@@ -154,9 +154,7 @@ export default async function handler(
             addMetadata(newDna, abstractedIndexes[0]);
             saveMetaDataSingleFile(abstractedIndexes[0]);
 
-            console.log(
-              `Created edition: ${abstractedIndexes[0]}, with DNA: ${sha1(newDna)}`
-            );
+            console.log(`Created edition: ${abstractedIndexes[0]}, with DNA: ${sha1(newDna)}`);
           });
 
           dnaList.add(newDna);
@@ -275,6 +273,9 @@ export default async function handler(
 /**
  * uploadFileToFirebase
  * */
+
+// TODO: 
+//        - write each file has been create to firebase storeage and it's path to database
 
 function uploadFileToFirebase(file: File) {
 

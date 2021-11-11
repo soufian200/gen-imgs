@@ -1,0 +1,19 @@
+{
+  "name": "Your Collection #5",
+  "description": "Remember to replace this description",
+  "image": "ipfs://NewUriToReplace/5.png",
+  "dna": "bba9d14a642fad199469a32c375d9a0fe6577f0b",
+  "edition": 5,
+  "date": "2021-11-11T20:53:44.833Z",
+  "attributes": [
+    {
+      "trait_type": "bgs",
+      "value": "purple"
+    },
+    {
+      "trait_type": "body",
+      "value": "Untitled"
+    }
+  ],
+  "compiler": "NFTs Generators"
+}
