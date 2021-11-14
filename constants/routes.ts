@@ -1,7 +1,7 @@
 const routes = {
 
     // Sign up
-    absolute: "/",
+    ABSOLUTE: "/",
 
     // Log in
     LOGIN: "/login",
