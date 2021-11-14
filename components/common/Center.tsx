@@ -1,10 +1,11 @@
 import { FC } from "react";
 
 interface CenterProps {
-    children: React.ReactNode;
+    children: React.ReactNode
+    styles?: string
 }
 
-const Center: FC<CenterProps> = ({ children }) => <div className="flex justify-center items-center">{children}</div>
+const Center: FC<CenterProps> = ({ children, styles = "" }) => <div className={`flex justify-center items-center ${styles}`}>{children}</div>
 
 
 export default Center;

@@ -9,6 +9,9 @@ const routes = {
     // Sign up
     SIGNUP: "/signup",
 
+    // reset password if user forget it
+    RESETPASSWORD: "/reset-password",
+
 }
 
 export default routes;
