@@ -1,0 +1,41 @@
+import Action from "./Action";
+import { AiOutlineCloudUpload, AiOutlineFolderAdd } from "react-icons/ai";
+import { BsTrash, } from 'react-icons/bs'
+import { BiExport, BiRightArrow } from "react-icons/bi";
+import { useRouter } from "next/dist/client/router";
+import { route } from "next/dist/server/router";
+
+const ActionsBar = () => {
+
+    const router = useRouter();
+
+    const getRoutes = (pathname: string): string[] => pathname.substr(2).split('/').slice(1,)
+    const ROUTES = getRoutes(router.asPath)
+
+    return <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white p-2 fixed `}>
+
+        <ul className={`flex text-gray-800`}>
+            {
+                ROUTES.map((r, i) => {
+
+
+                    return <div key={i} className={`flex items-center`}>
+                        <li key={i} className={`cursor-pointer hover:bg-gray-100 rounded-md text-xl capitalize py-2 px-4`}>{r}</li>
+                        {i != ROUTES.length - 1 && <BiRightArrow className={`ml-2`} />}
+                    </div>
+
+                })
+            }
+        </ul>
+        <div className="flex text-gray-800">
+
+            <Action Icon={<BiExport size={24} />} label="Export" />
+            <Action Icon={<BsTrash size={21} />} label="Delete" />
+            <Action Icon={<AiOutlineCloudUpload size={25} />} label="Upload Files" />
+            <Action Icon={<AiOutlineFolderAdd size={25} />} label="New Folder" />
+
+        </div>
+    </div>
+}
+
+export default ActionsBar;
