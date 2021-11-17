@@ -12,7 +12,7 @@ const ActionsBar = () => {
     const getRoutes = (pathname: string): string[] => pathname.substr(2).split('/').slice(1,)
     const ROUTES = getRoutes(router.asPath)
 
-    return <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white p-2 fixed `}>
+    return <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed `}>
 
         <ul className={`flex text-gray-800`}>
             {

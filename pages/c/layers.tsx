@@ -2,15 +2,49 @@
 import Main from "../../components/ui/Main";
 import Navbar from "../../components/ui/Navbar";
 import Sidebar from "../../components/ui/Sidebar";
-import { useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import Asset from '../../components/ui/Asset';
+import AppContext from "../../contexts/AppContext";
+import { AiFillFolder } from "react-icons/ai";
+import classNames from "classnames";
+import Folder from "../../components/ui/Folder";
+import getItemsIds from "../../lib/getItemsIds";
 
 
 
 
-const Content = () => {
 
-    const [display, setDisplay] = useState("large")
+const Layers = () => {
+
+
+
+
+
+
+
+
+
+    const { setSelectedFoldersIds, folders, setToSelect } = useContext(AppContext);
+
+
+
+
+
+
+
+
+
+    useEffect(() => {
+
+        // items to be select in layer page
+        const ids = getItemsIds(folders);
+        setToSelect(ids)
+
+        // reset selected ids
+        setSelectedFoldersIds([])
+
+    }, [])
+
 
 
 
@@ -18,13 +52,17 @@ const Content = () => {
 
         <div className={`flex flex-wrap w-full`}>
             {
-                [1, 2, 3, 4, 5, 6, 7, 8].map((i, index) => {
-                    return <Asset key={index} date="Mon, Nov 2021 - 22:41" name={(index + 1).toString()} display={display} />
-                })
+                folders.map((folder, index) => <Folder
+                    key={folder.id}
+                    id={folder.id}
+                    title={index + 1}
+                    createdAt={folder.createdAt}
+
+                />)
             }
         </div>
-    </Main>
+    </Main >
 
 }
 
-export default Content;
+export default Layers;
