@@ -4,12 +4,13 @@ import AppContext, { ContextArgs } from '../contexts/AppContext'
 import { useState } from 'react'
 import { AssetProps } from '../components/ui/AssetContainer'
 import { AssetImgProps } from '../components/ui/Asset'
+import getItemsIds from '../lib/getItemsIds'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
   const [display, setDisplay] = useState<"Large" | "Small">("Large")
   const [isReversed, setIsReversed] = useState<boolean>(false)
-  const [selectedFoldersIds, setSelectedFoldersIds] = useState<string[]>([])
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [folders, setFolders] = useState<AssetProps[]>([
     {
       id: '1',
@@ -81,7 +82,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   ])
 
-  const [toSelect, setToSelect] = useState<any[]>(folders)
+  const [itemsIds, setItemsIds] = useState<any[]>(getItemsIds(folders))
 
   /**
    * App State
@@ -94,8 +95,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     isReversed,
     setIsReversed,
 
-    selectedFoldersIds,
-    setSelectedFoldersIds,
+    selectedIds,
+    setSelectedIds,
 
     folders,
     setFolders,
@@ -103,8 +104,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     exported,
     setExported,
 
-    toSelect,
-    setToSelect,
+    itemsIds,
+    setItemsIds,
   }
 
   return <AppContext.Provider value={vals}>

@@ -8,16 +8,16 @@ import getItemsIds from "../../lib/getItemsIds";
 
 const Exported = () => {
 
-    const { exported, setToSelect, setSelectedFoldersIds } = useContext(AppContext);
+    const { exported, setItemsIds, setSelectedIds } = useContext(AppContext);
 
     useEffect(() => {
 
         // items to be select in layer page
         const ids = getItemsIds(exported);
-        setToSelect(ids)
+        setItemsIds(ids)
 
         // reset selected ids
-        setSelectedFoldersIds([])
+        setSelectedIds([])
     }, [])
 
 

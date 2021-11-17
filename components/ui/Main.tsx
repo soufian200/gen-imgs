@@ -25,25 +25,17 @@ const Main: FC<MainProps> = ({ children }) => {
         setDisplay,
         isReversed,
         setIsReversed,
-        selectedFoldersIds,
-        setSelectedFoldersIds,
-        toSelect
+        selectedIds,
+        setSelectedIds,
+        itemsIds
     } = useContext(AppContext)
 
 
-    // Reset Selected Folders Ids
-    const handleSelectNone = () => setSelectedFoldersIds([])
+    // Reset Selected Folders Ids (Select None)
+    const handleSelectNone = () => setSelectedIds([])
 
-
-
-    const handleSelectAll = () => setSelectedFoldersIds(toSelect);
-
-
-
-
-
-
-
+    // Select All
+    const handleSelectAll = () => setSelectedIds(itemsIds);
 
 
 
@@ -61,9 +53,9 @@ const Main: FC<MainProps> = ({ children }) => {
                 <div className={`flex items-center`}>
                     <h3 className={`capitalize`}>results ( 2000 )</h3>
 
-                    {selectedFoldersIds.length > 0 && <>
+                    {selectedIds.length > 0 && <>
                         <VertSep />
-                        < h3 className={`text-black mr-2`}>{selectedFoldersIds.length} Selected</h3>
+                        < h3 className={`text-black mr-2`}>{selectedIds.length} Selected</h3>
                         <Action
                             onClick={handleSelectNone}
                             Icon={<MdFilterNone size={19} />}
@@ -74,7 +66,7 @@ const Main: FC<MainProps> = ({ children }) => {
                             onClick={handleSelectAll}
                             Icon={<BiSelectMultiple size={22} />}
                             label="Select All"
-                            disabled={toSelect.length === selectedFoldersIds.length}
+                            disabled={itemsIds.length === selectedIds.length}
                         />
                     </>
                     }

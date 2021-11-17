@@ -24,7 +24,7 @@ const Layers = () => {
 
 
 
-    const { setSelectedFoldersIds, folders, setToSelect } = useContext(AppContext);
+    const { setSelectedIds, folders, setItemsIds } = useContext(AppContext);
 
 
 
@@ -38,10 +38,10 @@ const Layers = () => {
 
         // items to be select in layer page
         const ids = getItemsIds(folders);
-        setToSelect(ids)
+        setItemsIds(ids)
 
         // reset selected ids
-        setSelectedFoldersIds([])
+        setSelectedIds([])
 
     }, [])
 

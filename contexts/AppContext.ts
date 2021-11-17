@@ -21,8 +21,8 @@ export interface ContextArgs {
     /**
     *  if asset are reversed
     * */
-    selectedFoldersIds: string[]
-    setSelectedFoldersIds: (vals: string[]) => void
+    selectedIds: string[]
+    setSelectedIds: (vals: string[]) => void
 
 
     /**
@@ -41,8 +41,8 @@ export interface ContextArgs {
     /**
     *  which items to be select depand on current page
     * */
-    toSelect: any[]
-    setToSelect: (items: any[]) => void
+    itemsIds: any[]
+    setItemsIds: (items: any[]) => void
 }
 const AppContext = createContext({} as ContextArgs);
 
