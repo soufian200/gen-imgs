@@ -1,6 +1,6 @@
 import 'tailwindcss/tailwind.css'
 import type { AppProps } from 'next/app'
-import AppContext, { ContextArgs } from '../contexts/AppContext'
+import AppContext, { ContextArgs, DisplayState } from '../contexts/AppContext'
 import { useState } from 'react'
 import { AssetProps } from '../components/ui/AssetContainer'
 import { AssetImgProps } from '../components/ui/Asset'
@@ -8,7 +8,7 @@ import getItemsIds from '../lib/getItemsIds'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  const [display, setDisplay] = useState<"Large" | "Small">("Large")
+  const [display, setDisplay] = useState<DisplayState>(DisplayState.Large)
   const [isReversed, setIsReversed] = useState<boolean>(false)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [folders, setFolders] = useState<AssetProps[]>([

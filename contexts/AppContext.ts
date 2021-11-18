@@ -2,13 +2,19 @@ import { createContext } from "react";
 import { AssetImgProps } from "../components/ui/Asset";
 import { AssetProps } from "../components/ui/AssetContainer";
 
+
+export enum DisplayState {
+    Large = 'Large',
+    SMALL = 'SMALL',
+}
+
 export interface ContextArgs {
 
     /**
      *  display assets in the page
      * */
-    display: "Large" | "Small"
-    setDisplay: (type: "Large" | "Small") => void
+    display: DisplayState
+    setDisplay: (type: DisplayState) => void
 
 
     /**
@@ -52,5 +58,7 @@ export interface ContextArgs {
     setIsOverlayVisible: (val: boolean) => void
 }
 const AppContext = createContext({} as ContextArgs);
+
+
 
 export default AppContext;

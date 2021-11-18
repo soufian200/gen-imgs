@@ -4,7 +4,7 @@ import ActionsBar from "./ActionsBar";
 import { BsGrid, BsGrid3X3, BsArrowDown, BsArrowUp } from 'react-icons/bs'
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import AppContext from "../../contexts/AppContext";
+import AppContext, { DisplayState } from "../../contexts/AppContext";
 import { MdFilterNone } from "react-icons/md";
 import { BiSelectMultiple } from "react-icons/bi";
 
@@ -78,14 +78,14 @@ const Main: FC<MainProps> = ({ children }) => {
                 <div className={`flex items-center`}>
 
                     <Action
-                        onClick={() => setDisplay("Large")}
-                        foc={display === "Large"}
+                        onClick={() => setDisplay(DisplayState.Large)}
+                        foc={display === DisplayState.Large}
                         Icon={<BsGrid size={22} />}
                         title="Small Display"
                     />
                     <Action
-                        onClick={() => setDisplay("Small")}
-                        foc={display === "Small"}
+                        onClick={() => setDisplay(DisplayState.SMALL)}
+                        foc={display === DisplayState.SMALL}
                         Icon={<BsGrid3X3 size={22} />}
                         title="Large Display"
                     />
