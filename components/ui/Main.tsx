@@ -7,11 +7,7 @@ import Sidebar from "./Sidebar";
 import AppContext from "../../contexts/AppContext";
 import { MdFilterNone } from "react-icons/md";
 import { BiSelectMultiple } from "react-icons/bi";
-import Center from "../common/Center";
-import { AiOutlineClose } from "react-icons/ai";
-import Overlay from "./overlay/Overlay";
-import Button from "./Button"
-import EditItem from "./overlay/EditItem";
+
 
 
 interface MainProps {
@@ -51,9 +47,7 @@ const Main: FC<MainProps> = ({ children }) => {
         <Navbar styles={`shadow-none border-b border-gray-300`} />
         <Sidebar />
 
-        <Overlay>
-            <EditItem />
-        </Overlay>
+
 
         <div className={` w-10/12 ml-auto pt-32 relative`}>
 

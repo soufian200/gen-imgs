@@ -3,35 +3,33 @@ import AppContext from "../../../contexts/AppContext"
 import Button from "../Button"
 import Field from "../form/Field"
 
-const EditItem = () => {
-
-    const [value, setValue] = useState('')
+const DeleteItem = () => {
 
 
-    const { setIsOverlayVisible } = useContext(AppContext)
+
+
+    const { setIsOverlayVisible, selectedIds } = useContext(AppContext)
 
 
 
     return <div className={`p-4`}>
-        <h1 className={`text-lg mb-5`}>Edit</h1>
+        <h1 className={`text-lg mb-5`}>Delete</h1>
         <div>
 
-            <Field
-                value={value}
-                onChange={(e: React.FormEvent<HTMLInputElement>) => setValue(e.currentTarget.value)}
-            />
+            <h1 className={`my-10`}> <span className={`text-red-500 `}>
+                {selectedIds.length}
+            </span>  items will be removed. Are you sure ?</h1>
+
             <div className={`mt-5 flex items-center`}>
-
-
                 <Button
                     onClick={() => setIsOverlayVisible(false)}
-                    label="Cancel"
+                    label="No"
                     styles={`bg-gray-200 hover:bg-gray-300 text-black px-16 py-4 rounded-lg mr-1`}
                 />
                 <Button
-                    onClick={() => console.log("new name: ", value)}
+                    onClick={() => console.log("delete: ", selectedIds)}
                     loading={false}
-                    label="Save"
+                    label="Yes"
                     styles={`bg-blue-400 hover:bg-blue-300 px-16 py-4 rounded-lg text-white ml-1`}
                 />
             </div>
@@ -39,4 +37,4 @@ const EditItem = () => {
     </div>
 }
 
-export default EditItem;
+export default DeleteItem;
