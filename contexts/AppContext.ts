@@ -43,6 +43,13 @@ export interface ContextArgs {
     * */
     itemsIds: any[]
     setItemsIds: (items: any[]) => void
+
+
+    /**
+    *  which items to be select depand on current page
+    * */
+    isOverlayVisible: boolean
+    setIsOverlayVisible: (val: boolean) => void
 }
 const AppContext = createContext({} as ContextArgs);
 

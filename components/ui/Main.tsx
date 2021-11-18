@@ -7,6 +7,12 @@ import Sidebar from "./Sidebar";
 import AppContext from "../../contexts/AppContext";
 import { MdFilterNone } from "react-icons/md";
 import { BiSelectMultiple } from "react-icons/bi";
+import Center from "../common/Center";
+import { AiOutlineClose } from "react-icons/ai";
+import Overlay from "./overlay/Overlay";
+import Button from "./Button"
+import EditItem from "./overlay/EditItem";
+
 
 interface MainProps {
     children?: React.ReactNode
@@ -27,7 +33,7 @@ const Main: FC<MainProps> = ({ children }) => {
         setIsReversed,
         selectedIds,
         setSelectedIds,
-        itemsIds
+        itemsIds,
     } = useContext(AppContext)
 
 
@@ -40,10 +46,14 @@ const Main: FC<MainProps> = ({ children }) => {
 
 
 
-    return <div className={`w-full flex relative pt-5 p-10`}>
+    return <div className={`w-full flex relative pt-5 p-10 `}>
 
         <Navbar styles={`shadow-none border-b border-gray-300`} />
         <Sidebar />
+
+        <Overlay>
+            <EditItem />
+        </Overlay>
 
         <div className={` w-10/12 ml-auto pt-32 relative`}>
 
@@ -51,7 +61,7 @@ const Main: FC<MainProps> = ({ children }) => {
 
             <div className={`flex justify-between items-center text-gray-600 text-sm`}>
                 <div className={`flex items-center`}>
-                    <h3 className={`capitalize`}>results ( 2000 )</h3>
+                    <h3 className={`capitalize`}>results ( {itemsIds.length} )</h3>
 
                     {selectedIds.length > 0 && <>
                         <VertSep />

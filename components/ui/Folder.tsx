@@ -11,7 +11,7 @@ const Folder: FC<AssetProps> = ({ id, title, createdAt, }) => {
 
     return <AssetContainer id={id} title={title} createdAt={createdAt} >
         <div className={`text-blue-400`}>
-            <AiFillFolder size={display === "Large" ? 200 : 100} />
+            <AiFillFolder size={display === "Large" ? 200 : 130} />
         </div>
     </AssetContainer>
 }

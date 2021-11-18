@@ -5,16 +5,17 @@ import { BiEdit, BiExport, BiRightArrow } from "react-icons/bi";
 import { useRouter } from "next/dist/client/router";
 import { useContext } from "react";
 import AppContext from "../../contexts/AppContext";
+import routes from "../../constants/routes";
 
 const ActionsBar = () => {
 
-    const router = useRouter();
+    const { asPath } = useRouter();
 
     const getRoutes = (pathname: string): string[] => pathname.substr(2).split('/').slice(1,)
-    const ROUTES = getRoutes(router.asPath)
+    const ROUTES = getRoutes(asPath)
 
 
-    const { selectedIds } = useContext(AppContext);
+    const { selectedIds, setIsOverlayVisible } = useContext(AppContext);
 
     return <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed `}>
 
@@ -35,7 +36,10 @@ const ActionsBar = () => {
 
             <Action Icon={<BiExport size={24} />} label="Export" />
             {
-                selectedIds.length != 0 && <Action
+                selectedIds.length != 0 &&
+                // asPath == routes.CONTENT + routes.LAYERS && 
+                <Action
+                    onClick={() => setIsOverlayVisible(true)}
                     Icon={<BiEdit size={24} />}
                     label="Edit"
                     disabled={selectedIds.length != 1}

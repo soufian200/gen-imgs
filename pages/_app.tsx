@@ -83,7 +83,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   ])
 
   const [itemsIds, setItemsIds] = useState<any[]>(getItemsIds(folders))
-
+  const [isOverlayVisible, setIsOverlayVisible] = useState<boolean>(false)
   /**
    * App State
    * */
@@ -106,6 +106,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     itemsIds,
     setItemsIds,
+
+    isOverlayVisible,
+    setIsOverlayVisible
   }
 
   return <AppContext.Provider value={vals}>
