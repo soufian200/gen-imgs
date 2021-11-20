@@ -27,7 +27,7 @@ const Exported = () => {
                 exported.map((item, index) => <Asset
                     key={item.id}
                     id={item.id}
-                    title={item.title}
+                    title={"# " + item.title}
                     createdAt={item.createdAt}
                     path={item.path}
 

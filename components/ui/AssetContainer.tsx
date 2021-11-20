@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import { FC, useContext } from "react"
 import AppContext from "../../contexts/AppContext"
+import router, { useRouter } from 'next/router'
 
 
 export interface AssetProps {
@@ -15,7 +16,7 @@ interface AssetContainerProps extends AssetProps {
 
 const AssetContainer: FC<AssetContainerProps> = ({ children, id, title, createdAt, }) => {
 
-    const { setSelectedIds, selectedIds } = useContext(AppContext)
+    const { setSelectedIds, selectedIds, setItemsIds } = useContext(AppContext)
 
     /**
      * When user try to select a folder
@@ -35,6 +36,23 @@ const AssetContainer: FC<AssetContainerProps> = ({ children, id, title, createdA
     }
 
 
+
+    /**
+     * When user try to open a folder
+     * */
+
+    const handleOpenFolder = (id: string) => {
+
+        // console.log("open folder with this id: ", router.asPath + '/' + id)
+        setSelectedIds([])
+        setItemsIds([])
+
+        router.push(router.asPath + '/' + id)
+
+
+    }
+
+
     const rootStyle = `mr-4 
     mt-4
     border
@@ -43,17 +61,19 @@ const AssetContainer: FC<AssetContainerProps> = ({ children, id, title, createdA
     hover:shadow-lg 
     cursor-pointer 
     transition duration-300
+    select-none
     `;
 
 
     return <div
+        onDoubleClick={() => handleOpenFolder(id)}
         onClick={() => handleSelectFolder(id)}
         className={classNames(rootStyle, { "bg-blue-100 border-blue-300": selectedIds.includes(id) })
         }
     >
 
         {children}
-        <h1 className={`mt-3`}># {title}</h1>
+        <h1 className={`mt-3`}> {title}</h1>
         <p className={`text-xs text-gray-400 capitalize`}>{createdAt}</p>
     </div>
 }

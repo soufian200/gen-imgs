@@ -1,14 +1,14 @@
 
-import Main from "../../components/ui/Main";
-import Navbar from "../../components/ui/Navbar";
-import Sidebar from "../../components/ui/Sidebar";
+import Main from "../../../components/ui/Main";
+import Navbar from "../../../components/ui/Navbar";
+import Sidebar from "../../../components/ui/Sidebar";
 import { FC, useContext, useEffect, useState } from 'react';
-import Asset from '../../components/ui/Asset';
-import AppContext from "../../contexts/AppContext";
+import Asset from '../../../components/ui/Asset';
+import AppContext from "../../../contexts/AppContext";
 import { AiFillFolder } from "react-icons/ai";
 import classNames from "classnames";
-import Folder from "../../components/ui/Folder";
-import getItemsIds from "../../lib/getItemsIds";
+import Folder from "../../../components/ui/Folder";
+import getItemsIds from "../../../lib/getItemsIds";
 
 
 
@@ -55,7 +55,7 @@ const Layers = () => {
                 folders.map((folder, index) => <Folder
                     key={folder.id}
                     id={folder.id}
-                    title={index + 1}
+                    title={folder.title}
                     createdAt={folder.createdAt}
 
                 />)

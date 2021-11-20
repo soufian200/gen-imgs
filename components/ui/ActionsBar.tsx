@@ -40,7 +40,7 @@ const ActionsBar = () => {
             {actionType == ActionTypes.EDIT && <EditItem />}
             {actionType == ActionTypes.DELETE && <DeleteItem />}
         </Overlay>
-        <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed `}>
+        <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed z-30`}>
 
             <ul className={`flex text-gray-800`}>
                 {
@@ -74,7 +74,10 @@ const ActionsBar = () => {
                 />}
                 <Action Icon={<BiExport size={24} />} label="Export" />
 
-                <Action Icon={<AiOutlineCloudUpload size={25} />} label="Upload Files" />
+                <div className={`relative overflow-hidden cursor-pointer`}>
+                    <input type="file" title="Upload Files" accept="image/*" multiple className={`absolute cursor-pointer top-0 left-0 bg-red-400 h-full w-full opacity-0 `} />
+                    <Action Icon={<AiOutlineCloudUpload size={25} />} label="Upload Files" />
+                </div>
                 <Action Icon={<AiOutlineFolderAdd size={25} />} label="New Folder" />
 
             </div>
