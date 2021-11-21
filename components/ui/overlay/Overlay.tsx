@@ -22,7 +22,7 @@ const Overlay: FC<OverlayProps> = ({ children }) => {
                 title="Close" className={`absolute right-20 text-black bg-white hover:text-white hover:bg-gray-800 cursor-pointer p-4 rounded-full top-10`}>
                 <AiOutlineClose size={24} />
             </div>
-            <div className={`p-2 bg-white rounded-lg`}>
+            <div className={`p-4 bg-white rounded-lg`}>
 
                 {children}
 

@@ -8,6 +8,12 @@ export enum DisplayState {
     SMALL = 'SMALL',
 }
 
+export enum ActionTypes {
+    EDIT = "EDIT",
+    DELETE = "DELETE",
+    GENERATE = "GENERATE",
+}
+
 export interface ContextArgs {
 
     /**
@@ -56,6 +62,10 @@ export interface ContextArgs {
     * */
     isOverlayVisible: boolean
     setIsOverlayVisible: (val: boolean) => void
+
+
+    overlayActionType: ActionTypes
+    setOverlayActionType: (type: ActionTypes) => void
 }
 const AppContext = createContext({} as ContextArgs);
 

@@ -4,21 +4,18 @@ import { BsTrash, } from 'react-icons/bs'
 import { BiEdit, BiExport, BiRightArrow } from "react-icons/bi";
 import { useRouter } from "next/dist/client/router";
 import { useContext, useState } from "react";
-import AppContext from "../../contexts/AppContext";
+import AppContext, { ActionTypes } from "../../contexts/AppContext";
 import routes from "../../constants/routes";
 import Overlay from "./overlay/Overlay";
 import EditItem from "./overlay/EditItem"
 import DeleteItem from "./overlay/DeleteItem";
 
 
-enum ActionTypes {
-    EDIT = "EDIT",
-    DELETE = "DELETE",
-}
+
 
 const ActionsBar = () => {
 
-    const [actionType, setActionType] = useState<ActionTypes>()
+
 
     const { asPath } = useRouter();
 
@@ -28,18 +25,18 @@ const ActionsBar = () => {
     const isEmpty = (_selectedIds: string[]): boolean => _selectedIds.length === 0;
 
 
-    const { selectedIds, setIsOverlayVisible } = useContext(AppContext);
+    const { selectedIds, setIsOverlayVisible, setOverlayActionType } = useContext(AppContext);
 
     const handleAction = (type: ActionTypes) => {
         setIsOverlayVisible(true)
-        setActionType(type)
+        setOverlayActionType(type)
     }
 
     return <>
-        <Overlay>
+        {/* <Overlay>
             {actionType == ActionTypes.EDIT && <EditItem />}
             {actionType == ActionTypes.DELETE && <DeleteItem />}
-        </Overlay>
+        </Overlay> */}
         <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed z-30`}>
 
             <ul className={`flex text-gray-800`}>

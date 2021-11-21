@@ -4,9 +4,13 @@ import ActionsBar from "./ActionsBar";
 import { BsGrid, BsGrid3X3, BsArrowDown, BsArrowUp } from 'react-icons/bs'
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import AppContext, { DisplayState } from "../../contexts/AppContext";
+import AppContext, { ActionTypes, DisplayState } from "../../contexts/AppContext";
 import { MdFilterNone } from "react-icons/md";
 import { BiSelectMultiple } from "react-icons/bi";
+import Overlay from "./overlay/Overlay";
+import EditItem from "./overlay/EditItem";
+import DeleteItem from "./overlay/DeleteItem";
+import Generate from "./overlay/Generate";
 
 
 
@@ -30,6 +34,7 @@ const Main: FC<MainProps> = ({ children }) => {
         selectedIds,
         setSelectedIds,
         itemsIds,
+        overlayActionType
     } = useContext(AppContext)
 
 
@@ -46,6 +51,12 @@ const Main: FC<MainProps> = ({ children }) => {
 
         <Navbar styles={`shadow-none border-b border-gray-300`} />
         <Sidebar />
+
+        <Overlay>
+            {overlayActionType == ActionTypes.EDIT && <EditItem />}
+            {overlayActionType == ActionTypes.DELETE && <DeleteItem />}
+            {overlayActionType == ActionTypes.GENERATE && <Generate />}
+        </Overlay>
 
 
 

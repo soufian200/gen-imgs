@@ -12,8 +12,8 @@ const DeleteItem = () => {
 
 
 
-    return <div className={`p-4`}>
-        <h1 className={`text-lg mb-5`}>Delete</h1>
+    return <div >
+        <h1 className={`text-lg mb-5 font-bold`}>Delete</h1>
         <div>
 
             <h1 className={`my-10`}> <span className={`text-red-500 `}>

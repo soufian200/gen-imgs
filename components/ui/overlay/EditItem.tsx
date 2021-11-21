@@ -12,8 +12,8 @@ const EditItem = () => {
 
 
 
-    return <div className={`p-4`}>
-        <h1 className={`text-lg mb-5`}>Edit</h1>
+    return <div >
+        <h1 className={`text-lg mb-5 font-bold`}>Edit</h1>
         <div>
 
             <Field
