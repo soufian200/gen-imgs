@@ -199,10 +199,11 @@ const writeMetaData = (_data: string) => fs.writeFileSync(`${buildDir}/json/_met
  * */
 const saveImage = (_editionCount: number) => {
 
-    fs.writeFileSync(
-        `${buildDir}/images/${_editionCount}.png`,
-        canvas.toBuffer("image/png")
-    );
+    // fs.writeFileSync(
+    //     `${buildDir}/images/${_editionCount}.png`,
+    //     canvas.toBuffer("image/png")
+    // );
+    return canvas.toBuffer("image/png")
 };
 
 
@@ -211,7 +212,7 @@ const saveImage = (_editionCount: number) => {
  * */
 
 
-const addMetadata = (_dna: string, _edition: number) => {
+const addMetadata = (_dna: string, _edition: number, namePrefix: string, description: string) => {
 
     // time
     let dateTime = Date.now();
@@ -219,11 +220,11 @@ const addMetadata = (_dna: string, _edition: number) => {
     // meta data
     let tempMetadata: TempMetadataInterface = {
         name: `${namePrefix} #${_edition}`,
-        description: description,
+        description,
         image: `${baseUri}/${_edition}.png`,
         dna: sha1(_dna),
         edition: _edition,
-        date: new Date(dateTime),
+        date: dateTime,
         ...extraMetadata,
         attributes: attributesList,
         compiler: "NFTs Generators",
@@ -274,10 +275,12 @@ const saveMetaDataSingleFile = (_editionCount: number) => {
         ? console.log(`Writing metadata for ${_editionCount}: ${JSON.stringify(metadata)}`)
         : null;
 
-    fs.writeFileSync(
-        `${buildDir}/json/${_editionCount}.json`,
-        JSON.stringify(metadata, null, 2)
-    );
+    // fs.writeFileSync(
+    //     `${buildDir}/json/${_editionCount}.json`,
+    //     JSON.stringify(metadata, null, 2)
+    // );
+
+    return JSON.stringify(metadata, null, 2)
 };
 
 /**

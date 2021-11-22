@@ -3,13 +3,13 @@
     "name": "Your Collection #1",
     "description": "Remember to replace this description",
     "image": "ipfs://NewUriToReplace/1.png",
-    "dna": "6f26f581200b226ab699e92e6ca01febe6199128",
+    "dna": "0322fd9873348b5e78a3618bdace58fc256748ce",
     "edition": 1,
-    "date": "2021-11-11T20:53:38.684Z",
+    "date": 1637512829089,
     "attributes": [
       {
         "trait_type": "bgs",
-        "value": "pink"
+        "value": "purple"
       },
       {
         "trait_type": "body",
@@ -22,9 +22,28 @@
     "name": "Your Collection #2",
     "description": "Remember to replace this description",
     "image": "ipfs://NewUriToReplace/2.png",
-    "dna": "226ef89a7f857f8e95117059ba6fcd308e3f59d1",
+    "dna": "a2ab17baa1dbbea2cd457794866f02ebd563e47b",
     "edition": 2,
-    "date": "2021-11-11T20:53:40.347Z",
+    "date": 1637512831203,
+    "attributes": [
+      {
+        "trait_type": "bgs",
+        "value": "purple"
+      },
+      {
+        "trait_type": "body",
+        "value": "Untitled"
+      }
+    ],
+    "compiler": "NFTs Generators"
+  },
+  {
+    "name": "Your Collection #3",
+    "description": "Remember to replace this description",
+    "image": "ipfs://NewUriToReplace/3.png",
+    "dna": "b83d92c87469b01d25155fc4d500eb51cd6e5ecb",
+    "edition": 3,
+    "date": 1637512835270,
     "attributes": [
       {
         "trait_type": "bgs",
@@ -38,54 +57,54 @@
     "compiler": "NFTs Generators"
   },
   {
+    "name": "Your Collection #1",
+    "description": "Remember to replace this description",
+    "image": "ipfs://NewUriToReplace/1.png",
+    "dna": "6b4261199ad14568d30b8f4001c32538e12748a7",
+    "edition": 1,
+    "date": 1637512916967,
+    "attributes": [
+      {
+        "trait_type": "bgs",
+        "value": "yellow"
+      },
+      {
+        "trait_type": "body",
+        "value": "Untitled"
+      }
+    ],
+    "compiler": "NFTs Generators"
+  },
+  {
+    "name": "Your Collection #2",
+    "description": "Remember to replace this description",
+    "image": "ipfs://NewUriToReplace/2.png",
+    "dna": "c987ba310ed57c53be84bb701a52e828754b66de",
+    "edition": 2,
+    "date": 1637512918615,
+    "attributes": [
+      {
+        "trait_type": "bgs",
+        "value": "yellow"
+      },
+      {
+        "trait_type": "body",
+        "value": "Untitled"
+      }
+    ],
+    "compiler": "NFTs Generators"
+  },
+  {
     "name": "Your Collection #3",
     "description": "Remember to replace this description",
     "image": "ipfs://NewUriToReplace/3.png",
-    "dna": "0322fd9873348b5e78a3618bdace58fc256748ce",
+    "dna": "226ef89a7f857f8e95117059ba6fcd308e3f59d1",
     "edition": 3,
-    "date": "2021-11-11T20:53:41.772Z",
+    "date": 1637512920864,
     "attributes": [
       {
         "trait_type": "bgs",
-        "value": "purple"
-      },
-      {
-        "trait_type": "body",
-        "value": "Untitled"
-      }
-    ],
-    "compiler": "NFTs Generators"
-  },
-  {
-    "name": "Your Collection #4",
-    "description": "Remember to replace this description",
-    "image": "ipfs://NewUriToReplace/4.png",
-    "dna": "a2ab17baa1dbbea2cd457794866f02ebd563e47b",
-    "edition": 4,
-    "date": "2021-11-11T20:53:43.110Z",
-    "attributes": [
-      {
-        "trait_type": "bgs",
-        "value": "purple"
-      },
-      {
-        "trait_type": "body",
-        "value": "Untitled"
-      }
-    ],
-    "compiler": "NFTs Generators"
-  },
-  {
-    "name": "Your Collection #5",
-    "description": "Remember to replace this description",
-    "image": "ipfs://NewUriToReplace/5.png",
-    "dna": "bba9d14a642fad199469a32c375d9a0fe6577f0b",
-    "edition": 5,
-    "date": "2021-11-11T20:53:44.833Z",
-    "attributes": [
-      {
-        "trait_type": "bgs",
-        "value": "purple"
+        "value": "pink"
       },
       {
         "trait_type": "body",

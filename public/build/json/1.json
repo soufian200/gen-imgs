@@ -2,13 +2,13 @@
   "name": "Your Collection #1",
   "description": "Remember to replace this description",
   "image": "ipfs://NewUriToReplace/1.png",
-  "dna": "6f26f581200b226ab699e92e6ca01febe6199128",
+  "dna": "0322fd9873348b5e78a3618bdace58fc256748ce",
   "edition": 1,
-  "date": "2021-11-11T20:53:38.684Z",
+  "date": 1637512829089,
   "attributes": [
     {
       "trait_type": "bgs",
-      "value": "pink"
+      "value": "purple"
     },
     {
       "trait_type": "body",

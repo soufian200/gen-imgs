@@ -87,7 +87,7 @@ export interface TempMetadataInterface {
     seller_fee_basis_points?: number
     external_url?: string
 
-    date?: Date
+    date?: number
     extraMetadata?: any
     dna?: string
     properties?: PropertyInterface

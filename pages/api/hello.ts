@@ -6,25 +6,18 @@ import User from '../../models/User'
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import storage from "../../services/firebase/storage";
 import {
-  format,
-  baseUri,
-  description,
   background,
   uniqueDnaTorrance,
-  layerConfigurations,
-  rarityDelimiter,
+  // layerConfigurations,
   shuffleLayerConfigurations,
   debugLogs,
-  extraMetadata,
-  text,
-  namePrefix,
   network,
-  solanaMetadata,
   gif,
+  namePrefix,
 } from "../../lib/config"
 import { NETWORK } from "../../constants/network"
 import HashlipsGiffer from "../../lib/HashlipsGiffer"
-
+import * as Yup from 'yup';
 import sha1 from "sha1"
 import {
   addMetadata,
@@ -41,7 +34,7 @@ import {
   shuffle,
   writeMetaData
 } from '../../utils/defs';
-import { ConstructLayerInterface } from '../../utils/interfaces';
+import { ConstructLayerInterface, LayerInterface } from '../../utils/interfaces';
 import { canvas, ctx } from '../../lib/ctx';
 
 
@@ -55,7 +48,12 @@ const buildDir = "public/build";
 const layersDir = "public/layers";
 
 type Data = {
-  name: string
+  name?: string
+  imgs?: Buffer[]
+  metadataList?: string
+  allSingleMetaData?: string[]
+  error?: string
+
 }
 
 export default async function handler(
@@ -63,13 +61,25 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  const startCreating = async () => {
+
+  interface layerConfigurationsProps {
+    growEditionSizeTo: number;
+    layersOrder: LayerInterface[]
+  }
+  const startCreating = async (layerConfigurations: layerConfigurationsProps[],
+    format: { width: number, height: number },
+    shuffleLayer: boolean,
+    namePrefix: string,
+    description: string
+  ) => {
 
     // init values
     let layerConfigIndex = 0;
     let editionCount = 1;
     let failedCount = 0;
     let abstractedIndexes: number[] = [];
+    const imgsBuffer: Buffer[] = []
+    const allSingleMetaData: string[] = []
 
 
     for (
@@ -81,7 +91,7 @@ export default async function handler(
     }
 
     // shuffle indexes
-    if (shuffleLayerConfigurations)
+    if (shuffleLayer)
       abstractedIndexes = shuffle(abstractedIndexes);
 
 
@@ -105,6 +115,8 @@ export default async function handler(
           results.forEach((layer) => {
             loadedElements.push(loadLayerImg(layer));
           });
+
+
 
 
           await Promise.all(loadedElements).then((renderObjectArray) => {
@@ -150,9 +162,13 @@ export default async function handler(
               ? console.log("Editions left to create: ", abstractedIndexes)
               : null;
 
-            saveImage(abstractedIndexes[0]);
-            addMetadata(newDna, abstractedIndexes[0]);
-            saveMetaDataSingleFile(abstractedIndexes[0]);
+            const imgBuffer = saveImage(abstractedIndexes[0]);
+            imgsBuffer.push(imgBuffer)
+
+            addMetadata(newDna, abstractedIndexes[0], namePrefix, description);
+            const singleMetaData = saveMetaDataSingleFile(abstractedIndexes[0]);
+
+            allSingleMetaData.push(singleMetaData)
 
             console.log(`Created edition: ${abstractedIndexes[0]}, with DNA: ${sha1(newDna)}`);
           });
@@ -177,23 +193,119 @@ export default async function handler(
       layerConfigIndex++;
     }
 
-    writeMetaData(JSON.stringify(metadataList, null, 2));
+    // writeMetaData(JSON.stringify(metadataList, null, 2));
 
 
     console.log("############################")
+
     console.log("Done!!.....")
     console.log("############################")
+    res.status(200).json({
+      name: "done",
+      imgs: imgsBuffer,
+      metadataList: JSON.stringify(metadataList, null, 2),
+      allSingleMetaData
+    })
 
   }
 
-  // startCreating()
 
-  // uploadFileToFirebase()
+  const {
+    layers,
+    width,
+    height,
+    size,
+    description,
+    collectionName,
+    isShuffle
+  } = req.body;
 
-  // const analytics = getAnalytics(app);
+  /**
+  * Validation Schema
+  * */
+  const ValidationSchema = Yup.object().shape({
+    width: Yup.number()
+      .typeError('only numbers')
+      .min(10, "Too Short!")
+      .max(1000, "Too Long!")
+      .required("Required"),
+
+    height: Yup.number()
+      .typeError('only numbers')
+      .min(10, "Too Short!")
+      .max(1000, "Too Long!")
+      .required("Required"),
+
+    size: Yup.number()
+      .typeError('only numbers')
+      .min(5, "Too Short!")
+      .max(50, "Currently You can Just generate up to 50 img")
+      .required("Required"),
+
+    collectionName: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+
+    description: Yup.string()
+
+      .max(250, "Too Long!")
+
+  });
+
+  ValidationSchema.validate({
+    width,
+    height,
+    size,
+    collectionName,
+    description,
+    isShuffle
+  })
+    .then(function (value) {
+      // #####################################
+      // console.log(value); 
+      const {
+        description,
+        collectionName,
+        size,
+        height,
+        width,
+        isShuffle
+      } = value;
+
+      const layerConfigurations = [{
+        growEditionSizeTo: size,
+        layersOrder: layers
+      }]
+
+      startCreating(layerConfigurations, { width, height }, isShuffle, collectionName, description || "Remember to replace this description")
+
+      // res.status(200).json({
+      //   name: "done",
+      // })
+
+      // #####################################
+
+    })
+    .catch(function (err) {
+
+      res.status(400).json({
+        error: (err.errors[0]) as string,
+      })
+    });
 
 
-  // await dbConnect();
+
+
+
+
+
+
+
+
+
+
+
 
   const user = new User({
     name: 'bob',
@@ -256,6 +368,7 @@ export default async function handler(
   });
   // const r = await user.save();
 
+  console.log("###################")
 
 
 
@@ -264,7 +377,6 @@ export default async function handler(
 
 
 
-  res.status(200).json({ name: "hello" })
 }
 
 
@@ -334,6 +446,7 @@ function uploadFileToFirebase(file: File) {
   );
 
 }
+
 
 
 

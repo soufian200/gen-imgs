@@ -1,14 +1,14 @@
 {
-  "name": "Your Collection #3",
+  "name": "Your Collection #6",
   "description": "Remember to replace this description",
-  "image": "ipfs://NewUriToReplace/3.png",
-  "dna": "b83d92c87469b01d25155fc4d500eb51cd6e5ecb",
-  "edition": 3,
-  "date": 1637512835270,
+  "image": "ipfs://NewUriToReplace/6.png",
+  "dna": "0322fd9873348b5e78a3618bdace58fc256748ce",
+  "edition": 6,
+  "date": "2021-11-21T10:40:54.986Z",
   "attributes": [
     {
       "trait_type": "bgs",
-      "value": "pink"
+      "value": "purple"
     },
     {
       "trait_type": "body",
