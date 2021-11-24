@@ -20,7 +20,7 @@ import {
 } from "../lib/config";
 import { canvas, ctx } from "../lib/ctx";
 import { AttributeListInterface, ConstructLayerInterface, ElementInterface, LayerInterface, LayersInterface, RenderObjectInterface, TempMetadataInterface } from "./interfaces";
-import fs from "fs"
+// import fs from "fs"
 import sha1 from "sha1"
 import { NETWORK } from "../constants/network";
 
@@ -192,7 +192,7 @@ const loadLayerImg = async (_layer: ConstructLayerInterface) => {
 /**
 * Write MetaData
 * */
-const writeMetaData = (_data: string) => fs.writeFileSync(`${buildDir}/json/_metadata.json`, _data);
+// const writeMetaData = (_data: string) => fs.writeFileSync(`${buildDir}/json/_metadata.json`, _data);
 
 /**
  * Save Image
@@ -370,7 +370,7 @@ export {
     addText,
     drawElement,
     constructLayerToDna,
-    writeMetaData,
+    // writeMetaData,
     saveImage,
     addMetadata,
     saveMetaDataSingleFile

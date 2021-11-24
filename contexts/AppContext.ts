@@ -11,7 +11,6 @@ export enum DisplayState {
 export enum ActionTypes {
     EDIT = "EDIT",
     DELETE = "DELETE",
-    GENERATE = "GENERATE",
 }
 
 export interface ContextArgs {

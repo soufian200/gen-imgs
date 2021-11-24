@@ -10,7 +10,6 @@ import { BiSelectMultiple } from "react-icons/bi";
 import Overlay from "./overlay/Overlay";
 import EditItem from "./overlay/EditItem";
 import DeleteItem from "./overlay/DeleteItem";
-import Generate from "./overlay/Generate";
 
 
 
@@ -55,7 +54,6 @@ const Main: FC<MainProps> = ({ children }) => {
         <Overlay>
             {overlayActionType == ActionTypes.EDIT && <EditItem />}
             {overlayActionType == ActionTypes.DELETE && <DeleteItem />}
-            {overlayActionType == ActionTypes.GENERATE && <Generate />}
         </Overlay>
 
 

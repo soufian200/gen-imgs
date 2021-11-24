@@ -1,3 +1,3 @@
 export default {
-    generate: '/api/hello'
+    generate: '/api/generate'
 }

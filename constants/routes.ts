@@ -25,7 +25,7 @@ const routes = {
     LAYERS: "/layers",
 
     // images
-    IMAGES: "/images",
+    HOME: "/home",
 
     // exported
     EXPORTED: "/exported",
@@ -35,6 +35,27 @@ const routes = {
 
     // exported
     HELP: "/help",
+
+
+
+
+    /**
+   * Tools
+   * */
+
+    // Generate
+    TOOLS: "/tools",
+
+    // Generate
+    GENERATE: "/generate",
+
+
+    // update json
+    UPDATEJSON: "/update-json",
+
+    // generate gif
+    GENERATEGIF: "/generate-gif",
+
 
 }
 

@@ -32,7 +32,6 @@ import {
   saveImage,
   saveMetaDataSingleFile,
   shuffle,
-  writeMetaData
 } from '../../utils/defs';
 import { ConstructLayerInterface, LayerInterface } from '../../utils/interfaces';
 import { canvas, ctx } from '../../lib/ctx';
@@ -278,11 +277,11 @@ export default async function handler(
         layersOrder: layers
       }]
 
-      startCreating(layerConfigurations, { width, height }, isShuffle, collectionName, description || "Remember to replace this description")
+      // startCreating(layerConfigurations, { width, height }, isShuffle, collectionName, description || "Remember to replace this description")
 
-      // res.status(200).json({
-      //   name: "done",
-      // })
+      res.status(200).json({
+        name: "done",
+      })
 
       // #####################################
 
