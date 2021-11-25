@@ -1,10 +1,12 @@
 import 'tailwindcss/tailwind.css'
 import type { AppProps } from 'next/app'
 import AppContext, { ActionTypes, ContextArgs, DisplayState } from '../contexts/AppContext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AssetProps } from '../components/ui/AssetContainer'
 import { AssetImgProps } from '../components/ui/Asset'
 import getItemsIds from '../lib/getItemsIds'
+import { collection, addDoc, getFirestore } from "firebase/firestore";
+import app from '../services/firebase/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -116,6 +118,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     overlayActionType,
     setOverlayActionType
   }
+
+
 
   return <AppContext.Provider value={vals}>
     <Component {...pageProps} />

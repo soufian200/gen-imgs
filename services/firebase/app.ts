@@ -5,6 +5,7 @@ const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_PROJECT_ID,
     projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+    databaseUrl: process.env.NEXT_PUBLIC_DATABASE_URL,
     storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
     messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
     appId: process.env.NEXT_PUBLIC_APP_ID,
@@ -12,5 +13,6 @@ const firebaseConfig = {
 };
 
 
-const firebaseApp = initializeApp(firebaseConfig);
-export default firebaseApp
+
+const app = initializeApp(firebaseConfig);
+export default app

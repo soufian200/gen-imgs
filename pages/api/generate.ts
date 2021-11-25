@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import ArtGenerator from "../../lib/ArtGenerator";
+import ArtGenerator from "../../lib/classes/ArtGenerator";
 import generateFormSchema from "../../lib/schemas/generateFormSchema";
 
 

@@ -1,59 +1,17 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import app from 'next/app';
-import dbConnect from '../../lib/dbConnect';
-import User from '../../models/User'
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
-import storage from "../../services/firebase/storage";
-import {
-  background,
-  uniqueDnaTorrance,
-  // layerConfigurations,
-  shuffleLayerConfigurations,
-  debugLogs,
-  network,
-  gif,
-  namePrefix,
-} from "../../lib/config"
-import { NETWORK } from "../../constants/network"
-import HashlipsGiffer from "../../lib/HashlipsGiffer"
-import * as Yup from 'yup';
-import sha1 from "sha1"
-import {
-  addMetadata,
-  constructLayerToDna,
-  createDna,
-  drawBackground,
-  drawElement,
-  isDnaUnique,
-  layersSetup,
-  loadLayerImg,
-  metadataList,
-  saveImage,
-  saveMetaDataSingleFile,
-  shuffle,
-} from '../../utils/defs';
-import { ConstructLayerInterface, LayerInterface } from '../../utils/interfaces';
-import { canvas, ctx } from '../../lib/ctx';
 
 
-let hashlipsGiffer: any = null;
-
-
-var dnaList = new Set();
-
-
-const buildDir = "public/build";
-const layersDir = "public/layers";
-
+import User from '../../lib/classes/User';
 type Data = {
-  name?: string
-  imgs?: Buffer[]
-  metadataList?: string
-  allSingleMetaData?: string[]
-  error?: string
+  msg: string
 
 }
+
+
+
+
+
 
 export default async function handler(
   req: NextApiRequest,
@@ -61,391 +19,117 @@ export default async function handler(
 ) {
 
 
-  interface layerConfigurationsProps {
-    growEditionSizeTo: number;
-    layersOrder: LayerInterface[]
-  }
-  const startCreating = async (layerConfigurations: layerConfigurationsProps[],
-    format: { width: number, height: number },
-    shuffleLayer: boolean,
-    namePrefix: string,
-    description: string
-  ) => {
 
-    // init values
-    let layerConfigIndex = 0;
-    let editionCount = 1;
-    let failedCount = 0;
-    let abstractedIndexes: number[] = [];
-    const imgsBuffer: Buffer[] = []
-    const allSingleMetaData: string[] = []
 
 
-    for (
-      let i = network == NETWORK.sol ? 0 : 1;
-      i <= layerConfigurations[layerConfigurations.length - 1].growEditionSizeTo;
-      i++
-    ) {
-      abstractedIndexes.push(i);
-    }
+  // const user: User = {
 
-    // shuffle indexes
-    if (shuffleLayer)
-      abstractedIndexes = shuffle(abstractedIndexes);
+  //   username: "tom",
+  //   email: "so@gmail.com",
+  //   password: "123",
 
+  // }
 
-    while (layerConfigIndex < layerConfigurations.length) {
 
-      const layers = layersSetup(layerConfigurations[layerConfigIndex].layersOrder);
+  // try {
+  //   const db = admin.firestore()
 
+  //   // add user
+  //   const userCollection = db.collection('users')
+  //   const tomDoc = userCollection.doc("useridtom111")
+  //   // tomDoc.set(user)
 
-      while (
-        editionCount <= layerConfigurations[layerConfigIndex].growEditionSizeTo
-      ) {
+  // add layer
+  //   const layerCollection = tomDoc.collection("layers")
+  //   const bgDoc = layerCollection.doc("layerIdbg222");
 
-        let newDna: string = createDna(layers);
 
-        if (isDnaUnique(dnaList, newDna)) {
+  //   /**
+  //    * Add Imgs for a layer
+  //   */
 
-          let results: ConstructLayerInterface[] = constructLayerToDna(newDna, layers);
-          let loadedElements: Promise<any>[] = [];
+  //   const imgsCollection = bgDoc.collection("imgs");
+  //   const pink = imgsCollection.doc("imgID2")
+  //   // pink.set({
+  //   //   filename: "yellow#30",
+  //   //   path: "fake/path/2"
+  //   // })
 
 
-          results.forEach((layer) => {
-            loadedElements.push(loadLayerImg(layer));
-          });
 
+  //   // bgDoc.set({
+  //   //   folderName: "bg",
+  //   // })
 
 
+  //   // const tomData = await tomDoc.get();
+  //   // if (!tomData.exists) {
+  //   //   console.log('No such document!');
+  //   // } else {
+  //   //   console.log('Document data:', tomData.data());
+  //   // }
 
-          await Promise.all(loadedElements).then((renderObjectArray) => {
 
-            //for debuging
-            debugLogs ? console.log("Clearing canvas") : null;
+  //   /**
+  //   * get layers
+  //   * */
+  //   // const tomsLayers = await layerCollection.get()
+  //   // tomsLayers.forEach(doc => {
+  //   //   console.log(doc.id, '=>', doc.data());
+  //   // });
 
-            // clean rectangle
-            ctx.clearRect(0, 0, format.width, format.height);
+  //   /**
+  //    * Get imgs for a layer
+  //    * */
+  //   // const tomsImgs = await imgsCollection.get()
+  //   // tomsImgs.forEach(doc => {
+  //   //   console.log(doc.id, '=>', doc.data());
+  //   // });
 
-            if (gif.export) {
-              hashlipsGiffer = new HashlipsGiffer(
-                canvas,
-                ctx,
-                `${buildDir}/gifs/${abstractedIndexes[0]}.gif`,
-                gif.repeat,
-                gif.quality,
-                gif.delay
-              );
-              hashlipsGiffer.start();
-            }
 
-            if (background.generate)
-              drawBackground();
 
+  //   /**
+  //    * update layer name
+  //    * */
+  //   // bgDoc.update({
+  //   //   folderName: "legs"
+  //   // })
 
-            renderObjectArray.forEach((renderObject, index) => {
-              drawElement(
-                renderObject,
-                index,
-                layerConfigurations[layerConfigIndex].layersOrder.length
-              );
+  //   /**
+  //    *  push layer to layers
+  //    * */
+  //   // doc.update({
+  //   //   layers: admin.firestore.FieldValue.arrayUnion({
+  //   //     folderName: "eyes",
+  //   //     imgs: []
+  //   //   })
+  //   // });
 
-              if (gif.export)
-                hashlipsGiffer.add();
 
-            });
+  //   /**
+  //   *  push img to layer
+  //   * */
+  //   // doc.update({
+  //   //   'layers.imgs': admin.firestore.FieldValue.arrayUnion({
+  //   //     filename: 'pink#3.png',
+  //   //     path: "img/path3"
+  //   //   })
+  //   // });
 
-            if (gif.export) hashlipsGiffer.stop();
 
 
-            debugLogs
-              ? console.log("Editions left to create: ", abstractedIndexes)
-              : null;
+  //   // doc.set(user)
 
-            const imgBuffer = saveImage(abstractedIndexes[0]);
-            imgsBuffer.push(imgBuffer)
-
-            addMetadata(newDna, abstractedIndexes[0], namePrefix, description);
-            const singleMetaData = saveMetaDataSingleFile(abstractedIndexes[0]);
-
-            allSingleMetaData.push(singleMetaData)
-
-            console.log(`Created edition: ${abstractedIndexes[0]}, with DNA: ${sha1(newDna)}`);
-          });
-
-          dnaList.add(newDna);
-          editionCount++;
-          abstractedIndexes.shift();
-
-        }
-        else {
-          console.log("DNA exists!");
-          failedCount++;
-          if (failedCount >= uniqueDnaTorrance) {
-            console.log(
-              `You need more layers or elements to grow your edition to ${layerConfigurations[layerConfigIndex].growEditionSizeTo} artworks!`
-            );
-            break;
-          }
-        }
-      }
-
-      layerConfigIndex++;
-    }
-
-    // writeMetaData(JSON.stringify(metadataList, null, 2));
-
-
-    console.log("############################")
-
-    console.log("Done!!.....")
-    console.log("############################")
-    res.status(200).json({
-      name: "done",
-      imgs: imgsBuffer,
-      metadataList: JSON.stringify(metadataList, null, 2),
-      allSingleMetaData
-    })
 
-  }
+  //   console.log("added ");
+  // } catch (e) {
+  //   console.log("Error adding document: ", e);
+  // }
 
 
-  const {
-    layers,
-    width,
-    height,
-    size,
-    description,
-    collectionName,
-    isShuffle
-  } = req.body;
 
-  /**
-  * Validation Schema
-  * */
-  const ValidationSchema = Yup.object().shape({
-    width: Yup.number()
-      .typeError('only numbers')
-      .min(10, "Too Short!")
-      .max(1000, "Too Long!")
-      .required("Required"),
 
-    height: Yup.number()
-      .typeError('only numbers')
-      .min(10, "Too Short!")
-      .max(1000, "Too Long!")
-      .required("Required"),
-
-    size: Yup.number()
-      .typeError('only numbers')
-      .min(5, "Too Short!")
-      .max(50, "Currently You can Just generate up to 50 img")
-      .required("Required"),
-
-    collectionName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-
-    description: Yup.string()
-
-      .max(250, "Too Long!")
-
-  });
-
-  ValidationSchema.validate({
-    width,
-    height,
-    size,
-    collectionName,
-    description,
-    isShuffle
-  })
-    .then(function (value) {
-      // #####################################
-      // console.log(value); 
-      const {
-        description,
-        collectionName,
-        size,
-        height,
-        width,
-        isShuffle
-      } = value;
-
-      const layerConfigurations = [{
-        growEditionSizeTo: size,
-        layersOrder: layers
-      }]
-
-      // startCreating(layerConfigurations, { width, height }, isShuffle, collectionName, description || "Remember to replace this description")
-
-      res.status(200).json({
-        name: "done",
-      })
-
-      // #####################################
-
-    })
-    .catch(function (err) {
-
-      res.status(400).json({
-        error: (err.errors[0]) as string,
-      })
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const user = new User({
-    name: 'bob',
-    email: "boblms@gmail.com",
-    layers: [
-      {
-        folderName: "bgs",
-        imgs: [
-          {
-            filename: 'pink#2.png',
-            path: "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fbg%2Fpink%232.png?alt=media&token=83fee278-440b-4281-b6e7-5ebfe5c0581f",
-          },
-          {
-            filename: 'purple#3.png',
-            path: "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fbg%2Fpurple%233.png?alt=media&token=0e5505e3-a938-4d2e-a900-e50ff261bf5d",
-          },
-          {
-            filename: 'yellow#1.png',
-            path: "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fbg%2Fyellow%231.png?alt=media&token=a13c7ac6-88b7-4235-b4fb-bbd82886ea30"
-
-          },
-
-        ]
-      },
-      {
-        folderName: "body",
-        imgs: [
-          {
-            filename: 'yellow#1.png',
-            path: "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fbody%2FUntitled%231.png?alt=media&token=2a103dba-49c5-4111-aa4e-ddc834b83d9a"
-          },
-          {
-            filename: 'yellow#1.png',
-            path: "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fbody%2FUntitled%231.png?alt=media&token=2a103dba-49c5-4111-aa4e-ddc834b83d9a",
-          },
-          {
-            filename: 'yellow#1.png',
-            path: "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fbody%2FUntitled%231.png?alt=media&token=2a103dba-49c5-4111-aa4e-ddc834b83d9a",
-
-          },
-        ]
-      },
-      // {
-      //   folderName: "eye",
-      //   imgs: [
-      //     "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Feye%2FGreen%231.png?alt=media&token=6042142c-9c4f-4d03-8907-973414366dc9",
-      //     "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Feye%2FPink%231.png?alt=media&token=73c41f95-0e85-4908-a597-646561292309",
-      //     "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Feye%2FPurple%231.png?alt=media&token=a8d42354-b190-4741-803a-9614321ec9ff"
-      //   ]
-      // },
-      // {
-      //   folderName: "head",
-      //   imgs: [
-      //     "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fhead%2Fhead%231.png?alt=media&token=f73bd228-a41d-499b-a62f-255f16a8c297",
-      //     "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fhead%2Fhead%232.png?alt=media&token=9c7f6f28-f977-42d6-b5b0-0462e09806bb",
-      //     "https://firebasestorage.googleapis.com/v0/b/nfts-generator-fe3a2.appspot.com/o/layers%2Fhead%2Fhead%233.png?alt=media&token=79277e43-b839-4f0a-a148-5acc71280be4"
-      //   ]
-      // },
-    ]
-  });
-  // const r = await user.save();
-
-  console.log("###################")
 
 
-
-
-
-
-
-
+  return res.json({ msg: "welcome" })
 }
-
-
-
-
-
-
-
-/**
- * uploadFileToFirebase
- * */
-
-// TODO: 
-//        - write each file has been create to firebase storeage and it's path to database
-
-function uploadFileToFirebase(file: File) {
-
-  // Create the file metadata
-  const metadata = { contentType: 'image/jpeg' };
-
-  // Upload file and metadata to the object 'images/mountains.jpg'
-  const storageRef = ref(storage, 'build/');
-
-  const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-
-  // Listen for state changes, errors, and completion of the upload.
-  uploadTask.on('state_changed',
-    (snapshot) => {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-      console.log('Upload is ' + progress + '% done');
-      switch (snapshot.state) {
-        case 'paused':
-          // console.log('Upload is paused');
-          break;
-        case 'running':
-          // console.log('Upload is running');
-          break;
-      }
-    },
-    (error) => {
-      // A full list of error codes is available at
-      // https://firebase.google.com/docs/storage/web/handle-errors
-      switch (error.code) {
-        case 'storage/unauthorized':
-          // User doesn't have permission to access the object
-          break;
-        case 'storage/canceled':
-          // User canceled the upload
-          break;
-
-        // ...
-
-        case 'storage/unknown':
-          // Unknown error occurred, inspect error.serverResponse
-          break;
-      }
-    },
-    () => {
-      // Upload completed successfully, now we can get the download URL
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-
-        console.log('File available at', downloadURL);
-      });
-    }
-  );
-
-}
-
-
-
-

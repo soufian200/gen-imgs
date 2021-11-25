@@ -1,7 +1,7 @@
-import { AttributeListInterface, ConstructLayerInterface, LayerInterface, LayersInterface, RenderObjectInterface, TempMetadataInterface } from "../utils/interfaces";
+import { AttributeListInterface, ConstructLayerInterface, LayerInterface, LayersInterface, RenderObjectInterface, TempMetadataInterface } from "../../utils/interfaces";
 import { createCanvas, loadImage, } from 'canvas'
 import sha1 from "sha1"
-import { shuffle } from "../utils/defs";
+import { shuffle } from "../../utils/defs";
 
 
 
