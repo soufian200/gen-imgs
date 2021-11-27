@@ -8,6 +8,8 @@ export interface ElementInterface {
 
 
 export interface ImgInterface {
+
+    id?: string
     filename: String
     path: String
 
@@ -15,6 +17,8 @@ export interface ImgInterface {
 
 
 export interface LayerInterface {
+
+    id?: string
     folderName: String
     imgs: ImgInterface[]
     options?: any

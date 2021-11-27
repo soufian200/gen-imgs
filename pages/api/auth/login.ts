@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import User from '../../../lib/classes/User';
+import User from '../../../services/firebase/classes/User';
 
 
 

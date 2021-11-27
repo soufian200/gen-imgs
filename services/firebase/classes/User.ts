@@ -1,12 +1,7 @@
-import admin from "../../services/firebase/admin";
+import admin from "../admin";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { v4 as uuidv4 } from 'uuid';
-
-// AppError
-// 403 Forbidden
-// 401 Unauthorized
-// 400 Bad Request
 
 
 
@@ -15,6 +10,7 @@ class User {
     private db;
     private usersCollection;
     private subsCollection;
+
 
 
 
@@ -29,6 +25,17 @@ class User {
         // subs collection ref
         this.subsCollection = this.db.collection('subs');
 
+
+    }
+
+
+
+    /**
+    * Get User Doc
+    * */
+    getUserDoc(_userId: string) {
+
+        return this.usersCollection.doc(_userId)
     }
 
 
@@ -43,6 +50,7 @@ class User {
         const hashedPassword = await bcrypt.hash(_password, salt)
         return hashedPassword;
     }
+
 
 
     /**
@@ -60,7 +68,7 @@ class User {
     * Get a User
     * */
 
-    async getUser(_id: string) {
+    private async getUser(_id: string) {
 
         const userDoc = this.usersCollection.doc(_id)
         const user = await userDoc.get();
