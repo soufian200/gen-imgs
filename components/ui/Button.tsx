@@ -12,7 +12,7 @@ interface CenterProps {
     [x: string]: any
 }
 
-const Button: FC<CenterProps> = ({ onClick, label, loading = false, disabled = false, styles = `bg-blue-400 hover:bg-blue-300 text-white `, rest }) => <button
+const Button: FC<CenterProps> = ({ onClick, label, loading = false, disabled = false, styles = `bg-blue-400 hover:bg-blue-300 text-white `, ...rest }) => <button
     onClick={onClick}
     className={cn(` py-4 px-20 capitalize  m-px`, styles, { "pointer-events-none": loading || disabled, })}
     {...rest}
