@@ -1,14 +1,14 @@
-import Center from "../components/common/Center";
-import { AiOutlineCheckCircle, AiOutlineMail, } from 'react-icons/ai'
-import Input from "../components/ui/form/Input";
+import Center from "../../components/common/Center";
+import { AiFillCheckCircle, AiOutlineMail, } from 'react-icons/ai'
+import Input from "../../components/ui/form/Input";
 import classNames from "classnames";
-import Loader from "../components/ui/Loader";
+import Loader from "../../components/ui/Loader";
 import { useFormik } from "formik";
 import { useState } from "react";
-import BluredBg from "../components/ui/BluredBg";
-import Logo from "../components/ui/Logo";
+import BluredBg from "../../components/ui/BluredBg";
+import Logo from "../../components/ui/Logo";
 import Link from 'next/link'
-import routes from "../constants/routes";
+import routes from "../../constants/routes";
 import { useRouter } from "next/dist/client/router";
 
 const ResetPassword = () => {
@@ -23,7 +23,7 @@ const ResetPassword = () => {
     });
 
     const [errors, setErrors] = useState([])
-    const [sended, setSended] = useState(false)
+    const [sended, setSended] = useState(!false)
 
     const router = useRouter()
 
@@ -34,15 +34,15 @@ const ResetPassword = () => {
     return <BluredBg>
         {sended
             ? <div>
-                <Logo />
-                <div className={`flex items-center mt-10 text-green-600`}>
-                    <AiOutlineCheckCircle size={30} />
-                    <p className={`ml-3 `}>Please check your email</p>
+                <div className={`capitalize font-bold text-3xl mb-10`}>  <Logo /> | Reset Password</div>
+                <div className={`flex items-center mt-10 text-green-600 flex flex-col justify-center items-center`}>
+                    <AiFillCheckCircle size={120} />
+                    <h1 className={`mt-6 capitalize`}>Please check your email</h1>
                 </div>
 
-                <button
+                {/* <button
                     onClick={router.back}
-                    className={`capitalize py-4 px-20 bg-blue-500 text-white mt-10`} >go back</button>
+                    className={`capitalize py-4 px-20 bg-blue-500 text-white mt-10`} >go back</button> */}
 
             </div>
             : <div>
