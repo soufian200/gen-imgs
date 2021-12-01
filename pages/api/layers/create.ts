@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { TOKEN_NAMEPREFIX } from '../../../constants/config';
 import Layer from '../../../services/firebase/classes/Layer';
 
 
@@ -41,7 +40,7 @@ async function handler(
     // console.log(req.cookies)
 
     // 1. Get Token
-    const token = req.cookies[TOKEN_NAMEPREFIX];
+    const token = req.cookies;
 
 
     // 2. Get Sub (user id) From Decode

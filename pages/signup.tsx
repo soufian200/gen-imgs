@@ -5,7 +5,6 @@ import { Form, Formik } from "formik";
 import { useState } from "react";
 import BluredBg from "../components/ui/BluredBg";
 import Logo from "../components/ui/Logo";
-
 import AuthInput from "../components/ui/form/AuthInput";
 import Button from "../components/ui/Button";
 import signupForm from '../lib/schemas/singupSchema';
@@ -15,6 +14,7 @@ interface Values {
     username: string;
     email: string;
     password: string;
+    passwordConfirmation: string
 }
 
 
@@ -22,6 +22,10 @@ const Signup = () => {
 
 
     const [errors, setErrors] = useState([])
+
+    const handleOnSubmit = (values: Values) => {
+        console.log(values)
+    }
 
 
 
@@ -39,9 +43,7 @@ const Signup = () => {
                     passwordConfirmation: ''
                 }}
                 validationSchema={signupForm}
-                onSubmit={(values: Values) => {
-                    console.log(values)
-                }}
+                onSubmit={handleOnSubmit}
             >
                 <Form className={`flex flex-col`}>
 
@@ -54,27 +56,27 @@ const Signup = () => {
 
                     <AuthInput
                         label="username"
-                        placeholder="Enter your username"
+                        placeholder="Username"
                         Icon={<AiOutlineUser size={24} color="gray" />}
                         name="username"
                     />
 
                     <AuthInput
                         label="email"
-                        placeholder="Enter your email"
+                        placeholder="Email"
                         Icon={<AiOutlineMail size={24} color="gray" />}
                         name="email"
                     />
                     <AuthInput
                         label="password"
-                        placeholder="Enter your password"
+                        placeholder="Password"
                         Icon={<AiOutlineLock size={24} color="gray" />}
                         type="password"
                         name="password"
                     />
                     <AuthInput
                         label="Confirm password"
-                        placeholder="Confirm your password"
+                        placeholder="Confirm password"
                         Icon={<AiOutlineLock size={24} color="gray" />}
                         type="password"
                         name="passwordConfirmation"
@@ -87,7 +89,7 @@ const Signup = () => {
 
 
             <div>
-                <p className={`text-sm mt-2 capitalize mt-4`}>I have an account!
+                <p className={`text-sm capitalize mt-4`}>I have an account!
                     <Link href={routes.LOGIN}><span className={`text-blue-500 cursor-pointer capitalize hover:underline`}> log in</span>
                     </Link>
                 </p>

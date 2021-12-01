@@ -5,8 +5,9 @@ import { useEffect, useState } from 'react'
 import { AssetProps } from '../components/ui/AssetContainer'
 import { AssetImgProps } from '../components/ui/Asset'
 import getItemsIds from '../lib/getItemsIds'
-import { collection, addDoc, getFirestore } from "firebase/firestore";
-import app from '../services/firebase/app'
+import axios from 'axios'
+
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 function MyApp({ Component, pageProps }: AppProps) {
 

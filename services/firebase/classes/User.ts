@@ -1,7 +1,8 @@
 import admin from "../admin";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { v4 as uuidv4 } from 'uuid';
+
+import { IUser } from "../../../utils/interfaces";
 
 
 
@@ -10,8 +11,6 @@ class User {
     private db;
     private usersCollection;
     private subsCollection;
-
-
 
 
     constructor() {
@@ -96,14 +95,12 @@ class User {
     /**
     * Add A Sub
     * */
-    private async addSub(_email: string) {
-
-        const id = uuidv4()
+    private async addSub(_id: string, _email: string) {
 
         // map email to subs
         const emailDoc = this.subsCollection.doc(_email);
-        emailDoc.set({ id })
-        return id;
+        emailDoc.set({ id: _id })
+        return _id;
     }
 
 
@@ -111,7 +108,7 @@ class User {
     /**
     * Get A Sub
     * */
-    private async getSub(_email: string) {
+    async getSub(_email: string) {
 
         const sub = await this.subsCollection.doc(_email).get();
         return sub.exists ? sub.data()?.id : null;
@@ -134,49 +131,25 @@ class User {
 
 
     /**
-     * Make A User
+     * Make A New User
+     * @param _user 
+     * @return token
      * */
-
-    async signUp(_username: string, _email: string, _password: string) {
-
-
+    async signUp(_user: IUser) {
+        // get user data
+        const { id, password, email } = _user;
         // hash passowrd
-        const hashedPassword = await this.hashPassword(_password)
-
-        // this.addSub(_email)
-
-        const id = await this.getSub("soufianxlm@gmail.com")
-
-        if (id) throw new Error("This email Exists")
-
+        const hashedPassword = await this.hashPassword(password)
         // add map email & id to subs
-        const newId = await this.addSub(_email)
-
-
+        const newId = await this.addSub(id, email)
         // add user with newId
         const newUserDoc = this.usersCollection.doc(newId)
-
-        newUserDoc.set({
-
-            username: _username,
-            email: _email,
-            password: hashedPassword
-
-            //TODO:  add role
-        });
-
-
-
-
+        // save data to firestore (firebase db)
+        newUserDoc.set({ ..._user, password: hashedPassword });
         // generate token
         const token = this.signToken(newUserDoc.id);
-
-
         // update stats users count
-
-        return {
-            token
-        }
+        return { token }
 
     }
 
@@ -215,7 +188,53 @@ class User {
         return { token }
 
     }
+    /**
+    * 
+    * Update Reset Token
+    * @param _userId
+    * @param _resetToken
+    * @return true (update success) | false (update failed)
+    * 
+    * */
+    async updateResetToken(_userId: string, _resetToken: string | null = null,) {
+        const date = new Date()
+        try {
+            // set hashed token and expire date to user
+            await this.getUserDoc(_userId).update({
+                // hashed token
+                resetToken: _resetToken,
+                // valid for 5 min
+                resetTokenExpiresIn: !_resetToken
+                    ? null
+                    : date.getTime() + 1000 * 60 * Number(process.env.RESET_EMAIL_COOKIE_EXPIRES)
+            })
+            return true
+        } catch (err) { return false }
+    }
+    /**
+     * 
+    * Update Reset Token
+    * @param _userId
+    * @param _newPassword
+    * @return true (update success) | false (update failed)
+    * 
+    * */
+    async updatePassword(_userId: string, _newPassword: string) {
+        try {
+            // hash password
+            const hashedPassword = await this.hashPassword(_newPassword);
 
+            // set hashed token and expire date to user
+            await this.getUserDoc(_userId).update({
+                password: hashedPassword,
+                resetToken: null,
+                resetTokenExpiresIn: null,
+                passwordChangedAt: Date.now()
+            })
+
+            return true
+        } catch (err) { return false }
+    }
 
 
 

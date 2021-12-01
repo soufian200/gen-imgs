@@ -1,12 +1,11 @@
 import type { NextRequest } from 'next/server'
-import { TOKEN_NAMEPREFIX } from '../../../constants/config';
 import jsonResponse from '../../../lib/api/jsonResponse'
 
 
 export async function middleware(req: NextRequest,) {
 
 
-    const token = req.cookies[TOKEN_NAMEPREFIX]
+    const token = req.cookies
 
 
     if (!token)

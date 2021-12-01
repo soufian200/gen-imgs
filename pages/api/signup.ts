@@ -1,61 +1,40 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import signupForm from "../../lib/schemas/singupSchema";
+import { v4 as uuidv4 } from 'uuid';
+import User from "../../services/firebase/classes/User";
+import Stat from "../../services/firebase/classes/Stat";
+import { IUser } from "../../utils/interfaces";
+import AppRes, { AppResData } from "../../lib/api/AppRes";
 
-type AppErrorData = {
-    status: number;
-    message: string
-}
-type Data = {
-    msg?: string
-    error?: AppErrorData
-}
-interface IUser {
 
-    username: string;
-    email: string;
-    password: string;
-    passwordChangedAt: number;
-    role: "user" | "admin";
-    activated: boolean;
-    createdAt: number;
 
-}
 
-function AppError(res: NextApiResponse<{ error: AppErrorData }>, status: number, message: string) {
-    return res.status(status).json({
-        error: {
-            status,
-            message
-        }
-    })
-}
+
+
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Data>
+    res: NextApiResponse<AppResData>
 ) {
 
     // Global 
     const date = new Date()
 
+
     // Allow Post Method Only
-    if (req.method === "GET")
-        return AppError(res, 405, "Method Not Allowed")
-
-
-
+    if (req.method === "GET") return AppRes(res, 405, "Method Not Allowed")
 
     // Get Data From Client
-
     const body = req.body;
 
     try {
 
         const { username, email, password } = await signupForm.validate(body)
 
-
         // Prepare Data For User
 
-        const user: IUser = {
+        let newUser: IUser = {
+
+            id: uuidv4(),
             username,
             email,
             password,
@@ -67,12 +46,39 @@ export default async function handler(
         }
 
 
+        const stat = new Stat();
+        const user = new User()
 
-        console.log(user)
+        const usersCount = await stat.getCountUsers()
+        if (usersCount === 0) {
+
+            // First User Is Admin
+            newUser.role = "admin";
+            newUser.activated = true;
+
+        }
+
+        // Check If Email Exists
+        const id = await user.getSub(email)
+        if (id) return AppRes(res, 400, "Email already exists")
+
+
+        const data = await user.signUp(newUser)
+
+        // increate count of user in stats collection
+        stat.increaseCountUsers(usersCount + 1)
+
+
+
+        console.log('=======================')
+        console.log(data)
+
+        return AppRes(res, 200, "signup")
+
 
     } catch (err) {
 
-        return AppError(res, 400, (err as Error).message)
+        return AppRes(res, 400, (err as Error).message)
     }
 
 
@@ -91,7 +97,7 @@ export default async function handler(
 
 
 
-    return res.status(200).json({ msg: "sign up" })
+
 
 
 

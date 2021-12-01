@@ -109,3 +109,19 @@ export interface RenderObjectInterface {
     },
     loadedImage: Promise<any>[]
 }
+
+/**
+ * User Interface
+ * */
+export interface IUser {
+
+    id: string
+    username: string;
+    email: string;
+    password: string;
+    passwordChangedAt?: number;
+    role?: "user" | "admin";
+    activated?: boolean;
+    createdAt?: number;
+
+}

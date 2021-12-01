@@ -1,95 +1,115 @@
-import Center from "../../components/common/Center";
-import { AiFillCheckCircle, AiOutlineMail, } from 'react-icons/ai'
-import Input from "../../components/ui/form/Input";
-import classNames from "classnames";
-import Loader from "../../components/ui/Loader";
-import { useFormik } from "formik";
+import { AiFillCheckCircle, AiOutlineLock, } from 'react-icons/ai'
+import { Form, Formik } from "formik";
 import { useState } from "react";
 import BluredBg from "../../components/ui/BluredBg";
-import Logo from "../../components/ui/Logo";
 import Link from 'next/link'
 import routes from "../../constants/routes";
-import { useRouter } from "next/dist/client/router";
-
+import AuthInput from "../../components/ui/form/AuthInput";
+import Button from "../../components/ui/Button";
+import axios, { AxiosError } from "axios";
+import resetPasswordEmailSchema from '../../lib/schemas/resetPasswordEmailSchema';
+import ErrorsList from '../../components/ui/ErrorsList';
+import LogoAndHeader from '../../components/ui/LogoAndHead';
+/**
+ * 
+ * Interface Values For Submit Form
+ */
+interface Values {
+    email: string;
+}
+/**
+ * 
+ * @returns Reset Password Page & Check Email View
+ */
 const ResetPassword = () => {
-
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-        },
-        onSubmit: values => {
-            console.log(values);
-        },
-    });
-
-    const [errors, setErrors] = useState([])
-    const [sended, setSended] = useState(!false)
-
-    const router = useRouter()
-
-
-
-
-
+    // errors
+    const [errors, setErrors] = useState<string[]>([])
+    // message
+    const [msg, setMsg] = useState('')
+    // is loading
+    const [loading, setLoading] = useState(false)
+    /**
+     * Send Email Input Value To Server
+     * @param values 
+     * 
+     */
+    const handleOnSubmit = async (values: Values) => {
+        // Get Current Location
+        const loc = { protocol: location.protocol, host: location.host }
+        // Parepare Data To Send To server
+        const data = { ...values, location: loc }
+        // Try To Post Data
+        try {
+            // Show Loader
+            setLoading(true)
+            // Post Data To Reset Password Api & Get Response
+            const res = await axios.post(routes.RESETPASSWORD, data)
+            // Get Message From Response If Post Request Was Successful
+            setMsg(res.data.data.message)
+            // Hide Loader
+            setLoading(false)
+            // Reset Errors
+            setErrors([])
+        } catch (err) {
+            // Set Error If Post Request Wasn't Successful
+            setErrors([...errors, (err as AxiosError).response?.data.error.message])
+            // Hide Loader
+            setLoading(false)
+        }
+    }
     return <BluredBg>
-        {sended
-            ? <div>
-                <div className={`capitalize font-bold text-3xl mb-10`}>  <Logo /> | Reset Password</div>
-                <div className={`flex items-center mt-10 text-green-600 flex flex-col justify-center items-center`}>
-                    <AiFillCheckCircle size={120} />
-                    <h1 className={`mt-6 capitalize`}>Please check your email</h1>
+        {msg
+            ? <CheckEmailView msg={msg} />
+            : <div>
+                <LogoAndHeader header="Reset Password" />
+                <ErrorsList errors={errors} />
+                <div>
+                    <Formik
+                        initialValues={{ email: '', }}
+                        validationSchema={resetPasswordEmailSchema}
+                        onSubmit={handleOnSubmit}
+                    >
+                        <Form className={`flex flex-col`}>
+                            <AuthInput
+                                label="Email"
+                                placeholder="Email"
+                                Icon={<AiOutlineLock size={24} color="gray" />}
+                                type="email"
+                                name="email"
+                            />
+
+                            <Button type="submit" loading={loading} label="Sign up" />
+                        </Form>
+                    </Formik>
                 </div>
 
-                {/* <button
-                    onClick={router.back}
-                    className={`capitalize py-4 px-20 bg-blue-500 text-white mt-10`} >go back</button> */}
-
-            </div>
-            : <div>
-                <div className={`capitalize font-bold text-3xl mb-10`}>  <Logo /> | Reset Password</div>
-
-                <form onSubmit={formik.handleSubmit}>
-                    <div className={` text-red-500`}>
-                        {errors.length > 0 &&
-                            errors.map((error) => <li className={` text-sm capitalize ml-2`}> {error} </li>)
-                        }
-                    </div>
-                    <Input
-                        label="email"
-                        type="email"
-                        Icon={<AiOutlineMail size={24} color="gray" />}
-                        onChange={formik.handleChange}
-                        value={formik.values.email}
-                        placeholder="Enter your email"
-                        name="email"
-
-                    />
-
-
-                    <button
-                        type="submit"
-                        className={classNames(`w-full capitalize p-4 text-white font-bold  mt-10 hover:opacity-90  ${!formik.values.email.trim() ? "bg-blue-400 pointer-events-none" : "bg-blue-500 pointer-events-auto"} `)}
-                    >
-                        <Center>
-                            {true ? "send" : <Loader />}
-                        </Center>
-
-                    </button>
-                </form>
                 <div>
-                    <p className={`text-sm mt-2 capitalize mt-4`}>I have an account!
-                        <Link href={routes.LOGIN}><span className={`text-blue-500 cursor-pointer capitalize hover:underline`}> log in</span>
+                    <p className={`text-sm capitalize mt-4`}>I have an account!
+                        <Link href={routes.LOGIN}>
+                            <span
+                                className={`text-blue-500 cursor-pointer capitalize hover:underline`}
+                            > log in</span>
                         </Link>
                     </p>
-
                 </div>
-            </div>}
+            </div>
+        }
 
     </BluredBg>
-
-
 }
-
-
-
+/**
+ * 
+ * @param msg Message Coming From Server 
+ * 
+ */
+const CheckEmailView = ({ msg }: { msg: string }) => {
+    return <div>
+        <LogoAndHeader header="Reset Password" />
+        <div className={`flex items-center mt-10 text-green-600 flex-col justify-center`}>
+            <AiFillCheckCircle size={120} />
+            <h1 className={`mt-6 capitalize`}>please check your email</h1>
+            <h1 className={` text-black capitalize`}>{msg}</h1>
+        </div>
+    </div>
+}
 export default ResetPassword;
