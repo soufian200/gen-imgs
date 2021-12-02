@@ -40,7 +40,7 @@ const HomeSection: FC<HomeSectionProps> = () => {
                         </div>
                         <div className={`bg-blue-20 w-1/2 `}>
                             <Center>
-                                <Image alt="balls" src={balls} className="animate-spin-slow" />
+                                <Image alt="balls" width="600px" height="600px" src={balls} className="animate-spin-slow" />
                                 {/* <div className={`flex justify-center items-center flex-wrap h-full w-full `}>
                                     {
                                         [1, 2, 3, 4, 5, 6].map((i, index) => <div
