@@ -162,30 +162,33 @@ class User {
     async login(_email: string, _password: string) {
 
 
+
         // Get Sub
         const id = await this.getSub(_email)
-
+        if (!id) return {}
 
         // Get User
         const user = await this.getUserData(id);
 
 
-        // If User Not Exists
-        if (!user) throw new Error("Invalid Email")
-
+        if (!user) return {}
 
         // Check Passowrd
         const isPasswordValid = await this.decodeHash(user.password, _password);
 
 
         // If Password Not Invalid
-        if (!isPasswordValid) throw new Error("Incorrect Password")
+        if (!isPasswordValid) return {}
 
 
         // Sign Token
         const token = this.signToken(id)
 
-        return { token }
+        return {
+            token,
+            username: user.username,
+            email: user.email
+        }
 
     }
     /**
