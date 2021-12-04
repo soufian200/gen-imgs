@@ -6,9 +6,10 @@ import Button from "../../../components/ui/Button";
 import ChangePasswordSchema from "../../../lib/schemas/ChangePasswordSchema";
 import LogoAndHeader from "../../../components/ui/LogoAndHead";
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import routes from "../../../constants/routes";
 import { useRouter } from "next/router";
+import SuccessOperation from "../../../components/ui/SuccessOperation";
 /**
  * 
  * Values Interface For Submition Form
@@ -29,8 +30,6 @@ function ResetPasswordToken() {
     const router = useRouter();
     // Get Token From Router
     const { token } = router.query
-    // errors
-    const [errors, setErrors] = useState<string[]>([])
     // message
     const [msg, setMsg] = useState('')
     // is loading
@@ -47,21 +46,19 @@ function ResetPasswordToken() {
             // Show Loader
             setLoading(true)
             // Post Data To Reset Password Api & Get Response
-            const res = await axios.post(`${routes.RESETPASSWORD}/${token}`, { password: '123', passwordConfirmation: '123' })
+            const res = await axios.post(`${routes.RESETPASSWORD}/${token}`, values)
             const data = res.data;
             // Get Message From Response If Post Request Was Successful
-            //  setMsg(res.data.data.message)
+            setMsg(res.data.data.message)
             // Hide Loader
-            //  setLoading(false)
+            setLoading(false)
             // Reset Errors
             //  setErrors([])
             console.log(data)
         } catch (err) {
-            console.log((err as Error).message)
-            // Set Error If Post Request Wasn't Successful
-            //  setErrors([...errors, (err as AxiosError).response?.data.error.message])
-            // Hide Loader
-            //  setLoading(false)
+
+            setLoading(false)
+            router.push(routes.RESETPASSWORD)
         }
     }
     // Initial Values For Formik
@@ -70,31 +67,38 @@ function ResetPasswordToken() {
         passwordConfirmation: ''
     }
     return <BluredBg>
+        <LogoAndHeader header="Change Password" />
         <div>
-            <LogoAndHeader header="Change Password" />
-            <Formik
-                initialValues={initialValues}
-                validationSchema={ChangePasswordSchema}
-                onSubmit={handleOnSubmit}
-            >
-                <Form className={`flex flex-col`}>
-                    <AuthInput
-                        label="password"
-                        placeholder="Password"
-                        Icon={<AiOutlineLock size={24} color="gray" />}
-                        type="password"
-                        name="password"
-                    />
-                    <AuthInput
-                        label="Confirm password"
-                        placeholder="Confirm password"
-                        Icon={<AiOutlineLock size={24} color="gray" />}
-                        type="password"
-                        name="passwordConfirmation"
-                    />
-                    <Button type="submit" label="Save" />
-                </Form>
-            </Formik>
+            {
+                msg ? <div className={`flex flex-col`}>
+                    <SuccessOperation msg={msg} />
+                    <Button label="login" onClick={() => router.push(routes.LOGIN)} />
+                </div>
+                    : <div>
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={ChangePasswordSchema}
+                            onSubmit={handleOnSubmit}
+                        >
+                            <Form className={`flex flex-col`}>
+                                <AuthInput
+                                    label="password"
+                                    placeholder="Password"
+                                    Icon={<AiOutlineLock size={24} color="gray" />}
+                                    type="password"
+                                    name="password"
+                                />
+                                <AuthInput
+                                    label="Confirm password"
+                                    placeholder="Confirm password"
+                                    Icon={<AiOutlineLock size={24} color="gray" />}
+                                    type="password"
+                                    name="passwordConfirmation"
+                                />
+                                <Button type="submit" loading={loading} label="Save" />
+                            </Form>
+                        </Formik></div>
+            }
         </div>
     </BluredBg>
 }

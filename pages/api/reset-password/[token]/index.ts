@@ -35,10 +35,11 @@ const handler = async (
     const userId = await user.getSub(originalEmail)
     if (!userId) return AppRes(res, 401, "no user found")
     const userData = await user.getUserData(userId);
+    if (!userData?.resetToken) return AppRes(res, 403, "expired")
     // Get Token 
     const { token } = req.query;
     // descrypt user's resetToken property
-    const decodedToken = crypto.decrypt(userData?.resetToken);
+    const decodedToken = crypto.decrypt(userData.resetToken);
     // If decodedToken And token Not Equal Or Token Hasn Expired
     const isValid = decodedToken === token && Date.now() < userData?.resetTokenExpiresIn;
     if (!isValid) return AppRes(res, 401, "invalid token")

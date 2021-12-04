@@ -10,6 +10,7 @@ import axios, { AxiosError } from "axios";
 import resetPasswordEmailSchema from '../../lib/schemas/resetPasswordEmailSchema';
 import ErrorsList from '../../components/ui/ErrorsList';
 import LogoAndHeader from '../../components/ui/LogoAndHead';
+import SuccessOperation from '../../components/ui/SuccessOperation';
 /**
  * 
  * Interface Values For Submit Form
@@ -58,43 +59,45 @@ const ResetPassword = () => {
         }
     }
     return <BluredBg>
-        {msg
-            ? <CheckEmailView msg={msg} />
-            : <div>
-                <LogoAndHeader header="Reset Password" />
-                <ErrorsList errors={errors} />
-                <div>
-                    <Formik
-                        initialValues={{ email: '', }}
-                        validationSchema={resetPasswordEmailSchema}
-                        onSubmit={handleOnSubmit}
-                    >
-                        <Form className={`flex flex-col`}>
-                            <AuthInput
-                                label="Email"
-                                placeholder="Email"
-                                Icon={<AiOutlineLock size={24} color="gray" />}
-                                type="email"
-                                name="email"
-                            />
+        <div><LogoAndHeader header="Reset Password" />
+            {msg
+                ? <SuccessOperation msg={msg} />
+                : <div>
 
-                            <Button type="submit" loading={loading} label="Sign up" />
-                        </Form>
-                    </Formik>
+                    <ErrorsList errors={errors} />
+                    <div>
+                        <Formik
+                            initialValues={{ email: '', }}
+                            validationSchema={resetPasswordEmailSchema}
+                            onSubmit={handleOnSubmit}
+                        >
+                            <Form className={`flex flex-col`}>
+                                <AuthInput
+                                    label="Email"
+                                    placeholder="Email"
+                                    Icon={<AiOutlineLock size={24} color="gray" />}
+                                    type="email"
+                                    name="email"
+                                />
+
+                                <Button type="submit" loading={loading} label="Sign up" />
+                            </Form>
+                        </Formik>
+                    </div>
+
+                    <div>
+                        <p className={`text-sm capitalize mt-4`}>I have an account!
+                            <Link href={routes.LOGIN}>
+                                <span
+                                    className={`text-blue-500 cursor-pointer capitalize hover:underline`}
+                                > log in</span>
+                            </Link>
+                        </p>
+                    </div>
                 </div>
+            }
 
-                <div>
-                    <p className={`text-sm capitalize mt-4`}>I have an account!
-                        <Link href={routes.LOGIN}>
-                            <span
-                                className={`text-blue-500 cursor-pointer capitalize hover:underline`}
-                            > log in</span>
-                        </Link>
-                    </p>
-                </div>
-            </div>
-        }
-
+        </div>
     </BluredBg>
 }
 /**
