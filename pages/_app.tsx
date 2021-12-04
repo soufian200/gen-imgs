@@ -1,7 +1,7 @@
 import 'tailwindcss/tailwind.css'
 import type { AppProps } from 'next/app'
-import AppContext, { ActionTypes, ContextArgs, DisplayState } from '../contexts/AppContext'
-import { useEffect, useState } from 'react'
+import AppContext, { ActionTypes, ContextArgs, DisplayState, UserInterface } from '../contexts/AppContext'
+import { useState } from 'react'
 import { AssetProps } from '../components/ui/AssetContainer'
 import { AssetImgProps } from '../components/ui/Asset'
 import getItemsIds from '../lib/getItemsIds'
@@ -90,6 +90,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [itemsIds, setItemsIds] = useState<any[]>(getItemsIds(folders))
   const [isOverlayVisible, setIsOverlayVisible] = useState<boolean>(false)
   const [overlayActionType, setOverlayActionType] = useState<ActionTypes>("" as ActionTypes)
+  const [user, setUser] = useState<UserInterface | undefined>()
   /**
    * App State
    * */
@@ -117,7 +118,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     setIsOverlayVisible,
 
     overlayActionType,
-    setOverlayActionType
+    setOverlayActionType,
+
+    user,
+    setUser
   }
 
 

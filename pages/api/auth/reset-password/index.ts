@@ -1,12 +1,12 @@
 import { serialize } from 'cookie';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { COOKIES_NAMES } from '../../../constants/cookiesNames';
-import AppRes, { AppResData } from '../../../lib/api/AppRes';
-import randomString from '../../../lib/randomString';
-import sendEmail from '../../../lib/sendEmail';
-import * as crypto from "../../../lib/utils/crypto"
-import getResetUrl from '../../../lib/utils/getResetUrl';
-import User from '../../../services/firebase/classes/User';
+import { COOKIES_NAMES } from '../../../../constants/cookiesNames';
+import AppRes, { AppResData } from '../../../../lib/api/AppRes';
+import randomString from '../../../../lib/randomString';
+import sendEmail from '../../../../lib/sendEmail';
+import * as crypto from "../../../../lib/utils/crypto"
+import getResetUrl from '../../../../lib/utils/getResetUrl';
+import User from '../../../../services/firebase/classes/User';
 
 export default async function handler(
     req: NextApiRequest,
@@ -46,7 +46,7 @@ export default async function handler(
         }
         res.setHeader("Set-Cookie", serialize(COOKIES_NAMES.resetEmail, hashedEmail, cookieOptions))
         // return a friendly message to user
-        return AppRes(res, 200, `You have ${Number(process.env.RESET_EMAIL_COOKIE_EXPIRES)} min to change your password`)
+        return AppRes(res, 200, `Please check You Email. You have ${Number(process.env.RESET_EMAIL_COOKIE_EXPIRES)} min to change your password`)
     } catch (err) {
         // catch error
         return AppRes(res, 500, (err as Error).message)

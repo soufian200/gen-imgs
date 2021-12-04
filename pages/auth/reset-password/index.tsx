@@ -1,16 +1,16 @@
-import { AiFillCheckCircle, AiOutlineLock, } from 'react-icons/ai'
+import { AiOutlineLock, } from 'react-icons/ai'
 import { Form, Formik } from "formik";
 import { useState } from "react";
-import BluredBg from "../../components/ui/BluredBg";
+import BluredBg from "../../../components/ui/BluredBg";
 import Link from 'next/link'
-import routes from "../../constants/routes";
-import AuthInput from "../../components/ui/form/AuthInput";
-import Button from "../../components/ui/Button";
+import routes from "../../../constants/routes";
+import AuthInput from "../../../components/ui/form/AuthInput";
+import Button from "../../../components/ui/Button";
 import axios, { AxiosError } from "axios";
-import resetPasswordEmailSchema from '../../lib/schemas/resetPasswordEmailSchema';
-import ErrorsList from '../../components/ui/ErrorsList';
-import LogoAndHeader from '../../components/ui/LogoAndHead';
-import SuccessOperation from '../../components/ui/SuccessOperation';
+import resetPasswordEmailSchema from '../../../lib/schemas/resetPasswordEmailSchema';
+import LogoAndHeader from '../../../components/ui/LogoAndHead';
+import SuccessOperation from '../../../components/ui/SuccessOperation';
+import Error from '../../../components/ui/Error';
 /**
  * 
  * Interface Values For Submit Form
@@ -24,7 +24,7 @@ interface Values {
  */
 const ResetPassword = () => {
     // errors
-    const [errors, setErrors] = useState<string[]>([])
+    const [error, setError] = useState<string>('')
     // message
     const [msg, setMsg] = useState('')
     // is loading
@@ -50,10 +50,10 @@ const ResetPassword = () => {
             // Hide Loader
             setLoading(false)
             // Reset Errors
-            setErrors([])
+            setError('')
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
-            setErrors([...errors, (err as AxiosError).response?.data.error.message])
+            setError((err as AxiosError).response?.data.error.message)
             // Hide Loader
             setLoading(false)
         }
@@ -64,7 +64,7 @@ const ResetPassword = () => {
                 ? <SuccessOperation msg={msg} />
                 : <div>
 
-                    <ErrorsList errors={errors} />
+                    <Error error={error} />
                     <div>
                         <Formik
                             initialValues={{ email: '', }}
@@ -99,20 +99,5 @@ const ResetPassword = () => {
 
         </div>
     </BluredBg>
-}
-/**
- * 
- * @param msg Message Coming From Server 
- * 
- */
-const CheckEmailView = ({ msg }: { msg: string }) => {
-    return <div>
-        <LogoAndHeader header="Reset Password" />
-        <div className={`flex items-center mt-10 text-green-600 flex-col justify-center`}>
-            <AiFillCheckCircle size={120} />
-            <h1 className={`mt-6 capitalize`}>please check your email</h1>
-            <h1 className={` text-black capitalize`}>{msg}</h1>
-        </div>
-    </div>
 }
 export default ResetPassword;

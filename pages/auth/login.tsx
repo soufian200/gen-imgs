@@ -10,6 +10,7 @@ import Button from "../../components/ui/Button";
 import LogoAndHeader from "../../components/ui/LogoAndHead";
 import Error from "../../components/ui/Error";
 import axios, { AxiosError } from 'axios';
+import { useRouter } from 'next/router';
 /**
  * 
  * Formik Values
@@ -32,6 +33,7 @@ const initialValues = {
  * 
  * */
 const Login = () => {
+    const router = useRouter()
     // 400 error
     const [error, setError] = useState<string>('')
     // is loading
@@ -49,12 +51,8 @@ const Login = () => {
             setLoading(true)
             // Post Data To Reset Password Api & Get Response
             const res = await axios.post(routes.LOGIN, values)
-            // Get Message From Response If Post Request Was Successful
-            console.log(res)
-            // Hide Loader
-            setLoading(false)
-            // Reset Errors
-            setError('')
+            //Relove After Login Success
+            router.reload();
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
             setError((err as AxiosError).response?.data.error.message)
@@ -74,7 +72,6 @@ const Login = () => {
                 onSubmit={handleOnSubmit}
             >
                 <Form className={`flex flex-col`}>
-
                     {error && <Error error={error} />}
                     <AuthInput
                         label="email"
@@ -89,13 +86,17 @@ const Login = () => {
                         type="password"
                         name="password"
                     />
-                    <Button type="submit" loading={loading} label="sign up" />
+
+                    <Button type="submit" loading={loading} label="login" />
                 </Form>
             </Formik>
             <div>
                 <p className={`text-sm capitalize mt-4`}>I don't have an account!
                     <Link href={routes.SIGNUP}><span className={`text-blue-500 cursor-pointer capitalize hover:underline`}> sign up</span>
                     </Link>
+                </p>
+                <p className={`text-xs mt-1 text-red-500 capitalize hover:underline`}>
+                    <Link href={routes.RESETPASSWORD}>i forget my password </Link>
                 </p>
             </div>
         </div>

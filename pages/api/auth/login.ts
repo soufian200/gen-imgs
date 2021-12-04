@@ -1,33 +1,33 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import User from '../../../services/firebase/classes/User';
+import { serialize } from "cookie";
+import { NextApiRequest, NextApiResponse } from "next";
+import { COOKIES_NAMES } from "../../../constants/cookiesNames";
+import AppRes, { AppResData } from "../../../lib/api/AppRes";
+import User from "../../../services/firebase/classes/User";
 
-
-
-type Data = {
-    msg: string
-}
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Data>
+    res: NextApiResponse<AppResData>
 ) {
 
-    try {
+    const { email, password } = req.body;
 
-        const user = new User();
+    // create new user 
+    const user = new User();
 
-        // TODO: make sure email and password exists
 
-        const data = await user.login("soufianxlm@gmail.com", "1234")
 
-        console.log(data)
+    const userData = await user.login(email, password);
+    if (!('token' in userData)) return AppRes(res, 400, "email or password incorrect")
 
-    } catch (err: any) {
-
-        // return 400 
-        console.log(err?.message)
+    const cookieOptions = {
+        path: "/",
+        secure: true,
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * Number(process.env.JWT_COOKIE_EXPIRES_IN)) // 24h | 1day
     }
+    res.setHeader("Set-Cookie", serialize(COOKIES_NAMES.token, userData.token as string, cookieOptions))
 
-    return res.json({ msg: "login" })
 
+    return AppRes(res, 200, "login success")
 }

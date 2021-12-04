@@ -1,15 +1,15 @@
 import { Form, Formik } from "formik"
-import BluredBg from "../../../components/ui/BluredBg"
-import AuthInput from "../../../components/ui/form/AuthInput";
+import BluredBg from "../../../../components/ui/BluredBg"
+import AuthInput from "../../../../components/ui/form/AuthInput";
 import { AiOutlineLock } from "react-icons/ai";
-import Button from "../../../components/ui/Button";
-import ChangePasswordSchema from "../../../lib/schemas/ChangePasswordSchema";
-import LogoAndHeader from "../../../components/ui/LogoAndHead";
+import Button from "../../../../components/ui/Button";
+import ChangePasswordSchema from "../../../../lib/schemas/ChangePasswordSchema";
+import LogoAndHeader from "../../../../components/ui/LogoAndHead";
 import { useState } from "react";
 import axios from "axios";
-import routes from "../../../constants/routes";
+import routes from "../../../../constants/routes";
 import { useRouter } from "next/router";
-import SuccessOperation from "../../../components/ui/SuccessOperation";
+import SuccessOperation from "../../../../components/ui/SuccessOperation";
 /**
  * 
  * Values Interface For Submition Form
@@ -26,6 +26,7 @@ interface Values {
  * 
  */
 function ResetPasswordToken() {
+    console.log(routes.RESETPASSWORD)
     // Global
     const router = useRouter();
     // Get Token From Router
@@ -80,7 +81,7 @@ function ResetPasswordToken() {
                             validationSchema={ChangePasswordSchema}
                             onSubmit={handleOnSubmit}
                         >
-                            <Form className={`flex flex-col`}>
+                            <Form >
                                 <AuthInput
                                     label="password"
                                     placeholder="Password"
@@ -95,7 +96,10 @@ function ResetPasswordToken() {
                                     type="password"
                                     name="passwordConfirmation"
                                 />
-                                <Button type="submit" loading={loading} label="Save" />
+                                <div className={`w-full flex justify-center mt-10`}>
+
+                                    <Button type="submit" loading={loading} label="Save" />
+                                </div>
                             </Form>
                         </Formik></div>
             }

@@ -12,7 +12,13 @@ export enum ActionTypes {
     EDIT = "EDIT",
     DELETE = "DELETE",
 }
-
+/**
+ * User Interface
+ * */
+export interface UserInterface {
+    username: string;
+    email: string;
+}
 export interface ContextArgs {
 
     /**
@@ -65,6 +71,13 @@ export interface ContextArgs {
 
     overlayActionType: ActionTypes
     setOverlayActionType: (type: ActionTypes) => void
+    /**
+     * 
+     * User
+     * 
+     * */
+    user: UserInterface | undefined
+    setUser: (val: UserInterface) => void
 }
 const AppContext = createContext({} as ContextArgs);
 

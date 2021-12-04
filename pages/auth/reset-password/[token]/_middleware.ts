@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse, NextFetchEvent } from 'next/server'
-import { COOKIES_NAMES } from '../../../constants/cookiesNames';
-import routes from '../../../constants/routes';
-import * as crypto from "../../../lib/utils/crypto";
-// import { setUserCookie } from '@lib/auth'
+import { COOKIES_NAMES } from '../../../../constants/cookiesNames';
+import routes from '../../../../constants/routes';
+import * as crypto from "../../../../lib/utils/crypto";
 
 export function middleware(req: NextRequest) {
     // Add the user token to the response

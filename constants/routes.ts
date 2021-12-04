@@ -1,16 +1,17 @@
+const auth = '/auth'
 const routes = {
 
     // Sign up
     ABSOLUTE: "/",
 
     // Log in
-    LOGIN: "/login",
+    LOGIN: auth + "/login",
 
     // Sign up
-    SIGNUP: "/signup",
+    SIGNUP: auth + "/signup",
 
     // reset password if user forget it
-    RESETPASSWORD: "/reset-password",
+    RESETPASSWORD: auth + "/reset-password",
 
 
 
