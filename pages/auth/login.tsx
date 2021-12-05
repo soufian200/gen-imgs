@@ -47,10 +47,13 @@ const Login = () => {
     const handleOnSubmit = async (values: Values) => {
         // Try To Post Data
         try {
+            setError('')
             // Show Loader
             setLoading(true)
             // Post Data To Reset Password Api & Get Response
             const res = await axios.post(routes.LOGIN, values)
+            // hide loader
+            setLoading(false)
             //Relove After Login Success
             router.reload();
         } catch (err) {

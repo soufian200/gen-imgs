@@ -96,8 +96,7 @@ function ResetPasswordToken() {
                                     type="password"
                                     name="passwordConfirmation"
                                 />
-                                <div className={`w-full flex justify-center mt-10`}>
-
+                                <div className={`w-full flex justify-center pt-10`}>
                                     <Button type="submit" loading={loading} label="Save" />
                                 </div>
                             </Form>

@@ -53,7 +53,7 @@ const Generate = () => {
             </div>
             <div className={`flex flex-wrap`}>
                 {
-                    TOOLS.map(tool => <Tool tool={tool} />)
+                    TOOLS.map((tool, index) => <Tool key={index} tool={tool} />)
                 }
             </div>
         </div>

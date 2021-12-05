@@ -41,6 +41,8 @@ const ResetPassword = () => {
         const data = { ...values, location: loc }
         // Try To Post Data
         try {
+            // Reset Errors
+            setError('')
             // Show Loader
             setLoading(true)
             // Post Data To Reset Password Api & Get Response
@@ -49,8 +51,6 @@ const ResetPassword = () => {
             setMsg(res.data.data.message)
             // Hide Loader
             setLoading(false)
-            // Reset Errors
-            setError('')
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
             setError((err as AxiosError).response?.data.error.message)
@@ -59,12 +59,14 @@ const ResetPassword = () => {
         }
     }
     return <BluredBg>
-        <div><LogoAndHeader header="Reset Password" />
+        <div>
+            <div className={`flex justify-center`}>
+                <LogoAndHeader header="Reset Password" />
+            </div>
             {msg
                 ? <SuccessOperation msg={msg} />
                 : <div>
-
-                    <Error error={error} />
+                    {error && <Error error={error} />}
                     <div>
                         <Formik
                             initialValues={{ email: '', }}
@@ -79,12 +81,10 @@ const ResetPassword = () => {
                                     type="email"
                                     name="email"
                                 />
-
                                 <Button type="submit" loading={loading} label="Sign up" />
                             </Form>
                         </Formik>
                     </div>
-
                     <div>
                         <p className={`text-sm capitalize mt-4`}>I have an account!
                             <Link href={routes.LOGIN}>
@@ -96,7 +96,6 @@ const ResetPassword = () => {
                     </div>
                 </div>
             }
-
         </div>
     </BluredBg>
 }

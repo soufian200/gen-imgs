@@ -57,8 +57,7 @@ const Signup = () => {
             const res = await axios.post(routes.SIGNUP, values)
             // hide loader
             setLoading(false)
-            console.log(res)
-            //Relove After Login Success
+            //Relove After Signup Success
             router.reload();
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
