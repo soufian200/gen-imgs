@@ -149,7 +149,7 @@ class User {
         // generate token
         const token = this.signToken(newUserDoc.id);
         // update stats users count
-        return { token }
+        return { username: _user.username, email, token }
 
     }
 

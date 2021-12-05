@@ -121,7 +121,7 @@ export interface IUser {
     password: string;
     passwordChangedAt?: number;
     role?: "user" | "admin";
-    activated?: boolean;
+    isVerified?: boolean;
     createdAt?: number;
 
 }
