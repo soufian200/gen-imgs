@@ -79,11 +79,11 @@ class User {
     /**
      * Sign A Token For A User
      * */
-    private signToken(sub: string) {
+    private signToken(sub: string, isVerified: boolean) {
 
         const token = jwt.sign(
-            { sub },
-            process.env.JWT_SECRET || "this-a-jwt-secret",
+            { sub, isVerified },
+            String(process.env.JWT_SECRET),
             { expiresIn: process.env.JWT_EXPIRES_IN }
         )
 
@@ -147,7 +147,7 @@ class User {
         // save data to firestore (firebase db)
         newUserDoc.set({ ..._user, password: hashedPassword });
         // generate token
-        const token = this.signToken(newUserDoc.id);
+        const token = this.signToken(newUserDoc.id, _user.isVerified || false);
         // update stats users count
         return { username: _user.username, email, token }
 
@@ -180,9 +180,12 @@ class User {
         // If Password Not Invalid
         if (!isPasswordValid) return {}
 
+        console.log("user:", user)
+
 
         // Sign Token
-        const token = this.signToken(id)
+        const token = this.signToken(id, user.isVerified)
+        console.log("token:", token)
 
         return {
             token,

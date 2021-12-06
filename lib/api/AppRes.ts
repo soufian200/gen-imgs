@@ -15,13 +15,14 @@ export type AppResData = {
     data?: AppSuccessData
 }
 
-const AppRes = async (res: NextApiResponse<AppResData>, status: number, message: string) => {
+const AppRes = async (res: NextApiResponse<AppResData>, status: number, message: string, payload?: any) => {
 
     let obj = status === 200
         ? {
             data: {
                 status,
-                message
+                message,
+                payload
             }
         }
         : {

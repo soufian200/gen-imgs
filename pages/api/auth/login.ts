@@ -29,5 +29,5 @@ export default async function handler(
     res.setHeader("Set-Cookie", serialize(COOKIES_NAMES.token, userData.token as string, cookieOptions))
 
 
-    return AppRes(res, 200, "login success")
+    return AppRes(res, 200, "login success", { sub: userData.token })
 }

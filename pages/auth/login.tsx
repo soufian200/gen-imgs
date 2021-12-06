@@ -1,7 +1,7 @@
 import { AiOutlineLock, AiOutlineMail } from 'react-icons/ai'
 import Link from 'next/link'
 import routes from "../../constants/routes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BluredBg from "../../components/ui/BluredBg";
 import { Form, Formik } from "formik";
 import AuthInput from "../../components/ui/form/AuthInput";
@@ -11,6 +11,7 @@ import LogoAndHeader from "../../components/ui/LogoAndHead";
 import Error from "../../components/ui/Error";
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { COOKIES_NAMES } from '../../constants/cookiesNames';
 /**
  * 
  * Formik Values
@@ -52,9 +53,12 @@ const Login = () => {
             setLoading(true)
             // Post Data To Reset Password Api & Get Response
             const res = await axios.post(routes.LOGIN, values)
+            const { payload } = await res.data.data
             // hide loader
             setLoading(false)
-            //Relove After Login Success
+            // set token in local storage
+            localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
+            // reload in order to trigger middleware
             router.reload();
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
@@ -63,6 +67,8 @@ const Login = () => {
             setLoading(false)
         }
     }
+
+
 
 
     return <BluredBg>

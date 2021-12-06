@@ -1,14 +1,27 @@
 import 'tailwindcss/tailwind.css'
 import type { AppProps } from 'next/app'
 import AppContext, { ActionTypes, ContextArgs, DisplayState, UserInterface } from '../contexts/AppContext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AssetProps } from '../components/ui/AssetContainer'
 import { AssetImgProps } from '../components/ui/Asset'
 import getItemsIds from '../lib/getItemsIds'
 import axios from 'axios'
-
+import { COOKIES_NAMES } from '../constants/cookiesNames'
+import jwt from 'jsonwebtoken'
+import { useRouter } from 'next/router'
+import routes from '../constants/routes'
+/**
+ * 
+ * Set A Default API BaseUrl 
+ * 
+ */
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
+/**
+ * 
+ * @param Component 
+ * @param pageProps 
+ * 
+ */
 function MyApp({ Component, pageProps }: AppProps) {
 
   const [display, setDisplay] = useState<DisplayState>(DisplayState.Large)
@@ -91,8 +104,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [isOverlayVisible, setIsOverlayVisible] = useState<boolean>(false)
   const [overlayActionType, setOverlayActionType] = useState<ActionTypes>("" as ActionTypes)
   const [user, setUser] = useState<UserInterface | undefined>()
+  const [userLoading, setUserLoading] = useState<boolean>(false)
   /**
+   * 
    * App State
+   * 
    * */
   const vals: ContextArgs = {
 
@@ -121,11 +137,62 @@ function MyApp({ Component, pageProps }: AppProps) {
     setOverlayActionType,
 
     user,
-    setUser
+    setUser,
+    userLoading,
+    setUserLoading,
   }
+  /**
+   * 
+   * @param _token for current user
+   * @returns decode | null
+   */
+  const getDecode = (_token: string) => {
+    try {
+      // Get Decode JWT Token
+      let decode: any = jwt.verify(_token, String(process.env.NEXT_PUBLIC_JWT_SECRET));
+      return decode
 
-
-
+    } catch (err: any) {
+      console.log(err.message)
+      return null
+    }
+  }
+  /**
+   * 
+   * @param _token for current user
+   * @returns 
+   */
+  const getUser = async (_token: string) => {
+    const decode = getDecode(_token)
+    if (!decode) return;
+    try {
+      // show loader in nav
+      setUserLoading(true)
+      // get response
+      const res = await axios.get(`/user?sub=${decode.sub}`).then(res => res.data)
+      // set current user
+      setUser(res.data.payload)
+      // hide loader
+      setUserLoading(false)
+    } catch (err) {
+      // console.log(err.response)
+      setUserLoading(false)
+    }
+  }
+  // Get pathname from router
+  const router = useRouter()
+  const path = router.asPath
+  // When Page Loaded Get Current User
+  useEffect(() => {
+    // if not logged in
+    if (!path.includes(routes.CONTENT)) return
+    // Get token id user logged in
+    const token = localStorage.getItem(COOKIES_NAMES.token);
+    if (!token) return;
+    // fetch user data
+    getUser(token)
+  }, [])
+  // Global Rendring
   return <AppContext.Provider value={vals}>
     <Component {...pageProps} />
   </AppContext.Provider>

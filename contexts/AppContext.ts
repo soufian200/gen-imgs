@@ -74,10 +74,15 @@ export interface ContextArgs {
     /**
      * 
      * User
-     * 
      * */
     user: UserInterface | undefined
     setUser: (val: UserInterface) => void
+    /**
+     * 
+     * Show|Hide Loader When Try To Fech  User Data
+     * */
+    userLoading: boolean,
+    setUserLoading: (val: boolean) => void
 }
 const AppContext = createContext({} as ContextArgs);
 
