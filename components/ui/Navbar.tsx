@@ -7,7 +7,7 @@ import Loader from "./Loader";
 import AppContext from "../../contexts/AppContext";
 import { useRouter } from "next/router";
 import routes from "../../constants/routes";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { COOKIES_NAMES } from "../../constants/cookiesNames";
 /**
  * 
@@ -41,9 +41,7 @@ const Navbar: FC<NavbarProps> = ({ styles }) => {
             // Show Loader
             setLoading(true)
             // Post Data To Reset Password Api & Get Response
-            const res = await axios.get(routes.LOGOUT)
-            const message = res.data.data.message
-            console.log("message: ", message)
+            await axios.get(routes.LOGOUT)
             // remove token from local storage
             localStorage.removeItem(COOKIES_NAMES.token)
             // hide loader
@@ -51,15 +49,14 @@ const Navbar: FC<NavbarProps> = ({ styles }) => {
             // Go to Home
             router.replace(routes.LOGIN)
         } catch (err) {
-            // Set Error If Post Request Wasn't Successful
-            console.log((err as AxiosError).response?.data.error.message)
+            // console.log((err as AxiosError).response?.data.error.message)
             // Hide Loader
             setLoading(false)
         }
     }
     // Render Navbar
-    return <div className={`shadow-md bg-white p-4 fixed z-50 w-full left-0 top-0 h-16 ${styles ? styles : null}`} >
-        <div className={`flex justify-between items-center`}>
+    return <div className={`shadow-md bg-white p-4 fixed z-50 w-full flex justify-between items-center left-0 top-0 h-16 ${styles ? styles : null}`} >
+        <div className={`w-full flex justify-between items-center`}>
             <Logo />
             {!(path.includes(routes.CONTENT)) && NavbarLinks}
             {userLoading
