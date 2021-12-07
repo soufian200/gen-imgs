@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import { AiOutlineLogout } from "react-icons/ai";
 import Center from "../common/Center";
 import Action from "./Action";
@@ -7,6 +7,8 @@ import Loader from "./Loader";
 import AppContext from "../../contexts/AppContext";
 import { useRouter } from "next/router";
 import routes from "../../constants/routes";
+import axios, { AxiosError } from "axios";
+import { COOKIES_NAMES } from "../../constants/cookiesNames";
 /**
  * 
  * Navbar Props
@@ -23,8 +25,38 @@ const Navbar: FC<NavbarProps> = ({ styles }) => {
     // get pathname from router
     const router = useRouter()
     const path = router.asPath
+
+    // is loading
+    const [loading, setLoading] = useState(false)
     // get current user if logged in
     const { user, userLoading } = useContext(AppContext)
+    /**
+     * 
+     * Handle Logout 
+     * 
+     */
+    const handleLogout = async () => {
+        // Try To Post Data
+        try {
+            // Show Loader
+            setLoading(true)
+            // Post Data To Reset Password Api & Get Response
+            const res = await axios.get(routes.LOGOUT)
+            const message = res.data.data.message
+            console.log("message: ", message)
+            // remove token from local storage
+            localStorage.removeItem(COOKIES_NAMES.token)
+            // hide loader
+            setLoading(false)
+            // Go to Home
+            router.replace(routes.LOGIN)
+        } catch (err) {
+            // Set Error If Post Request Wasn't Successful
+            console.log((err as AxiosError).response?.data.error.message)
+            // Hide Loader
+            setLoading(false)
+        }
+    }
     // Render Navbar
     return <div className={`shadow-md bg-white p-4 fixed z-50 w-full left-0 top-0 h-16 ${styles ? styles : null}`} >
         <div className={`flex justify-between items-center`}>
@@ -36,12 +68,15 @@ const Navbar: FC<NavbarProps> = ({ styles }) => {
                 </div>
                 : user
                 && <div className={`flex`}>
-                    <Action label="Logout" Icon={<AiOutlineLogout size={25} />} />
+                    <Action
+                        disabled={loading}
+                        label={loading ? "Logging out..." : "Logout"}
+                        onClick={handleLogout}
+                        Icon={<AiOutlineLogout size={25} />} />
                     <div className={`ml-4 hover:bg-gray-100 cursor-pointer rounded-full pr-3`}>
                         <Center>
                             <div className={`h-10 w-10 bg-red-400 flex justify-center items-center font-bold text-2xl text-white rounded-full`}>{user.username.slice(0, 1)}</div>
                             <h2 className={`capitalize font-bold ml-2`}>{user.username}</h2>
-
                         </Center>
                     </div>
                 </div>

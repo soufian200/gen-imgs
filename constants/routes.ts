@@ -7,7 +7,10 @@ const routes = {
 
     // Log in
     LOGIN: auth + "/login",
-
+    /**
+     * Log out
+     */
+    LOGOUT: auth + "/logout",
     // Sign up
     SIGNUP: auth + "/signup",
 
