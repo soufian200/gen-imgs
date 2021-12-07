@@ -17,18 +17,18 @@ export async function verifyJwt(
 ) {
     // Get JWT Token Cookie
     const token = request.cookies[COOKIES_NAMES.token]
-    if (token) {
-        try {
-            // Get Decode JWT Token
-            let { exp }: any = jwt.verify(token, String(process.env.JWT_SECRET));
-            //If Token Expired Yer Go To Home
-            if (Date.now() < exp * 1000) return NextResponse.redirect(routes.CONTENT + routes.HOME)
-        } catch (err: any) {
-            // If Token Valid Clear JWT Token Cookie
-            return response.clearCookie(COOKIES_NAMES.token)
-        }
+    // If No User Logged In
+    if (!token) return response
+    // Get User And Redirect To Home
+    try {
+        // Get Decode JWT Token
+        let { exp }: any = jwt.verify(token, String(process.env.JWT_SECRET));
+        //If Token Expired Yer Go To Home
+        if (Date.now() < exp * 1000) return NextResponse.redirect(routes.CONTENT + routes.HOME)
+    } catch (err: any) {
+        // If Token Valid Clear JWT Token Cookie
+        return response.clearCookie(COOKIES_NAMES.token)
     }
-    return response
 }
 
 

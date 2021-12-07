@@ -18,6 +18,7 @@ async function handler(
     req: NextApiRequest,
     res: NextApiResponse<AppResData>
 ) {
+    console.log("hello...")
     // Global 
     const date = new Date()
     // Allow Post Method Only
@@ -53,15 +54,24 @@ async function handler(
     }
     // Save User In DB
     const userData = await user.signUp(newUser)
+    // Send Verification Code
+    console.log("userData: ", userData)
+    if (usersCount > 0) {
+
+        const isSendedorErrMsg = await user.sendVerificationCode(userData.id)
+        if (!isSendedorErrMsg) return AppRes(res, 400, isSendedorErrMsg.toString())
+
+        // get unverified users count
+        const unverifiedUsers = await stat.getUnverfiedUsers();
+        // increase unverified users count
+        stat.setUnverfiedUsers(unverifiedUsers + 1)
+    }
     // increase count of user in stats collection
     stat.increaseCountUsers(usersCount + 1)
-    // get unverified users count
-    const unverifiedUsers = await stat.getUnverfiedUsers();
-    // increase unverified users count
-    stat.increaseUnverfiedUsers(unverifiedUsers + 1)
+
     // Send JWT Via Cookie
     res.setHeader("Set-Cookie", setJWTCookie(userData.token))
     // Return Success Operation
-    return AppRes(res, 200, "signup success")
+    return AppRes(res, 200, "signup success", { sub: userData.token })
 }
 export default apiHandler(handler)

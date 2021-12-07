@@ -23,7 +23,7 @@ const sendEmail = async (options: IMailOptions) => {
         to,
         subject,
         text,
-        html: "<h1>Reset your password code: <b>445023</b></h1>"
+        html: "<h1>Reset your password code: </h1>"
     };
 
 

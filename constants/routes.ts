@@ -1,4 +1,5 @@
 const auth = '/auth'
+const content = '/c'
 const routes = {
 
     // Sign up
@@ -36,8 +37,9 @@ const routes = {
 
     // exported
     HELP: "/help",
-
-
+    // exported
+    VERIFY: content + "/verify",
+    RESEND: "/RESEND",
 
 
     /**

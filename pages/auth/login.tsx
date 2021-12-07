@@ -1,7 +1,7 @@
 import { AiOutlineLock, AiOutlineMail } from 'react-icons/ai'
 import Link from 'next/link'
 import routes from "../../constants/routes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BluredBg from "../../components/ui/BluredBg";
 import { Form, Formik } from "formik";
 import AuthInput from "../../components/ui/form/AuthInput";
@@ -54,12 +54,12 @@ const Login = () => {
             // Post Data To Reset Password Api & Get Response
             const res = await axios.post(routes.LOGIN, values)
             const { payload } = await res.data.data
-            // hide loader
-            setLoading(false)
             // set token in local storage
             localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
-            // reload in order to trigger middleware
-            router.reload();
+            // hide loader
+            setLoading(false)
+            // Go to Home
+            router.replace(routes.CONTENT + routes.HOME)
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
             setError((err as AxiosError).response?.data.error.message)
@@ -67,10 +67,6 @@ const Login = () => {
             setLoading(false)
         }
     }
-
-
-
-
     return <BluredBg>
         <div>
             <LogoAndHeader header="Login" />

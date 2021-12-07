@@ -10,6 +10,7 @@ import { COOKIES_NAMES } from '../constants/cookiesNames'
 import jwt from 'jsonwebtoken'
 import { useRouter } from 'next/router'
 import routes from '../constants/routes'
+import Cookies from 'js-cookie'
 /**
  * 
  * Set A Default API BaseUrl 
@@ -23,6 +24,9 @@ axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
  * 
  */
 function MyApp({ Component, pageProps }: AppProps) {
+  // Get pathname from router
+  const router = useRouter()
+  const path = router.asPath
 
   const [display, setDisplay] = useState<DisplayState>(DisplayState.Large)
   const [isReversed, setIsReversed] = useState<boolean>(false)
@@ -153,7 +157,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       return decode
 
     } catch (err: any) {
-      console.log(err.message)
+      console.log('dd:', err.message)
       return null
     }
   }
@@ -175,20 +179,22 @@ function MyApp({ Component, pageProps }: AppProps) {
       // hide loader
       setUserLoading(false)
     } catch (err) {
-      // console.log(err.response)
-      setUserLoading(false)
+      // Remove token from local storage
+      localStorage.removeItem(COOKIES_NAMES.token)
+      // If There Is No Token Response Will Remove Cookie
+      // Axios Will Catch 400 with error `user doesn't exists`
+      // reload to trigger middleware to check if there is a token
+      router.reload()
     }
   }
-  // Get pathname from router
-  const router = useRouter()
-  const path = router.asPath
+
   // When Page Loaded Get Current User
   useEffect(() => {
     // if not logged in
     if (!path.includes(routes.CONTENT)) return
     // Get token id user logged in
     const token = localStorage.getItem(COOKIES_NAMES.token);
-    if (!token) return;
+    if (!token) return
     // fetch user data
     getUser(token)
   }, [])

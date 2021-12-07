@@ -10,7 +10,7 @@ interface IAuthInput {
     placeholder: string;
 }
 
-const AuthInput: FC<IAuthInput> = ({ label, Icon, type = "text", name, placeholder }) => {
+const AuthInput: FC<IAuthInput> = ({ label, Icon, type = "text", name, placeholder, ...rest }) => {
 
     return <div className={`mb-4 w-96`}>
         <h1 className={` text-gray-700 capitalize`}>{label}</h1>
@@ -24,6 +24,7 @@ const AuthInput: FC<IAuthInput> = ({ label, Icon, type = "text", name, placehold
                 placeholder={placeholder}
                 type={type}
                 className={`border-none py-2  outline-none w-full ml-3 bg-transparent `}
+                {...rest}
             />
         </div>
         <ErrorMessage

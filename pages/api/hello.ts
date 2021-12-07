@@ -129,7 +129,9 @@ export default async function handler(
 
 
 
+  const user = new User()
+  const isSended = await user.sendVerificationCode('7b5c6338-e48b-48f0-a129-a89c775a8569')
+  console.log('iseSended: ', isSended)
 
-
-  return res.json({ msg: "welcome" })
+  return res.json({ msg: "hello api" })
 }

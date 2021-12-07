@@ -9,6 +9,8 @@ const apiHandler = (handler: any) => {
             return handler(req, res)
 
         } catch (err) {
+            console.log('========== from apiHandler ==========')
+            console.log((err as Error).message)
             return AppRes(res, 500, (err as Error).message)
         }
     }

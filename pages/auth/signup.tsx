@@ -11,6 +11,7 @@ import Error from '../../components/ui/Error';
 import LogoAndHeader from '../../components/ui/LogoAndHead';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router'
+import { COOKIES_NAMES } from '../../constants/cookiesNames';
 /**
  * 
  * Values For Signup After Validation
@@ -51,14 +52,18 @@ const Signup = () => {
     const handleOnSubmit = async (values: Values) => {
         // Try To Post Data
         try {
+            setError('')
             // Show Loader
             setLoading(true)
             // Post Data To Reset Password Api & Get Response
             const res = await axios.post(routes.SIGNUP, values)
+            const { payload } = await res.data.data
+            // set token in local storage
+            localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
             // hide loader
             setLoading(false)
-            //Relove After Signup Success
-            router.reload();
+            // Go to Home
+            router.replace(routes.CONTENT + routes.HOME)
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
             setError((err as AxiosError).response?.data.error.message)

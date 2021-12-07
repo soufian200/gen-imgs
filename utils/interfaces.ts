@@ -123,5 +123,8 @@ export interface IUser {
     role?: "user" | "admin";
     isVerified?: boolean;
     createdAt?: number;
-
+    hashed?: string;
+    expiresIn?: number;
+    sendedTimes?: number;
+    sendAfter?: number;
 }

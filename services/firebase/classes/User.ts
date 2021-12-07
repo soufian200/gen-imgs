@@ -1,8 +1,11 @@
 import admin from "../admin";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import * as crypto from '../../../lib/utils/crypto'
 
 import { IUser } from "../../../utils/interfaces";
+import sendEmail from "../../../lib/sendEmail";
+import { UserInterface } from "../../../contexts/AppContext";
 
 
 
@@ -149,7 +152,7 @@ class User {
         // generate token
         const token = this.signToken(newUserDoc.id, _user.isVerified || false);
         // update stats users count
-        return { username: _user.username, email, token }
+        return { id, username: _user.username, email, token }
 
     }
 
@@ -200,7 +203,6 @@ class User {
     * @param _userId
     * @param _resetToken
     * @return true (update success) | false (update failed)
-    * 
     * */
     async updateResetToken(_userId: string, _resetToken: string | null = null,) {
         const date = new Date()
@@ -223,7 +225,6 @@ class User {
     * @param _userId
     * @param _newPassword
     * @return true (update success) | false (update failed)
-    * 
     * */
     async updatePassword(_userId: string, _newPassword: string) {
         try {
@@ -239,6 +240,86 @@ class User {
             })
 
             return true
+        } catch (err) { return false }
+    }
+    /**
+     * 
+     * @returns 6 random number
+     */
+    private generateCode() {
+        const length = 6;
+        let rand = '';
+        for (let i = 0; i < length; i++) {
+            rand += Math.floor(Math.random() * 10)
+        }
+        return rand
+    }
+    /**
+     * 
+     * Send Verification Code To User
+     * @param _userId
+     * @return if verification code sended to user's email
+     */
+    async sendVerificationCode(_userId: string) {
+        try {
+
+
+            console.log("_userId: ", _userId)
+
+
+
+            // check if already Verified
+            const userData = await this.getUserData(_userId)
+
+
+            // Generate 6 randum nums (code)
+            const code = this.generateCode()
+            console.log("code: ", code)
+            // hash code 
+            const hashedCode = crypto.encrypt(code);
+            // Valid for 2min
+            const expiresIn = Date.now() + 1000 * 60 * Number(process.env.VERIFICATION_CODE_EXPIRES_IN)
+            // set hashed token and expire date to user
+            await this.getUserDoc(_userId).update({
+                hashed: hashedCode,
+                expiresIn,
+                sendedTimes: (userData?.sendedTimes || 0) + 1
+            })
+
+            // sending email options
+            const emailOptions = {
+                to: userData?.email,
+                subject: `Verification Code (valid for ${Number(process.env.VERIFICATION_CODE_EXPIRES_IN)} min)`,
+                text: `Verification Code: ${code}`
+            }
+            // Send Verification Code To User In Email
+            await sendEmail(emailOptions)
+            return true
+        } catch (err) {
+            return (err as Error).message
+        }
+    }
+    /**
+     * 
+     * @param _userId 
+     * @returns true (update success) | false (error occur)
+     */
+    async verify(_userId: string) {
+        try {
+            // set hashed token and expire date to user
+            await this.getUserDoc(_userId).update({
+                isVerified: true,
+                hashed: null,
+                expiresIn: null
+            })
+
+            // update stat verified users
+            // Sign Token
+            const token = this.signToken(_userId, true)
+            console.log("verified token:", token)
+
+
+            return token
         } catch (err) { return false }
     }
 

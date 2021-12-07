@@ -39,7 +39,7 @@ class Stat {
     * Increase unverfied Users Size
     * @param unverfied Set New unverfied users
     * */
-    async increaseUnverfiedUsers(unverfied: number) {
+    async setUnverfiedUsers(unverfied: number) {
         await this.unverifiedUsersDoc.set({ unverfied })
     }
     /**
