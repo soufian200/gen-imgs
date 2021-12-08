@@ -248,7 +248,12 @@ class User {
         const length = 6;
         let rand = '';
         for (let i = 0; i < length; i++) {
-            rand += Math.floor(Math.random() * 10)
+            const randNum = Math.floor(Math.random() * 10);
+            if (rand.length === 0 && randNum === 0) {
+                rand += 1;
+            } else {
+                rand += randNum;
+            }
         }
         return rand
     }
@@ -262,7 +267,7 @@ class User {
         try {
 
 
-            console.log("_userId: ", _userId)
+            // console.log("_userId: ", _userId)
 
 
 
@@ -272,7 +277,7 @@ class User {
 
             // Generate 6 randum nums (code)
             const code = this.generateCode()
-            console.log("code: ", code)
+            // console.log("code: ", code)
             // hash code 
             const hashedCode = crypto.encrypt(code);
             // Valid for 2min
