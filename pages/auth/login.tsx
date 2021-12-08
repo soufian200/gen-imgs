@@ -59,7 +59,8 @@ const Login = () => {
             // hide loader
             setLoading(false)
             // Go to Home
-            router.replace(routes.CONTENT + routes.HOME)
+            router.reload()
+            // router.replace(routes.CONTENT + routes.HOME)
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
             setError((err as AxiosError).response?.data.error.message)

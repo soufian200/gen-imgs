@@ -1,21 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { COOKIES_NAMES } from '../../constants/cookiesNames';
-import routes from '../../constants/routes';
 import jwt from 'jsonwebtoken'
-/**
- * If User Not Logged in Reddirect him to Login page
- * 
-*/
-export function middleware(req: NextRequest) {
-    // Add the user token to the response
-    return verifyJwt(req, NextResponse.next())
-}
+import { COOKIES_NAMES } from '../constants/cookiesNames';
+import routes from '../constants/routes';
 /**
  * Verification JWT
  * @param request 
  * @param response 
  */
-export async function verifyJwt(
+export default async function verifyUser(
     request: NextRequest,
     response: NextResponse
 ) {
@@ -45,5 +37,3 @@ export async function verifyJwt(
     }
     return response
 }
-
-

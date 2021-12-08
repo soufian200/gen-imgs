@@ -28,6 +28,7 @@ async function handler(
     // decrypt hashed code
     const userData = await user.getUserData(sub)
     if (!userData) return AppRes(res, 400, `user doesn't exists`)
+    console.log("userData:", userData)
     if (userData.isVerified) return AppRes(res, 200, 'already verified')
     if (Date.now() < userData?.sendAfter) {
         return AppRes(res, 403, `you cannot resend code for now. please try again after ${hoursToResend} hours`)

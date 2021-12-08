@@ -5,14 +5,15 @@ import AuthInput from "../../../components/ui/form/AuthInput";
 import LogoAndHeader from "../../../components/ui/LogoAndHead";
 import Navbar from "../../../components/ui/Navbar";
 import * as Yup from 'yup';
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Error from "../../../components/ui/Error";
 import Button from "../../../components/ui/Button";
 import axios, { AxiosError } from "axios";
 import routes from "../../../constants/routes";
 import SuccessOperation from "../../../components/ui/SuccessOperation";
 import { COOKIES_NAMES } from "../../../constants/cookiesNames";
-import router from "next/router";
+import { useRouter } from "next/router";
+import AppContext from "../../../contexts/AppContext";
 const verifySchema = Yup.object().shape({
     code: Yup.number()
         .typeError('Only numbers')
@@ -29,9 +30,11 @@ interface Values {
     code: string;
 }
 const Verify = () => {
+    const router = useRouter()
     const [error, setError] = useState<string>('')
     // 200 ok msg from server
     const [msg, setMsg] = useState<string>('')
+    const { user } = useContext(AppContext)
     // is loading
     const [loading, setLoading] = useState(false)
     const [isResendedLoading, setIsResendedLoading] = useState(false)
@@ -88,6 +91,12 @@ const Verify = () => {
             setIsResendedLoading(false)
         }
     }
+
+    useEffect(() => {
+        if (user && user.isVerified) {
+            setMsg("verified")
+        }
+    }, [user])
     return <div className={`w-screen h-screen bg-gray-100`}>
         <Navbar />
         <Center styles={`w-full h-full`} >
@@ -96,11 +105,11 @@ const Verify = () => {
                 {msg
                     ? <div>
                         <SuccessOperation msg={msg} />
-                        <div className={`mt-5`}>
-                        <Button
-                            label="Home"
-                            onClick={() => router.replace(routes.CONTENT + routes.HOME)}
-                        />
+                        <div className={`mt-5 flex justify-center`}>
+                            <Button
+                                label="Home"
+                                onClick={() => router.replace(routes.CONTENT + routes.HOME)}
+                            />
                         </div>
                     </div>
                     : <div>

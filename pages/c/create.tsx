@@ -118,9 +118,9 @@ const Create = () => {
         console.log(data)
 
         var zip = new JSZip();
-        var asset = zip.folder("images");
+        var asset: any = zip.folder("images");
 
-        data.imgs.forEach((img, index) => {
+        data.imgs.forEach((img: any, index: number) => {
 
             asset.file(`${index}.png`, img.data, { base64: true });
         })

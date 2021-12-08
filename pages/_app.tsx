@@ -16,7 +16,7 @@ import Cookies from 'js-cookie'
  * Set A Default API BaseUrl 
  * 
  */
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/api";
 /**
  * 
  * @param Component 
@@ -176,6 +176,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       const res = await axios.get(`/user?sub=${decode.sub}`).then(res => res.data)
       // set current user
       setUser(res.data.payload)
+      console.log(res.data)
+      if (!res.data.payload.isVerified) {
+        router.replace('/c/verify')
+      }
       // hide loader
       setUserLoading(false)
     } catch (err) {
@@ -190,6 +194,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // When Page Loaded Get Current User
   useEffect(() => {
+    console.log('default urlapi: ', process.env.NEXT_PUBLIC_API_BASE_URL)
     // if not logged in
     if (!path.includes(routes.CONTENT)) return
     // Get token id user logged in

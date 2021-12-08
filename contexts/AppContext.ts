@@ -18,6 +18,7 @@ export enum ActionTypes {
 export interface UserInterface {
     username: string;
     email: string;
+    isVerified: boolean
 }
 export interface ContextArgs {
 

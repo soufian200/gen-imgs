@@ -2,10 +2,8 @@ import admin from "../admin";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import * as crypto from '../../../lib/utils/crypto'
-
 import { IUser } from "../../../utils/interfaces";
 import sendEmail from "../../../lib/sendEmail";
-import { UserInterface } from "../../../contexts/AppContext";
 
 
 
@@ -183,12 +181,12 @@ class User {
         // If Password Not Invalid
         if (!isPasswordValid) return {}
 
-        console.log("user:", user)
+        // console.log("user:", user)
 
 
         // Sign Token
         const token = this.signToken(id, user.isVerified)
-        console.log("token:", token)
+        // console.log("token:", token)
 
         return {
             token,

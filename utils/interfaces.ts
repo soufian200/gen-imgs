@@ -95,7 +95,7 @@ export interface TempMetadataInterface {
     extraMetadata?: any
     dna?: string
     properties?: PropertyInterface
-    compiler?: "Art Generator"
+    compiler?: "NFTs Generator"
 }
 
 

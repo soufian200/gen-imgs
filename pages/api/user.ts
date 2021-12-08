@@ -26,6 +26,7 @@ async function handler(
         email: userData.email,
         username: userData.username,
         role: userData.role,
+        isVerified: userData.isVerified,
     })
 }
 export default apiHandler(handler)

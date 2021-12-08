@@ -373,7 +373,7 @@ class ArtGenerator {
             date: dateTime,
             ...this.extraMetadata,
             attributes: this.attributesList,
-            compiler: "Art Generator",
+            compiler: "NFTs Generator",
         };
 
         if (this.network == 'sol') {

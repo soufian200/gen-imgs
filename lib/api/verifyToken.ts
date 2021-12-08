@@ -9,12 +9,12 @@ export interface UserJwtPayload {
 const verifyToken = (token: string) => {
 
     try {
-        var decoded = jwt.verify(token, process.env.JWT_SECRET || '');
+        var decoded = jwt.verify(token, String(process.env.JWT_SECRET));
         return decoded as UserJwtPayload
 
     } catch (err: any) {
 
-        return jsonResponse(401, { error: { status: 401, message: err.message }, })
+        return jsonResponse(401, { error: { message: 'Your token has expired.' } })
     }
 
 }

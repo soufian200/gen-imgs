@@ -7,7 +7,7 @@ import CryptoJS from "crypto-js";
  * */
 export const encrypt = (_str: string) => {
     // Encrypt
-    var ciphertext = CryptoJS.AES.encrypt(_str, 'secret key 123').toString();
+    var ciphertext = CryptoJS.AES.encrypt(_str, String(process.env.CRYPTO_SECRET)).toString();
     return ciphertext
 }
 /**
@@ -18,7 +18,7 @@ export const encrypt = (_str: string) => {
 export const decrypt = (_str: string) => {
 
     // Decrypt
-    var bytes = CryptoJS.AES.decrypt(_str, 'secret key 123');
+    var bytes = CryptoJS.AES.decrypt(_str, String(process.env.CRYPTO_SECRET));
     var originalText = bytes.toString(CryptoJS.enc.Utf8);
     return originalText
 }

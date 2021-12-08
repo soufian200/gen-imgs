@@ -227,7 +227,7 @@ const addMetadata = (_dna: string, _edition: number, namePrefix: string, descrip
         date: dateTime,
         ...extraMetadata,
         attributes: attributesList,
-        compiler: "NFTs Generators",
+        compiler: "NFTs Generator",
     };
 
     if (network == NETWORK.sol) {

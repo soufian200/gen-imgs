@@ -21,6 +21,7 @@
     "firebase-admin": "^10.0.0",
     "formik": "^2.2.9",
     "gif-encoder-2": "^1.0.5",
+    "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.7.1",
     "mongoose": "^6.0.12",
@@ -32,6 +33,7 @@
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
     "sha1": "^1.1.1",
+    "sharp": "^0.29.3",
     "swr": "^1.0.1",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
@@ -43,6 +45,7 @@
     "@types/cookie": "^0.4.1",
     "@types/crypto-js": "^4.0.2",
     "@types/file-saver": "^2.0.4",
+    "@types/js-cookie": "^3.0.1",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/nodemailer": "^6.4.4",
     "@types/randombytes": "^2.0.0",
