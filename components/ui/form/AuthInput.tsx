@@ -3,7 +3,7 @@ import { ChangeEvent, FC } from "react"
 
 interface IAuthInput {
     label: string
-    Icon: React.ReactNode
+    Icon?: React.ReactNode
     type?: string
     [x: string]: any;
     name: string;

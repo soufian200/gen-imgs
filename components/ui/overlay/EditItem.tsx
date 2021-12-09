@@ -19,6 +19,7 @@ const EditItem = () => {
             <Field
                 value={value}
                 onChange={(e: React.FormEvent<HTMLInputElement>) => setValue(e.currentTarget.value)}
+                placeholder="New Name"
             />
             <div className={`mt-5 flex items-center`}>
 

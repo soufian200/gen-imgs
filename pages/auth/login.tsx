@@ -54,9 +54,9 @@ const Login = () => {
             // Post Data To Reset Password Api & Get Response
             const res = await axios.post(routes.LOGIN, values)
             const { payload } = await res.data.data
-            // set token in local storage
-            localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
-            // hide loader
+            /**  Set token in local storage */
+            // localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
+            /** Hide loader */
             setLoading(false)
             // Go to Home
             router.reload()

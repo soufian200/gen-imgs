@@ -1,68 +1,75 @@
 
 import Main from "../../../components/ui/Main";
-import Navbar from "../../../components/ui/Navbar";
-import Sidebar from "../../../components/ui/Sidebar";
-import { FC, useContext, useEffect, useState } from 'react';
-import Asset from '../../../components/ui/Asset';
+import { useContext, useEffect, useState } from 'react';
 import AppContext from "../../../contexts/AppContext";
-import { AiFillFolder } from "react-icons/ai";
-import classNames from "classnames";
-import Folder from "../../../components/ui/Folder";
-import getItemsIds from "../../../lib/getItemsIds";
-
-
-
-
-
+import Folder, { FolderProps } from "../../../components/ui/Folder";
+import axios from "axios";
+import FailedOperation from "../../../components/ui/FailedOperation";
+import Empty from "../../../components/ui/Empty";
+import routes from "../../../constants/routes";
+/**
+ * 
+ * Layers Page
+ */
 const Layers = () => {
-
-
-
-
-
-
-
-
-
-    const { setSelectedIds, folders, setItemsIds } = useContext(AppContext);
-
-
-
-
-
-
-
-
-
+    /** Request Laoding */
+    const [loading, setLoading] = useState(false)
+    /** Unexpected Error */
+    const [error, setError] = useState('')
+    const { setSelectedIds, folders, setFolders, setItemsIds, } = useContext(AppContext);
+    /**
+     * 
+     * Fetch Layers Of  Current User With Its Images
+     */
+    const fetchLayers = async () => {
+        /** Fetch at first load */
+        if (folders.length !== 0) return;
+        try {
+            /** Show Loader */
+            setLoading(true)
+            /** Get Result */
+            const res = await axios.get(routes.CONTENT + routes.LAYERS);
+            /** Get Payload Witch is array of layers */
+            const { payload } = res.data.data;
+            const layers: FolderProps[] = payload.layers;
+            /** Hide Loader */
+            setLoading(false)
+            /** Set Layers In Context */
+            setFolders(layers)
+            /** Items to be select in layer page 
+            *   Get IDs Of Layers
+            */
+            setItemsIds(layers.map(item => item.id));
+        } catch (err: any) {
+            /** Hide Loader */
+            setLoading(false)
+            /** Set Unexpected Error */
+            setError(err.message)
+        }
+    }
     useEffect(() => {
-
-        // items to be select in layer page
-        const ids = getItemsIds(folders);
-        setItemsIds(ids)
-
-        // reset selected ids
+        /** Fetch Layers Of  Current User */
+        fetchLayers()
+        /** Reset selected ids */
         setSelectedIds([])
-
     }, [])
-
-
-
-
+    /** Render Layers Page */
     return <Main>
+        <div className={`flex flex-wrap w-full mb-10 `}>
+            {loading && <h1>Loading...</h1>}
+            {error && <FailedOperation msg={error} />}
 
-        <div className={`flex flex-wrap w-full`}>
-            {
-                folders.map((folder, index) => <Folder
-                    key={folder.id}
-                    id={folder.id}
-                    title={folder.title}
-                    createdAt={folder.createdAt}
+            {folders.length === 0 && !loading
+                ? <Empty />
+                : folders.map(({ id, folderName, createdAt }) => <Folder
+                    key={id}
+                    id={id}
+                    folderName={folderName}
+                    createdAt={Date.now()}
 
                 />)
             }
         </div>
     </Main >
-
 }
-
 export default Layers;

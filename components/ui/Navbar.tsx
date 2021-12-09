@@ -8,7 +8,6 @@ import AppContext from "../../contexts/AppContext";
 import { useRouter } from "next/router";
 import routes from "../../constants/routes";
 import axios from "axios";
-import { COOKIES_NAMES } from "../../constants/cookiesNames";
 /**
  * 
  * Navbar Props
@@ -33,7 +32,7 @@ const Navbar: FC<NavbarProps> = ({ styles }) => {
     /**
      * 
      * Handle Logout 
-     * 
+     * @dev Send req to logout api to delete cookie
      */
     const handleLogout = async () => {
         // Try To Post Data
@@ -41,16 +40,17 @@ const Navbar: FC<NavbarProps> = ({ styles }) => {
             // Show Loader
             setLoading(true)
             // Post Data To Reset Password Api & Get Response
-            await axios.get(routes.LOGOUT)
-            // remove token from local storage
-            localStorage.removeItem(COOKIES_NAMES.token)
-            // hide loader
+            const res = await axios.get(routes.LOGOUT)
+            /** Remove token from local storage */
+            // localStorage.removeItem(COOKIES_NAMES.token)
+            /** Hide loader */
             setLoading(false)
-            // Go to Home
+            // console.log(res)
+            /** Go to Home */
             router.replace(routes.LOGIN)
         } catch (err) {
-            // console.log((err as AxiosError).response?.data.error.message)
-            // Hide Loader
+            console.log((err as any).response?.data.error.message)
+            /** Hide Loader */
             setLoading(false)
         }
     }

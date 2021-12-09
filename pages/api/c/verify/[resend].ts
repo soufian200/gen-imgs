@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { COOKIES_NAMES } from "../../../../constants/cookiesNames";
-import apiHandler from "../../../../lib/api/apiHandler";
 import AppRes, { AppResData } from "../../../../lib/api/AppRes";
+import apiHandler from "../../../../lib/api/middlewares/apiHandler";
 import verifyToken from "../../../../lib/api/verifyToken";
 import User from "../../../../services/firebase/classes/User";
 /**

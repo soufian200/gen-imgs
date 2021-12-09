@@ -2,16 +2,18 @@ import classNames from "classnames"
 import { FC, useContext } from "react"
 import AppContext from "../../contexts/AppContext"
 import router, { useRouter } from 'next/router'
+import formatCreatedAt from "../../lib/utils/formatCreatedAt"
 
 
 export interface AssetProps {
     id: string
     title: string | number
-    createdAt: string
+    createdAt: number
 }
 interface AssetContainerProps extends AssetProps {
     children: React.ReactNode
 }
+
 
 
 const AssetContainer: FC<AssetContainerProps> = ({ children, id, title, createdAt, }) => {
@@ -73,8 +75,8 @@ const AssetContainer: FC<AssetContainerProps> = ({ children, id, title, createdA
     >
 
         {children}
-        <h1 className={`mt-3`}> {title}</h1>
-        <p className={`text-xs text-gray-400 capitalize`}>{createdAt}</p>
+        <h1 className={`mt-3 capitalize`}> {title}</h1>
+        <p className={`text-xs text-gray-400 capitalize`}>{formatCreatedAt(createdAt)}</p>
     </div>
 }
 

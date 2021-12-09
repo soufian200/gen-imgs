@@ -1,8 +1,8 @@
 import { serialize } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 import { COOKIES_NAMES } from "../../../../../constants/cookiesNames";
-import apiHandler from "../../../../../lib/api/apiHandler";
 import AppRes, { AppResData } from "../../../../../lib/api/AppRes";
+import apiHandler from "../../../../../lib/api/middlewares/apiHandler";
 import * as crypto from "../../../../../lib/utils/crypto";
 import User from "../../../../../services/firebase/classes/User";
 /**

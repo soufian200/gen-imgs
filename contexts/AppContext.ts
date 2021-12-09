@@ -1,6 +1,7 @@
 import { createContext } from "react";
 import { AssetImgProps } from "../components/ui/Asset";
 import { AssetProps } from "../components/ui/AssetContainer";
+import { FolderProps } from "../components/ui/Folder";
 
 
 export enum DisplayState {
@@ -11,6 +12,7 @@ export enum DisplayState {
 export enum ActionTypes {
     EDIT = "EDIT",
     DELETE = "DELETE",
+    NEWFOLDER = "NEWFOLDER"
 }
 /**
  * User Interface
@@ -46,8 +48,8 @@ export interface ContextArgs {
     /**
     *  layers folders
     * */
-    folders: AssetProps[]
-    setFolders: (folders: AssetProps[]) => void
+    folders: FolderProps[]
+    setFolders: (folders: FolderProps[]) => void
 
     /**
    *  exported items

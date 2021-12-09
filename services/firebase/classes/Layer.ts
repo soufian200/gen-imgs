@@ -34,31 +34,7 @@ class Layer extends User {
         return this.layersCollection.doc(_layerId)
     }
 
-    /**
-    * Add A Layer
-    * */
-    async add(_layerName: string) {
 
-        /** Generate A Layer ID */
-        const layerId = nanoid();
-
-        /** Get Layer Doc */
-        const layerDoc = this.getLayerDoc(layerId);
-
-        /** Check If layerId Exists With _layerName */
-        const isLayerExists = (await layerDoc.get()).exists || (await this.getLayersNames()).includes(_layerName)
-
-        if (isLayerExists)
-            throw new Error("Layer Already Exists")
-
-
-        /** Add Layer To User's Layers */
-        layerDoc.set({ folderName: _layerName })
-
-        /** Return Layer Id */
-        return layerDoc.id;
-
-    }
 
     /**
      * Get A Layer

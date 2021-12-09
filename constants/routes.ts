@@ -28,6 +28,10 @@ const routes = {
 
     // layers
     LAYERS: "/layers",
+    /**
+     * Add New Layer
+     */
+    ADDLAYER: "/add",
 
     // images
     HOME: "/home",

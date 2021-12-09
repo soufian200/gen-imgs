@@ -9,6 +9,7 @@ import { MdFilterNone } from "react-icons/md";
 import { BiSelectMultiple } from "react-icons/bi";
 import Overlay from "./overlay/Overlay";
 import EditItem from "./overlay/EditItem";
+import NewFolder from "./overlay/NewFolder";
 import DeleteItem from "./overlay/DeleteItem";
 
 
@@ -45,7 +46,6 @@ const Main: FC<MainProps> = ({ children }) => {
 
 
 
-
     return <div className={`w-full flex relative pt-5 p-10 `}>
 
         <Navbar styles={`shadow-none border-b border-gray-300`} />
@@ -53,6 +53,7 @@ const Main: FC<MainProps> = ({ children }) => {
 
         <Overlay>
             {overlayActionType == ActionTypes.EDIT && <EditItem />}
+            {overlayActionType == ActionTypes.NEWFOLDER && <NewFolder />}
             {overlayActionType == ActionTypes.DELETE && <DeleteItem />}
         </Overlay>
 

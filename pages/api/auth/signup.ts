@@ -5,8 +5,8 @@ import User from "../../../services/firebase/classes/User";
 import Stat from "../../../services/firebase/classes/Stat";
 import { IUser } from "../../../utils/interfaces";
 import AppRes, { AppResData } from "../../../lib/api/AppRes";
-import apiHandler from "../../../lib/api/apiHandler";
 import setJWTCookie from "../../../lib/api/setJWTCookie";
+import apiHandler from "../../../lib/api/middlewares/apiHandler";
 /**
  * 
  * Sign up handler

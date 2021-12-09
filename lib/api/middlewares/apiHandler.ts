@@ -1,12 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import AppRes from "./AppRes";
+import AppRes from "../AppRes";
+
 
 const apiHandler = (handler: any) => {
     return async (req: NextApiRequest, res: NextApiResponse) => {
 
         try {
 
-            return handler(req, res)
+            return await handler(req, res)
 
         } catch (err) {
             console.log('========== from apiHandler ==========')

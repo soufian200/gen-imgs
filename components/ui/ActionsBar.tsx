@@ -3,13 +3,8 @@ import { AiOutlineCloudUpload, AiOutlineFolderAdd } from "react-icons/ai";
 import { BsTrash, } from 'react-icons/bs'
 import { BiEdit, BiExport, BiRightArrow } from "react-icons/bi";
 import { useRouter } from "next/dist/client/router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import AppContext, { ActionTypes } from "../../contexts/AppContext";
-import routes from "../../constants/routes";
-import Overlay from "./overlay/Overlay";
-import EditItem from "./overlay/EditItem"
-import DeleteItem from "./overlay/DeleteItem";
-
 
 
 
@@ -38,12 +33,9 @@ const ActionsBar = () => {
             {actionType == ActionTypes.DELETE && <DeleteItem />}
         </Overlay> */}
         <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed z-30`}>
-
             <ul className={`flex text-gray-800`}>
                 {
                     ROUTES.map((r, i) => {
-
-
                         return <div key={i} className={`flex items-center`}>
                             <li key={i} className={`cursor-pointer hover:bg-gray-100 rounded-md text-xl capitalize py-2 px-4`}>{r}</li>
                             {i != ROUTES.length - 1 && <BiRightArrow className={`ml-2`} />}
@@ -55,11 +47,10 @@ const ActionsBar = () => {
             <div className="flex text-gray-800">
 
                 {!isEmpty(selectedIds)
-                    // asPath == routes.CONTENT + routes.LAYERS && 
                     && <Action
                         onClick={() => handleAction(ActionTypes.EDIT)}
                         Icon={<BiEdit size={24} />}
-                        label="Edit"
+                        label="Rename"
                         disabled={selectedIds.length != 1}
                     />
                 }
@@ -75,7 +66,11 @@ const ActionsBar = () => {
                     <input type="file" title="Upload Files" accept="image/*" multiple className={`absolute cursor-pointer top-0 left-0 bg-red-400 h-full w-full opacity-0 `} />
                     <Action Icon={<AiOutlineCloudUpload size={25} />} label="Upload Files" />
                 </div>
-                <Action Icon={<AiOutlineFolderAdd size={25} />} label="New Folder" />
+                <Action
+                    Icon={<AiOutlineFolderAdd size={25} />}
+                    label="New Folder"
+                    onClick={() => handleAction(ActionTypes.NEWFOLDER)}
+                />
 
             </div>
         </div>

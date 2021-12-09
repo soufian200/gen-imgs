@@ -1,16 +1,17 @@
 import React, { FC } from "react";
 
 interface FieldProp {
-    value: string
-    onChange?: (e: React.FormEvent<HTMLInputElement>) => void
+    value: string;
+    onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
+    [x: string]: any;
 }
 
-const Field: FC<FieldProp> = ({ value, onChange }) => {
+const Field: FC<FieldProp> = ({ value, onChange, ...rest }) => {
     return <input
         className={`border rounded-lg border-gray-300 py-4 px-3 w-full`}
-        placeholder="New Name"
-        value={value}
         onChange={onChange}
+        value={value}
+        {...rest}
     />
 }
 
