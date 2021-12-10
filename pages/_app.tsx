@@ -170,7 +170,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   // When Page Loaded Get Current User
   useEffect(() => {
-    console.log('default urlapi: ', process.env.NEXT_PUBLIC_API_BASE_URL)
     // if not logged in
 
     // Get token id user logged in

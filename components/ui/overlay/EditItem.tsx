@@ -1,43 +1,99 @@
+import { Form, Formik } from "formik"
 import { useContext, useState } from "react"
 import AppContext from "../../../contexts/AppContext"
 import Button from "../Button"
-import Field from "../form/Field"
+import AuthInput from "../form/AuthInput"
+import * as Yup from 'yup';
+import routes from "../../../constants/routes"
+import axios, { AxiosError } from "axios"
+import Error from "../Error"
+/**
+ * 
+ * Formik Values
+ * */
+interface Values {
+    layerName: string;
+}
 
-const EditItem = () => {
+/**
+ * 
+ * @returns 
+ */
+const NewFolderSchema = Yup.object().shape({
+    layerName: Yup.string().required('Required'),
+});
+/**
+ * 
+ * Add New Layer (Folder)
+ */
+const NewFolder = () => {
 
-    const [value, setValue] = useState('')
+    const { setIsOverlayVisible, selectedIds, setFolders, folders, setSelectedIds } = useContext(AppContext)
+    const layerId = selectedIds[0];
+    let currentFolder = folders.find(folder => folder.id === layerId);
 
 
-    const { setIsOverlayVisible } = useContext(AppContext)
+    // Coming Error
+    const [error, setError] = useState<string>('')
+    /** Processing Request */
+    const [loading, setLoading] = useState(false)
+    /**
+     * Initial Values
+     * 
+     * */
+    const initialValues = { layerName: currentFolder?.folderName || '' }
+    /**
+     * 
+     * Send Email Input Value To Server
+     * @param values 
+     */
+    const handleOnSubmit = async (values: Values) => {
 
-
-
+        const { layerName } = values
+        // Try To Post Data
+        try {
+            /** Reset Error */
+            setError('')
+            /** Show Loader */
+            setLoading(true)
+            /** Post Data To Reset Password Api & Get Response */
+            const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.RENAMELAYER, { layerId, layerName })
+            console.log(res.data)
+            /** Hide loader */
+            setLoading(false)
+            /** Rename Local Folder */
+            const newFolders = folders.map(folder => folder.id === layerId ? { ...folder, folderName: layerName } : folder)
+            setFolders(newFolders)
+            /** Hide OverLay */
+            setIsOverlayVisible(false)
+            /** Reset Selected IDs */
+            setSelectedIds([])
+        } catch (err) {
+            // Set Error If Post Request Wasn't Successful
+            setError((err as AxiosError).response?.data.error.message)
+            // Hide Loader
+            setLoading(false)
+        }
+    }
     return <div >
-        <h1 className={`text-lg mb-5 font-bold`}>Edit</h1>
+        <h1 className={`text-lg mb-5 font-bold`}>Rename</h1>
         <div>
-
-            <Field
-                value={value}
-                onChange={(e: React.FormEvent<HTMLInputElement>) => setValue(e.currentTarget.value)}
-                placeholder="New Name"
-            />
-            <div className={`mt-5 flex items-center`}>
-
-
-                <Button
-                    onClick={() => setIsOverlayVisible(false)}
-                    label="Cancel"
-                    styles={`bg-gray-200 hover:bg-gray-300 text-black px-16 py-4 rounded-lg mr-1`}
-                />
-                <Button
-                    onClick={() => console.log("new name: ", value)}
-                    loading={false}
-                    label="Save"
-                    styles={`bg-blue-400 hover:bg-blue-300 px-16 py-4 rounded-lg text-white ml-1`}
-                />
-            </div>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={NewFolderSchema}
+                onSubmit={handleOnSubmit}
+            >
+                <Form className={`flex flex-col`}>
+                    {error && <Error error={error} />}
+                    <AuthInput
+                        label="New Folder"
+                        placeholder="Enter Folder Name"
+                        name="layerName"
+                    />
+                    <Button type="submit" loading={loading} label="Create" />
+                </Form>
+            </Formik>
         </div>
     </div>
 }
-
-export default EditItem;
+export default NewFolder;

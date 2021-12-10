@@ -46,8 +46,7 @@ class Layer extends User {
 
 
 
-        if (!layerDoc.exists)
-            throw new Error("Layer Doesn't Exists")
+        if (!layerDoc.exists) return
 
 
         return {
@@ -205,27 +204,6 @@ class Layer extends User {
         return layersOfUser;
     }
 
-    /**
-     * Add A Image To Layer
-     * @param _layerId Id Of Layer That's Gonna Be Changed
-     * @param _newName New Layer Name
-     * */
-    async rename(_layerId: string, _newName: string) {
-
-        const layer = await this.get(_layerId)
-
-        if (!layer.id) return;
-
-        /** Get Layer Doc With Name That's Gonna Be Changed */
-        const oldLayer = this.getLayerDoc(_layerId)
-
-        /** Update Layer Name */
-        oldLayer.update({ folderName: _newName })
-
-        /** Return The New Name */
-        return _newName
-
-    }
 
     /**
      * Add A Image To Layer

@@ -1,6 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { nanoid } from 'nanoid'
-import { FolderProps } from '../../../../components/ui/Folder'
 import AppRes, { AppResData } from '../../../../lib/api/AppRes'
 import getPayload from '../../../../lib/api/getPayload'
 import getToken from '../../../../lib/api/getToken'
@@ -9,7 +7,7 @@ import requireJWT from '../../../../lib/api/middlewares/requireJWT'
 import Layer from '../../../../services/firebase/classes/Layer'
 /**
  * 
- * Handler add new layer
+ * Handler rename layer's name
  * @param req Request
  * @param res Response
  * @returns AppRes
@@ -24,22 +22,19 @@ async function handler(
     const token = getToken(req)
     const { sub } = await getPayload(token)
     /** Get LayerName From Client */
-    const { layerName } = req.body;
+    const { layerId, layerName } = req.body;
     /** Instantiate new Layer */
     const layer = new Layer(sub as string);
-    /** Generate A Layer ID */
-    const layerId = nanoid();
-    /** Create New Doc Layer */
+    /** Get Layer Doc With Name That's Gonna Be Changed */
     const layerDoc = layer.getLayerDoc(layerId);
+    const layerData = await layerDoc.get()
+    if (!layerData.exists) return AppRes(res, 400, "layer not found");
     /** Check If layerId Exists With _layerName */
     const layerNames = await layer.getLayersNames()
     if (layerNames.includes(layerName)) return AppRes(res, 400, 'layer already exists')
-    /** Add Layer To User's Layers */
-    const createdAt = Date.now();
-    layerDoc.set({ folderName: layerName, createdAt })
-    /** Return newLayer (newFolder) */
-    const newFolder: FolderProps = { id: layerDoc.id, folderName: layerName, createdAt, imgs: [] }
-    return AppRes(res, 200, `'${layerName}' layer has been created`, newFolder)
+    /** Update Layer Name */
+    layerDoc.update({ folderName: layerName })
+    return AppRes(res, 200, `layer '${layerData.data()?.folderName}' renamed to '${layerName}'`)
 }
 export default apiHandler(
     requireJWT(handler)

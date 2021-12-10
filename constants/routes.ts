@@ -32,6 +32,10 @@ const routes = {
      * Add New Layer
      */
     ADDLAYER: "/add",
+    /**
+     * Add New Layer
+     */
+    RENAMELAYER: "/rename",
 
     // images
     HOME: "/home",
