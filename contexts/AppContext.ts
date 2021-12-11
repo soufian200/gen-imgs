@@ -1,6 +1,5 @@
 import { createContext } from "react";
 import { AssetImgProps } from "../components/ui/Asset";
-import { AssetProps } from "../components/ui/AssetContainer";
 import { FolderProps } from "../components/ui/Folder";
 
 
@@ -88,7 +87,4 @@ export interface ContextArgs {
     setUserLoading: (val: boolean) => void
 }
 const AppContext = createContext({} as ContextArgs);
-
-
-
 export default AppContext;
