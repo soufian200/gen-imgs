@@ -34,6 +34,7 @@ const Main: FC<MainProps> = ({ children }) => {
         selectedIds,
         setSelectedIds,
         itemsIds,
+        folders,
         overlayActionType
     } = useContext(AppContext)
 
@@ -65,7 +66,7 @@ const Main: FC<MainProps> = ({ children }) => {
 
             <div className={`flex justify-between items-center text-gray-600 text-sm`}>
                 <div className={`flex items-center`}>
-                    <h3 className={`capitalize`}>results ( {itemsIds.length} )</h3>
+                    <h3 className={`capitalize`}>results ( {folders.length} )</h3>
 
                     {selectedIds.length > 0 && <>
                         <VertSep />

@@ -34,7 +34,7 @@ const NewFolderSchema = Yup.object().shape({
  */
 const NewFolder = () => {
 
-    const { setIsOverlayVisible, setFolders, folders, setItemsIds, itemsIds } = useContext(AppContext)
+    const { setIsOverlayVisible, setFolders, folders } = useContext(AppContext)
     // Coming Error
     const [error, setError] = useState<string>('')
     /** Processing Request */
@@ -59,7 +59,6 @@ const NewFolder = () => {
             /** Hide OverLay */
             setIsOverlayVisible(false)
             setFolders([newLayer, ...folders])
-            setItemsIds([...itemsIds, newLayer.id])
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
             setError((err as AxiosError).response?.data.error.message)

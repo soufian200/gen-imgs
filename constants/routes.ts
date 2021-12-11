@@ -26,16 +26,29 @@ const routes = {
     // content
     CONTENT: "/c",
 
-    // layers
+    /** 
+     * layers
+     * client
+     * api 
+     * */
     LAYERS: "/layers",
     /**
      * Add New Layer
+     * api
      */
     ADDLAYER: "/add",
     /**
      * Add New Layer
+     * api
      */
     RENAMELAYER: "/rename",
+    /**
+     * Add New Layer
+     * api
+     */
+    DELETELAYER: "/delete",
+
+
 
     // images
     HOME: "/home",

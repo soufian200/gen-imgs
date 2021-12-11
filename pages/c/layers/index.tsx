@@ -13,7 +13,7 @@ import routes from "../../../constants/routes";
  */
 const Layers = () => {
     /** Request Laoding */
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     /** Unexpected Error */
     const [error, setError] = useState('')
     const { setSelectedIds, folders, setFolders, setItemsIds, } = useContext(AppContext);
@@ -23,10 +23,11 @@ const Layers = () => {
      */
     const fetchLayers = async () => {
         /** Fetch at first load */
-        if (folders.length !== 0) return;
+        if (folders.length !== 0) {
+            setLoading(false)
+            return
+        };
         try {
-            /** Show Loader */
-            setLoading(true)
             /** Get Result */
             const res = await axios.get(routes.CONTENT + routes.LAYERS);
             /** Get Payload Witch is array of layers */
@@ -36,8 +37,9 @@ const Layers = () => {
             setLoading(false)
             /** Set Layers In Context */
             setFolders(layers)
-            /** Items to be select in layer page 
-            *   Get IDs Of Layers
+            /** 
+            * Items to be select in layer page 
+            * Get IDs Of Layers
             */
             setItemsIds(layers.map(item => item.id));
         } catch (err: any) {
@@ -56,16 +58,15 @@ const Layers = () => {
     /** Render Layers Page */
     return <Main>
         <div className={`flex flex-wrap w-full mb-10 `}>
-            {loading && <h1>Loading...</h1>}
+            {loading && folders.length === 0 && <h1>Loading...</h1>}
             {error && <FailedOperation msg={error} />}
-
             {folders.length === 0 && !loading
                 ? <Empty />
                 : folders.map(({ id, folderName, createdAt }) => <Folder
                     key={id}
                     id={id}
                     folderName={folderName}
-                    createdAt={Date.now()}
+                    createdAt={createdAt}
 
                 />)
             }

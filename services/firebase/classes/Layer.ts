@@ -222,19 +222,12 @@ class Layer extends User {
     }
 
     private async _getImgsIdsOfLayer(_layerId: string) {
-
         const imgsOfLayer = await this.getLayerDoc(_layerId).collection("imgs").get();
         const imgsIds: string[] = [];
-
         imgsOfLayer.forEach((imgOfLayer) => {
-
-            if (imgOfLayer.exists)
-                imgsIds.push(imgOfLayer.id)
-
+            if (imgOfLayer.exists) imgsIds.push(imgOfLayer.id)
         })
-
         return imgsIds
-
     }
 
     /**
@@ -245,41 +238,21 @@ class Layer extends User {
     * 
     * */
     async delete(_layersIds: string[]) {
-
-
+        /** @dev Array of Promises */
         const deletedPending = _layersIds.map(async (_layerId, index) => {
-
             /** Get Of Ids Of Images Of Layer Thas's Gonna Be Deleted */
             const imgsIds = await this._getImgsIdsOfLayer(_layerId)
-
             /** Delete Imgs Of Layer (imgs is subCollection of layer) */
             await this.deleteImgs(_layerId, imgsIds)
-
             /** Delete Layer */
             await this.layersCollection.doc(_layerId).delete();
-
             /** Return Index In Each Deletion */
             return index;
         })
-
+        /** Resolve Pending Array */
         const deletedLayers = await Promise.all(deletedPending);
-
-
+        /** How Many Layer Has Been Deleted */
         return deletedLayers.length
-
-
-
-
-        /** Get Imgs Of A Layer */
-        //  const imgsOfLayer = await this.getLayerDoc(_layerId).collection("imgs").get();
-
-
-
-
-        //     // const deleted = await this.getLayerDoc(_layerId).collection("imgs").
-        //     // const deleted = await this.getLayerDoc(_layerId).delete();
-        //     const res = await this.layersCollection.doc(_layerId).delete();
-        //     console.log(res)
     }
 
 
