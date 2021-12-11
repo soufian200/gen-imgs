@@ -46,7 +46,7 @@ const Layers = () => {
             /** Hide Loader */
             setLoading(false)
             /** Set Unexpected Error */
-            setError(err.message)
+            setError(err.response.data.error.message)
         }
     }
     useEffect(() => {

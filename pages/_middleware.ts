@@ -13,7 +13,7 @@ export function middleware(req: NextRequest) {
     // FIXME: activeate below
     const token = req.cookies[COOKIES_NAMES.token]
 
-    const pathname = req.nextUrl.pathname
+    const { pathname } = req.nextUrl
 
     if (!token && pathname.includes('/c') && !pathname.includes('/api')) return NextResponse.redirect('/auth/login')
 
