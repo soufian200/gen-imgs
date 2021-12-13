@@ -42,6 +42,4 @@ async function handler(
     const newFolder: FolderProps = { id: layerDoc.id, folderName: layerName, createdAt, imgs: [] }
     return AppRes(res, 200, `'${layerName}' layer has been created`, newFolder)
 }
-export default apiHandler(
-    requireJWT(handler)
-)
+export default apiHandler(handler)

@@ -36,6 +36,4 @@ async function handler(
     layerDoc.update({ folderName: layerName })
     return AppRes(res, 200, `layer '${layerData.data()?.folderName}' renamed to '${layerName}'`)
 }
-export default apiHandler(
-    requireJWT(handler)
-)
+export default apiHandler(handler)

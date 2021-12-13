@@ -27,6 +27,4 @@ async function handler(
     const layers = await layer.getAll()
     return AppRes(res, 200, 'get all layers', { layers })
 }
-export default apiHandler(
-    requireJWT(handler)
-)
+export default apiHandler(handler)

@@ -30,6 +30,4 @@ async function handler(
     return AppRes(res, 200, `${deletedCount} layers deleted`)
 
 }
-export default apiHandler(
-    requireJWT(handler)
-)
+export default apiHandler(handler)

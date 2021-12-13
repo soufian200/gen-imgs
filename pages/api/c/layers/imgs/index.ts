@@ -33,6 +33,4 @@ async function handler(
         `get images of '${layerDoc.data()?.folderName}' `,
         { layerId, layerName: layerDoc.data()?.folderName, imgs })
 }
-export default requireJWT(
-    apiHandler(handler)
-)
+export default apiHandler(handler)
