@@ -23,10 +23,11 @@ async function handler(
     /** Get Current User */
     const token = getToken(req)
     const { sub } = await getPayload(token)
-    /** Get LayerName From Client */
-    const { layerName } = req.body;
     /** Instantiate new Layer */
     const layer = new Layer(sub as string);
+    /** Get LayerName From Client */
+    const { layerName } = req.body;
+    if (!layerName) return AppRes(res, 400, "Please provide layerName")
     /** Generate A Layer ID */
     const layerId = nanoid();
     /** Create New Doc Layer */

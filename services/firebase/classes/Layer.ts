@@ -65,39 +65,29 @@ class Layer extends User {
     }
 
     /**
+    * 
     * Add A Image To Layer
+    * @param _layerId layer's id
+    * @param _imgs ImgInterface[]
+    * @return count images added
     * */
     async addImages(_layerId: string, _imgs: ImgInterface[]) {
-
-        /** Get Layer Doc */
-        const layerDoc = await this.getLayerDoc(_layerId).get();
-
-
-
-        if (!layerDoc.exists)
-            throw new Error("Layer Doesn't Exists")
-
-
         /** iterate over imgs and set img */
-
         _imgs.forEach((img) => {
-
             /** Generate A Layer ID */
             const imgId = nanoid();
-
             /** Create New Img Doc */
             const imgDoc = this.getImgDoc(_layerId, imgId);
-
             imgDoc.set(img)
-
         })
-
         return _imgs.length
-
     }
 
     /**
+    * 
     * Add All Image Of A Layer
+    * @param _layerId
+    * @return ImgInterface[]
     * */
     async getLayerImgs(_layerId: string) {
 
