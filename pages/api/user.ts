@@ -1,7 +1,6 @@
 import { serialize } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 import { COOKIES_NAMES } from "../../constants/cookiesNames";
-
 import AppRes, { AppResData } from "../../lib/api/AppRes";
 import getPayload from "../../lib/api/getPayload";
 import getToken from "../../lib/api/getToken";

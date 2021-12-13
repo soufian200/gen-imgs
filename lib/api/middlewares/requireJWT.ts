@@ -26,7 +26,7 @@ const requireJWT = (handler: any) => {
         } catch (err) {
             console.log('========== Require JWT ==========')
             console.log((err as Error).message)
-            res.setHeader("Set-Cookie", serialize(COOKIES_NAMES.token, 'none', { maxAge: -1, path: '/' }))
+            // res.setHeader("Set-Cookie", serialize(COOKIES_NAMES.token, 'none', { maxAge: -1, path: '/' }))
             return AppRes(res, 401, 'Your token has expired.')
         }
     }

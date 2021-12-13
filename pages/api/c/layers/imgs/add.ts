@@ -3,7 +3,6 @@ import AppRes, { AppResData } from '../../../../../lib/api/AppRes';
 import getPayload from '../../../../../lib/api/getPayload';
 import getToken from '../../../../../lib/api/getToken';
 import apiHandler from "../../../../../lib/api/middlewares/apiHandler";
-import requireJWT from "../../../../../lib/api/middlewares/requireJWT";
 import Layer from '../../../../../services/firebase/classes/Layer';
 /**
  * 
@@ -35,6 +34,4 @@ async function handler(
     const imgsLength = await layer.addImages(layerId, imgs);
     return AppRes(res, 200, `${imgsLength} images added`)
 }
-export default requireJWT(
-    apiHandler(handler)
-)
+export default apiHandler(handler)
