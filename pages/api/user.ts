@@ -33,12 +33,11 @@ async function handler(
         return AppRes(res, 400, "user doesn't exists")
     }
     return AppRes(res, 200, "get user success", {
+        id: sub,
         email: userData.email,
         username: userData.username,
         role: userData.role,
         isVerified: userData.isVerified,
     })
 }
-export default apiHandler(
-    requireJWT(handler)
-)
+export default apiHandler(handler)

@@ -48,6 +48,8 @@ const routes = {
      */
     DELETELAYER: "/delete",
 
+    IMGS: "/imgs",
+    ADDIMG: "/add",
 
 
     // images

@@ -16,6 +16,9 @@ import classNames from "classnames";
 import storage from "../../../services/firebase/storage";
 import Loader from "../../../components/ui/Loader";
 import Button from "../../../components/ui/Button";
+import { ImgInterface } from "../../../utils/interfaces";
+import axios, { AxiosError } from "axios";
+import routes from "../../../constants/routes";
 
 
 
@@ -25,18 +28,49 @@ import Button from "../../../components/ui/Button";
 const FolderDetail = () => {
 
     const router = useRouter()
-    const { id } = router.query
-    const { exported, setItemsIds, setSelectedIds } = useContext(AppContext);
-
-
-
+    const { setItemsIds, setSelectedIds, user, userLoading } = useContext(AppContext);
+    // const exported = []
+    const [traits, setTraits] = useState<ImgInterface[]>([]);
     const [paths, setPaths] = useState<string[]>([])
     const [progress, setProgress] = useState<{ [x: number]: number }>({})
-    const [urls, setUrls] = useState<string[]>([])
+    const [imgs, setImgs] = useState<ImgInterface[]>([])
+    const [layerId, setLayerId] = useState<string>('')
+    const [imgsLoading, setImgsLoading] = useState(true)
     const tempObj: any = {};
 
+    const getImgsOfLayer = async (_layerId: string) => {
+        // console.log(router)
+        // console.log(layerId)
+        // return
+        try {
+            // setError('')
+            // Show Loader
+            // setLoading(true)
+            // Post Data To Reset Password Api & Get Response
+            const values = { layerId: _layerId }
+            console.log(values)
+            const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.IMGS, values)
+            const data = await res.data.data
+            setTraits(data.payload.imgs)
+            /**  Set token in local storage */
+            // localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
+            /** Hide loader */
+            setImgsLoading(false)
+            // Go to Home
+            // router.reload()
+            console.log(data)
+            // router.replace(routes.CONTENT + routes.HOME)
+        } catch (err) {
+            setImgsLoading(false)
+            // Set Error If Post Request Wasn't Successful
+            console.log((err as AxiosError).response?.data)
+            // Hide Loader
+            // setLoading(false)
+            // console.log(err.response)
+        }
+    }
 
-    const onDrop = useCallback(acceptedFiles => {
+    const onDrop = useCallback(async (acceptedFiles) => {
 
         // Create Blob Path For Each file
         const blobPaths = acceptedFiles.map((file: File) => URL.createObjectURL(file))
@@ -50,9 +84,11 @@ const FolderDetail = () => {
 
             // Meta data for file
             const metadata = { contentType: 'image/png' };
+            // Img path in firebase storage
+            const imgPath = `users/${user?.id}/layers/${layerId}/imgs/${file.name}`
 
             // Upload file and metadata to the object 'users/tom/layers/bg/mountains.png'
-            const storageRef = ref(storage, 'users/tom/layers/bg/' + file.name);
+            const storageRef = ref(storage, imgPath);
             const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
             // Push Promise
@@ -104,9 +140,33 @@ const FolderDetail = () => {
                 },
                 async () => {
                     // Upload completed successfully, now we can get the download URL
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        setUrls(urls => [...urls, downloadURL])
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+                        setImgs(urls => [...urls, { filename: file.name, path: downloadURL }])
                         console.log('File available at', downloadURL);
+                        try {
+                            // setError('')
+                            // Show Loader
+                            // setLoading(true)
+                            // Post Data To Reset Password Api & Get Response
+                            const values = { layerId, imgs: [{ filename: file.name, path: downloadURL }] }
+                            console.log(values)
+                            const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.IMGS + routes.ADDIMG, values)
+                            const data = await res.data.data
+                            /**  Set token in local storage */
+                            // localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
+                            /** Hide loader */
+                            // setLoading(false)
+                            // Go to Home
+                            // router.reload()
+                            console.log(data)
+                            // router.replace(routes.CONTENT + routes.HOME)
+                        } catch (err) {
+                            // Set Error If Post Request Wasn't Successful
+                            console.log((err as AxiosError).response?.data)
+                            // Hide Loader
+                            // setLoading(false)
+                            // console.log(err.response)
+                        }
                     });
                 }
             );
@@ -115,27 +175,41 @@ const FolderDetail = () => {
 
         Promise.all(pendings).then(() => {
             console.log("finished.........")
+            console.log("imgs: ", imgs)
+
+
         }).catch(err => {
             console.log(err)
         })
 
-        console.log("urls: ", urls)
+        // await saveImgToFirestore();
 
 
-    }, [])
+
+    }, [userLoading])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
     useEffect(() => {
 
-        console.log(id)
+        const splitedPathname = location.pathname.split('/')
+        setLayerId(splitedPathname[splitedPathname.length - 1])
+
 
         // items to be select in layer page
-        const ids = getItemsIds(exported);
+        const ids = getItemsIds(traits);
         setItemsIds(ids)
 
         // reset selected ids
         setSelectedIds([])
     }, [])
+    useEffect(() => {
+        const { id } = router.query
+        console.log(id)
+        if (!id) return
+        getImgsOfLayer(id)
+
+    }, [router])
+
 
 
 
@@ -148,50 +222,62 @@ const FolderDetail = () => {
     return <Main>
         <div className={`flex flex-wrap w-full`}>
 
+            {imgsLoading
+                ? <h1>imgs Loading...</h1>
+                : traits.length > 0
+                    ? traits.map((item, index) => <Asset
+                        key={item.id}
+                        id={item.id || 'id'}
+                        title={item.title}
+                        createdAt={item?.createdAt || 1222}
+                        path={item.path || 'pth'}
 
-
-
-
-
-
-
-            {exported.length === 0
-                ? (paths.length > 0)
-                    ? <div className={`w-full p-10`}>
-
-                        {
-                            paths.map((i, index) => <UploadingLayerCard key={index} imgPath={i} progress={progress[index] || 0} />)
-                        }
-                        <div className="w-full flex justify-center">
-                            <Button
-                                onClick={() => router.reload()}
-                                label="Done" styles={`rounded-lg bg-blue-400  text-white `} />
-                        </div>
-                    </div>
-                    : <Center styles={`w-full pt-10 `}>
-                        <div {...getRootProps()}
-                            className={classNames(`cursor-pointer w-full h-96 border-4 border-black border-dotted  rounded-xl`, { "bg-black text-white": isDragActive })}>
-                            <Center styles={` h-full `}>
-                                <input {...getInputProps()} accept="image/png" />
-                                <Center styles={` flex-col `}>
-                                    <div className={``}>
-                                        <BsImages size={120} />
-                                    </div>
-                                    <h1 className={`font-bold text-xl mt-12`}>Drop your image here, or <span className={`text-blue-500 `}>browse</span></h1>
-                                    <h1 className={`text-gray-500 mt-2`}>Support: PNG (e.g. image_name.png)</h1>
-                                </Center>
-                            </Center>
-                        </div>
-                    </Center>
-                : exported.map((item, index) => <Asset
-                    key={item.id}
-                    id={item.id}
-                    title={item.title}
-                    createdAt={item.createdAt}
-                    path={item.path}
-
-                />)
+                    />)
+                    : <h1>Empty</h1>
             }
+
+
+
+            {/* {userLoading
+                ? <h1>Loading...</h1>
+                : traits.length === 0
+                    ?
+                    (paths.length > 0)
+                        ? <div className={`w-full p-10`}>
+
+                            {
+                                paths.map((i, index) => <UploadingLayerCard key={index} imgPath={i} progress={progress[index] || 0} />)
+                            }
+                            <div className="w-full flex justify-center">
+                                <Button
+                                    onClick={() => router.reload()}
+                                    label="Done" styles={`rounded-lg bg-blue-400  text-white `} />
+                            </div>
+                        </div>
+                        : <Center styles={`w-full pt-10 `}>
+                            <div {...getRootProps()}
+                                className={classNames(`cursor-pointer w-full h-96 border-4 border-black border-dotted  rounded-xl`, { "bg-black text-white": isDragActive })}>
+                                <Center styles={` h-full `}>
+                                    <input {...getInputProps()} accept="image/png" />
+                                    <Center styles={` flex-col `}>
+                                        <div className={``}>
+                                            ? <h1>Imgs Loading...</h1>           <BsImages size={120} />
+                                        </div>
+                                        <h1 className={`font-bold text-xl mt-12`}>Drop your image here, or <span className={`text-blue-500 `}>browse</span></h1>
+                                        <h1 className={`text-gray-500 mt-2`}>Support: PNG (e.g. image_name.png)</h1>
+                                    </Center>
+                                </Center>
+                            </div>
+                        </Center>
+                    : traits.map((item, index) => <Asset
+                        key={item.id}
+                        id={item.id || 'id'}
+                        title={item.title}
+                        createdAt={item?.createdAt || 1222}
+                        path={item.path || 'pth'}
+
+                    />)
+            } */}
         </div>
     </Main>
 }

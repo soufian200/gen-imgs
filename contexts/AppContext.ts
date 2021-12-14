@@ -17,6 +17,7 @@ export enum ActionTypes {
  * User Interface
  * */
 export interface UserInterface {
+    id: string;
     username: string;
     email: string;
     isVerified: boolean

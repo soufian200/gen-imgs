@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import AppContext, { ActionTypes, ContextArgs, DisplayState, UserInterface } from '../contexts/AppContext'
 import { useEffect, useState } from 'react'
 import { AssetImgProps } from '../components/ui/Asset'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import jwt from 'jsonwebtoken'
 import { useRouter } from 'next/router'
 import routes from '../constants/routes'
@@ -117,22 +117,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   /**
    * 
    * @param _token for current user
-   * @returns decode | null
-   */
-  const getDecode = (_token: string) => {
-    try {
-      // Get Decode JWT Token
-      let decode: any = jwt.verify(_token, String(process.env.NEXT_PUBLIC_JWT_SECRET));
-      return decode
-
-    } catch (err: any) {
-      console.log('dd:', err.message)
-      return null
-    }
-  }
-  /**
-   * 
-   * @param _token for current user
    * @returns 
    */
   const getUser = async () => {
@@ -154,14 +138,20 @@ function MyApp({ Component, pageProps }: AppProps) {
       // }
       // hide loader
       setUserLoading(false)
-    } catch (err) {
+    } catch (error) {
       /**  Remove token from local storage */
       // localStorage.removeItem(COOKIES_NAMES.token)
       // If There Is No Token Response Will Remove Cookie
       // Axios Will Catch 400 with error `user doesn't exists`
       // reload to trigger middleware to check if there is a token
       // router.reload()
-      console.log(err)
+
+
+      if ((error as AxiosError).response?.status === 401) {
+        router.push(routes.LOGIN)
+      }
+
+
     }
   }
 
@@ -174,7 +164,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     // if (!token) return
     // fetch user data
     // FIXME: activate below
-    // getUser()
+    getUser()
   }, [])
   // Global Rendring
   return <AppContext.Provider value={vals}>

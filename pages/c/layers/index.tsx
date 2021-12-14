@@ -3,15 +3,17 @@ import Main from "../../../components/ui/Main";
 import { useContext, useEffect, useState } from 'react';
 import AppContext from "../../../contexts/AppContext";
 import Folder, { FolderProps } from "../../../components/ui/Folder";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import FailedOperation from "../../../components/ui/FailedOperation";
 import Empty from "../../../components/ui/Empty";
 import routes from "../../../constants/routes";
+import { useRouter } from "next/router";
 /**
  * 
  * Layers Page
  */
 const Layers = () => {
+    const router = useRouter()
     /** Request Laoding */
     const [loading, setLoading] = useState(true)
     /** Unexpected Error */
@@ -43,6 +45,9 @@ const Layers = () => {
             */
             setItemsIds(layers.map(item => item.id));
         } catch (err: any) {
+            if ((err as AxiosError).response?.status === 401) {
+                router.push(routes.LOGIN)
+            }
             /** Hide Loader */
             setLoading(false)
             /** Set Unexpected Error */
