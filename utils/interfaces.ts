@@ -10,8 +10,8 @@ export interface ElementInterface {
 export interface ImgInterface {
 
     id?: string
-    filename: String
-    path: String
+    filename: string
+    path: string
 
 }
 

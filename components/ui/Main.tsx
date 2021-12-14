@@ -10,6 +10,7 @@ import DeleteItem from "./overlay/DeleteItem";
 import { useRouter } from "next/router";
 import routes from "../../constants/routes";
 import ResultBar from "./ResultBar";
+import UploadLayers from "./overlay/UploadLayers";
 /**
  * 
  * interface For Main Layout Props
@@ -30,6 +31,7 @@ const Main: FC<MainProps> = ({ children }) => {
      * Get Values From AppContext
      * */
     const { overlayActionType } = useContext(AppContext)
+
     // Render
     return <div className={`w-full flex relative pt-5 p-10 `}>
         <Navbar styles={`shadow-none border-b border-gray-300`} />
@@ -39,6 +41,7 @@ const Main: FC<MainProps> = ({ children }) => {
             {overlayActionType == ActionTypes.EDIT && <EditItem />}
             {overlayActionType == ActionTypes.NEWFOLDER && <NewFolder />}
             {overlayActionType == ActionTypes.DELETE && <DeleteItem />}
+            {overlayActionType == ActionTypes.UPLOADLAYERS && <UploadLayers />}
         </Overlay>
         <div className={` w-10/12 ml-auto pt-32 relative`}>
             <ActionsBar />

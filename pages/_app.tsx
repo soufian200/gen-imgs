@@ -1,6 +1,6 @@
 import 'tailwindcss/tailwind.css'
 import type { AppProps } from 'next/app'
-import AppContext, { ActionTypes, ContextArgs, DisplayState, UserInterface } from '../contexts/AppContext'
+import AppContext, { ActionTypes, ContextArgs, DisplayState, LayersImgs, UserInterface } from '../contexts/AppContext'
 import { useEffect, useState } from 'react'
 import { AssetImgProps } from '../components/ui/Asset'
 import axios, { AxiosError } from 'axios'
@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken'
 import { useRouter } from 'next/router'
 import routes from '../constants/routes'
 import { FolderProps } from '../components/ui/Folder'
+import { ImgInterface } from '../utils/interfaces'
 /**
  * 
  * Set A Default API BaseUrl 
@@ -78,6 +79,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [overlayActionType, setOverlayActionType] = useState<ActionTypes>("" as ActionTypes)
   const [user, setUser] = useState<UserInterface | undefined>()
   const [userLoading, setUserLoading] = useState<boolean>(false)
+  const [files, setFiles] = useState<File[]>([])
+  const [imgs, setImgs] = useState<LayersImgs>({})
   /**
    * 
    * App State
@@ -113,6 +116,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     setUser,
     userLoading,
     setUserLoading,
+    files,
+    setFiles,
+    imgs,
+    setImgs,
   }
   /**
    * 

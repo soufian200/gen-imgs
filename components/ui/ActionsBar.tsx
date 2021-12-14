@@ -10,7 +10,7 @@ import { useContext } from "react";
  */
 const ActionsBar = () => {
 
-    const { selectedIds, setIsOverlayVisible, setOverlayActionType } = useContext(AppContext);
+    const { selectedIds, setIsOverlayVisible, setOverlayActionType, setFiles } = useContext(AppContext);
     const isEmpty = (_selectedIds: string[]): boolean => _selectedIds.length === 0;
     /**
      * Render Component Depends On Action Type 
@@ -22,6 +22,21 @@ const ActionsBar = () => {
         /** Set Type Action */
         setOverlayActionType(type)
     }
+    /**
+    * Render Component Depends On Action Type 
+    * @param type 
+    */
+    const handleUploadLayers = (e: React.FormEvent<HTMLInputElement>) => {
+
+        const files = e.currentTarget.files;
+        if (!files) return
+
+        handleAction(ActionTypes.UPLOADLAYERS)
+        setFiles(Array.from(files))
+
+
+
+    }
     return <>
         <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed z-30`}>
             <div className="flex text-gray-800">
@@ -32,6 +47,7 @@ const ActionsBar = () => {
                         accept="image/*"
                         multiple
                         className={`absolute cursor-pointer top-0 left-0 bg-red-400 h-full w-full opacity-0 `}
+                        onChange={handleUploadLayers}
                     />
                     <Action
                         Icon={<AiOutlineCloudUpload size={25} />}
