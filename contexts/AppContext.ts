@@ -24,7 +24,7 @@ export interface UserInterface {
     email: string;
     isVerified: boolean
 }
-export interface LayersImgs { [x: number]: number }
+export interface LayersImgs { [x: string]: ImgInterface[] }
 export interface ContextArgs {
 
     /**

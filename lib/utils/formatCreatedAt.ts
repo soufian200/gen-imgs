@@ -4,7 +4,7 @@ const formatCreatedAt = (_date: number) => {
     ];
     const date = new Date(_date);
     const mo = date.getMonth()
-    const day = date.getDay()
+    const day = date.getDate()
 
     return `${monthNames[mo].slice(0, 3)} ${day}`
 }

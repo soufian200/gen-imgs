@@ -14,6 +14,8 @@ import Empty from "../../../components/ui/Empty";
 const FolderDetail = () => {
 
     const router = useRouter()
+    const { layerId }: any = router.query
+
     const { setItemsIds, setSelectedIds, setImgs, imgs } = useContext(AppContext);
     const [traits, setTraits] = useState<ImgInterface[]>([]);
     const [error, setError] = useState('')
@@ -24,14 +26,11 @@ const FolderDetail = () => {
      */
     const getImgsOfLayer = async () => {
         // console.log(router)
-        const layerId: any = router.query.layerId;
-        // Get imgs from local
-        const localImgs: any = imgs[layerId];
-        if (localImgs) {
+
+        if (Object.keys(imgs).includes(layerId)) {
             setImgsLoading(false)
-            if (localImgs) setTraits(localImgs)
             return
-        }
+        };
         try {
             setError('')
 
@@ -39,11 +38,12 @@ const FolderDetail = () => {
             const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.IMGS, values)
             const { payload } = await res.data.data
 
-            setTraits(payload.imgs)
+            // setTraits(payload.imgs)
             setImgsLoading(false)
             let tempobj: any = {};
             tempobj[payload.layerId] = payload.imgs;
             setImgs({ ...imgs, ...tempobj })
+            // console.log('imgs: ', { ...imgs, ...tempobj })
         } catch (err) {
             setImgsLoading(false)
             /** Set Unexpected Error */
@@ -52,32 +52,31 @@ const FolderDetail = () => {
     }
 
     useEffect(() => {
+        if (!imgs[layerId]) return
         // items to be select in layer page
-        const ids = getItemsIds(traits);
+        const ids = getItemsIds(imgs[layerId]);
         setItemsIds(ids)
         // reset selected ids
         setSelectedIds([])
-    }, [imgsLoading])
+    }, [imgsLoading, imgs[layerId]])
 
     useEffect(() => {
         if (!router.isReady) return;
         getImgsOfLayer()
     }, [router.isReady]);
 
-
     return <Main>
         <div className={`flex flex-wrap w-full`}>
             {!imgsLoading && error && <FailedOperation msg={error} />}
-            {imgsLoading
+            {imgsLoading || !layerId
                 ? <h1>imgs Loading...</h1>
-                : traits.length > 0
-                    ? traits.map((item, index) => <Asset
+                : imgs[layerId] && imgs[layerId].length > 0
+                    ? imgs[layerId].map((item, index) => <Asset
                         key={item.id}
-                        id={item.id || 'id'}
+                        id={item.id}
                         title={item.filename}
-                        createdAt={1222}
-                        path={item.path || 'pth'}
-
+                        createdAt={item.createdAt}
+                        path={item.path}
                     />)
                     : <Empty />
             }

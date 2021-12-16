@@ -36,7 +36,7 @@ const routes = {
      * Add New Layer
      * api
      */
-    ADDLAYER: "/add",
+    ADD: "/add",
     /**
      * Add New Layer
      * api
@@ -46,7 +46,7 @@ const routes = {
      * Add New Layer
      * api
      */
-    DELETELAYER: "/delete",
+    DELETE: "/delete",
 
     IMGS: "/imgs",
     ADDIMG: "/add",

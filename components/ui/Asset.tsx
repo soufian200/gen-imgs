@@ -3,7 +3,6 @@ import Image from "next/image"
 import classNames from "classnames";
 import AppContext, { DisplayState } from "../../contexts/AppContext";
 import AssetContainer, { AssetProps } from "./AssetContainer";
-import punk from "../../assets/unnamed.png"
 
 export interface AssetImgProps extends AssetProps {
     path: string

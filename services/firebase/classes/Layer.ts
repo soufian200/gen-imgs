@@ -74,10 +74,9 @@ class Layer extends User {
     async addImages(_layerId: string, _imgs: ImgInterface[]) {
         /** iterate over imgs and set img */
         _imgs.forEach((img) => {
-            /** Generate A Layer ID */
-            const imgId = nanoid();
+
             /** Create New Img Doc */
-            const imgDoc = this.getImgDoc(_layerId, imgId);
+            const imgDoc = this.getImgDoc(_layerId, img.id);
             imgDoc.set(img)
         })
         return _imgs.length
@@ -152,7 +151,7 @@ class Layer extends User {
         let names: LayerInterface[] = await Promise.all(pendingNames)
 
         /** Return Names Array */
-        return names.map(name => name.folderName);
+        return names.map(name => name.folderName.split('-').pop());
 
     }
 

@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { nanoid } from "nanoid";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import routes from "../../../constants/routes";
@@ -11,10 +12,11 @@ import UploadingLayerProgress from "../UploadingLayerProgress";
 
 const UploadLayers = () => {
     const router = useRouter()
-    const { files, user } = useContext(AppContext);
+    const { files, user, imgs, setImgs, setFiles, setIsOverlayVisible } = useContext(AppContext);
     const blobPaths = files.map((file) => URL.createObjectURL(file))
     const [error, setError] = useState<string>('')
     const [progress, setProgress] = useState<{ [x: number]: number }>({})
+
     // Used to store current progress for each file
     const tempObj: any = {};
     /**
@@ -48,7 +50,7 @@ const UploadLayers = () => {
                     setProgress({ ...progress, ...tempObj })
                 },
                 (error) => {
-                    console.log(error.message)
+                    // console.log(error.message)
                     setError('something went wrong')
                 },
                 async () => {
@@ -56,14 +58,27 @@ const UploadLayers = () => {
                     getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                         // console.log('File available at', downloadURL);
                         try {
-                            const values = { layerId, imgs: [{ filename: file.name, path: downloadURL }] }
-                            console.log("values: ", values)
+                            /** Generate A Layer ID */
+                            const imgId = nanoid();
+                            const newImg = { id: imgId, filename: file.name, path: downloadURL, createdAt: Date.now() }
+                            const values = { layerId, imgs: [newImg] }
+                            // console.log("values: ", values)
                             await axios.post(routes.CONTENT + routes.LAYERS + routes.IMGS + routes.ADDIMG, values)
+                            // imgs[layerId] = [...imgs[layerId], newImg]
+                            // let obj: any = {}
+                            // obj[layerId] = [...imgs[layerId], newImg]
+                            // setImgs({ ...imgs, ...obj })
                         } catch (err) {
-                            console.log((err as AxiosError).response?.data)
+                            // console.log((err as AxiosError).response?.data)
                             setError("Cound't save img path")
                         }
                     });
+
+                    // if (files.length - 1 === index) {
+                    // setIsOverlayVisible(false)
+                    // setFiles([])
+                    // console.log("upload layers done")
+                    // }
                 }
             );
         })
@@ -71,7 +86,7 @@ const UploadLayers = () => {
 
     useEffect(() => {
         if (!router.isReady) return;
-        saveImgToLayer()
+        if (files.length > 0) saveImgToLayer()
     }, [router.isReady]);
 
 
@@ -79,7 +94,7 @@ const UploadLayers = () => {
         <h1 className={`text-lg mb-5 font-bold`}>Upload Layers {blobPaths.length > 0 && `( ${blobPaths.length} )`} </h1>
         <div className={` max-h-96 overflow-auto`} style={{ width: '600px' }}>
             {
-                progress[blobPaths.length - 1] === 100 && <div className={`w-full mb-3`}><Button label="Done" onClick={router.reload} /></div>
+                progress[blobPaths.length - 1] === 100 && <div className={`w-full flex justify-center mb-3`}><Button label="Done" onClick={router.reload} /></div>
             }
             {!error
                 ? blobPaths.map((i, index) => <UploadingLayerProgress

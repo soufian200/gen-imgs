@@ -32,6 +32,6 @@ async function handler(
     if (!layerId) return AppRes(res, 400, "Please provide layerId")
     if (!imgs || imgs.length === 0) return AppRes(res, 400, "Please provide imgs")
     const imgsLength = await layer.addImages(layerId, imgs);
-    return AppRes(res, 200, `${imgsLength} images added`)
+    return AppRes(res, 200, `${imgsLength} images added`,)
 }
 export default apiHandler(handler)

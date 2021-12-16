@@ -37,9 +37,10 @@ async function handler(
     if (layerNames.includes(layerName)) return AppRes(res, 400, 'layer already exists')
     /** Add Layer To User's Layers */
     const createdAt = Date.now();
-    layerDoc.set({ folderName: layerName, createdAt })
+    const folderName = `${layerNames.length + 1}-${layerName}`
+    layerDoc.set({ folderName, createdAt })
     /** Return newLayer (newFolder) */
-    const newFolder: FolderProps = { id: layerDoc.id, folderName: layerName, createdAt, imgs: [] }
+    const newFolder: FolderProps = { id: layerDoc.id, folderName, createdAt, imgs: [] }
     return AppRes(res, 200, `'${layerName}' layer has been created`, newFolder)
 }
 export default apiHandler(handler)

@@ -1,4 +1,4 @@
-import { Form, Formik } from "formik"
+import { Form, Formik, FormikHelpers } from "formik"
 import { useContext, useState } from "react"
 import AppContext from "../../../contexts/AppContext"
 import Button from "../Button"
@@ -44,7 +44,7 @@ const NewFolder = () => {
      * Send Email Input Value To Server
      * @param values 
      */
-    const handleOnSubmit = async (values: Values) => {
+    const handleOnSubmit = async (values: Values, { setSubmitting, resetForm }: FormikHelpers<Values>) => {
         // Try To Post Data
         try {
             /** Reset Error */
@@ -52,13 +52,15 @@ const NewFolder = () => {
             /** Show Loader */
             setLoading(true)
             /** Post Data To Reset Password Api & Get Response */
-            const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.ADDLAYER, values)
+            const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.ADD, values)
             const { payload: newLayer } = await res.data.data
             /** Hide loader */
             setLoading(false)
             /** Hide OverLay */
             setIsOverlayVisible(false)
-            setFolders([newLayer, ...folders])
+            setFolders([...folders, newLayer])
+            setSubmitting(false);
+            resetForm()
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
             setError((err as AxiosError).response?.data.error.message)

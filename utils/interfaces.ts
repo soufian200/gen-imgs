@@ -9,10 +9,10 @@ export interface ElementInterface {
 
 export interface ImgInterface {
 
-    id?: string
+    id: string
     filename: string
     path: string
-
+    createdAt: number
 }
 
 

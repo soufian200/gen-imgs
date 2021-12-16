@@ -65,13 +65,11 @@ const AssetContainer: FC<AssetContainerProps> = ({ children, id, title, createdA
     return <div
         onDoubleClick={() => handleOpenFolder(id)}
         onClick={() => handleSelectFolder(id)}
-        className={classNames(rootStyle, { "bg-blue-100 border-blue-300": selectedIds.includes(id) })
-        }
+        className={classNames(rootStyle, { "bg-blue-100 border-blue-300": selectedIds.includes(id) })}
     >
         {children}
         <h1 className={`mt-3 capitalize`}> {title}</h1>
         <p className={`text-xs text-gray-400 capitalize`}>{formatCreatedAt(createdAt)}</p>
     </div>
 }
-
 export default AssetContainer;
