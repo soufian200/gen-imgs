@@ -41,7 +41,7 @@ const routes = {
      * Add New Layer
      * api
      */
-    RENAMELAYER: "/rename",
+    RENAME: "/rename",
     /**
      * Add New Layer
      * api

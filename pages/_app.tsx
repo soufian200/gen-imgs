@@ -137,7 +137,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       const res = await axios.get(`/user`)
       const { payload } = res.data.data;
       // set current user
-      console.log(payload)
+      // console.log(payload)
       setUser(payload)
       // console.log(res.data)
       // if (!res.data.payload.isVerified) {
