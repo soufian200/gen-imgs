@@ -60,7 +60,7 @@ const UploadLayers = () => {
                         try {
                             /** Generate A Layer ID */
                             const imgId = nanoid();
-                            const newImg = { id: imgId, filename: file.name, path: downloadURL, createdAt: Date.now() }
+                            const newImg = { id: imgId, filename: file.name.split('.').shift(), path: downloadURL, createdAt: Date.now() }
                             const values = { layerId, imgs: [newImg] }
                             // console.log("values: ", values)
                             await axios.post(routes.CONTENT + routes.LAYERS + routes.IMGS + routes.ADDIMG, values)
