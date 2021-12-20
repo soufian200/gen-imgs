@@ -60,13 +60,6 @@ export interface ContextArgs {
     imgs: LayersImgs,
     setImgs: (imgs: LayersImgs) => void
     /**
-   *  exported items
-   * */
-    exported: AssetImgProps[]
-    setExported: (items: AssetImgProps[]) => void
-
-
-    /**
     *  which items to be select depand on current page
     * */
     itemsIds: any[]

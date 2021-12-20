@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { FC, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai"
-import AppContext from "../../../contexts/AppContext";
+import AppContext, { ActionTypes } from "../../../contexts/AppContext";
 import Center from "../../common/Center"
 
 
@@ -11,14 +11,23 @@ interface OverlayProps {
 
 const Overlay: FC<OverlayProps> = ({ children }) => {
 
-    const { isOverlayVisible, setIsOverlayVisible } = useContext(AppContext);
+    const { isOverlayVisible, setIsOverlayVisible, overlayActionType, setFiles } = useContext(AppContext);
+
+    const handleCloseOverlay = () => {
+        /** Close Overlay */
+        setIsOverlayVisible(false)
+        /** Reset Files */
+        if (overlayActionType == ActionTypes.UPLOADLAYERS) {
+            setFiles([])
+        }
+    }
 
     return <div
         className={classNames(`w-screen h-screen fixed overflow-hidden top-0 
     left-0 bg-gray-800 bg-opacity-80 z-50 transition`, { "hidden": !isOverlayVisible })}>
         <Center styles={`w-full h-full`}>
             <div
-                onClick={() => setIsOverlayVisible(false)}
+                onClick={handleCloseOverlay}
                 title="Close" className={`absolute right-20 text-black bg-white hover:text-white hover:bg-gray-800 cursor-pointer p-4 rounded-full top-10`}>
                 <AiOutlineClose size={24} />
             </div>

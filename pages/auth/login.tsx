@@ -11,7 +11,6 @@ import LogoAndHeader from "../../components/ui/LogoAndHead";
 import Error from "../../components/ui/Error";
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { COOKIES_NAMES } from '../../constants/cookiesNames';
 /**
  * 
  * Formik Values
@@ -98,11 +97,11 @@ const Login = () => {
             </Formik>
             <div>
                 <p className={`text-sm capitalize mt-4`}>I don't have an account!
-                    <Link href={routes.SIGNUP}><span className={`text-blue-500 cursor-pointer capitalize hover:underline`}> sign up</span>
+                    <Link href={routes.SIGNUP} passHref><span className={`text-blue-500 cursor-pointer capitalize hover:underline`}> sign up</span>
                     </Link>
                 </p>
                 <p className={`text-xs mt-1 text-red-500 capitalize hover:underline`}>
-                    <Link href={routes.RESETPASSWORD}>i forget my password </Link>
+                    <Link href={routes.RESETPASSWORD} passHref>i forget my password </Link>
                 </p>
             </div>
         </div>

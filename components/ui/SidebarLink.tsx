@@ -12,7 +12,7 @@ export interface SidebarLinkProps {
 
 
 const SidebarLink: FC<SidebarLinkProps> = ({ dirname, Icon, path, isActive }) => {
-    return <Link href={path}>
+    return <Link href={path} passHref>
         <li title={dirname}>
             <a className={classNames(` text-xl flex hover:bg-gray-100 cursor-pointer rounded-tr-full rounded-br-full py-2 pl-10 mb-2`, { 'text-blue-500 bg-blue-50': isActive })}>
                 <Icon size={30} />

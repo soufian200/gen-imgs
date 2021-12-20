@@ -28,11 +28,11 @@ const HomeSection: FC<HomeSectionProps> = () => {
                                 <h2 className={`text-xl capitalize text-gray-800 mb-20`}>on the world's first & largest NFT marketplace. In this unit, you'll learn about the main value types in Solidity. Value types are passed by value and are copied when they're used. </h2>
                                 <div className={`flex`}>
 
-                                    <Link href={routes.LOGIN} >
+                                    <Link href={routes.LOGIN} passHref>
                                         <button
                                             className={`bg-blue-500 text-white mr-10 ${btnClass}`}>login</button>
                                     </Link>
-                                    <Link href={routes.SIGNUP}>
+                                    <Link href={routes.SIGNUP} passHref>
                                         <button className={`text-blue-500 border-2 border-blue-500 ${btnClass}`}>sign up</button>
                                     </Link>
                                 </div>

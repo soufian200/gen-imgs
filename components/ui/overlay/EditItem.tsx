@@ -130,7 +130,7 @@ const EditItem = () => {
             let currentImg = currentImgs.find(img => img.id === firstSelected);
             setCrrValue(currentImg?.filename || '')
         }
-    }, [selectedIds[0]])
+    }, [selectedIds])
 
     return <div >
         <h1 className={`text-lg mb-5 font-bold`}>Rename</h1>

@@ -10,8 +10,6 @@ interface IUploadingLayerCard {
 }
 
 const UploadingLayerProgress: FC<IUploadingLayerCard> = ({ progress, imgPath }) => {
-
-
     return <div className={` relative border rounded-lg w-full p-4 mb-4 hover:shadow-lg`}>
         <div
             style={{ width: `${progress}%` }}
@@ -21,7 +19,7 @@ const UploadingLayerProgress: FC<IUploadingLayerCard> = ({ progress, imgPath }) 
             <div className={``}>
 
                 <div className={`w-20 h-20 border rounded-lg bg-gray-200 overflow-hidden`}>
-                    {imgPath && <Image width="100px" height="100px" src={imgPath} layout="responsive" />}
+                    {imgPath && <Image alt="trait" width="100px" height="100px" src={imgPath} layout="responsive" />}
 
                 </div>
             </div>

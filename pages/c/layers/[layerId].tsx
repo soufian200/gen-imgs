@@ -17,39 +17,9 @@ const FolderDetail = () => {
     const { layerId }: any = router.query
 
     const { setItemsIds, setSelectedIds, setImgs, imgs } = useContext(AppContext);
-    const [traits, setTraits] = useState<ImgInterface[]>([]);
     const [error, setError] = useState('')
     const [imgsLoading, setImgsLoading] = useState(true)
-    /**
-     * 
-     * Fetch Imgs of current layer
-     */
-    const getImgsOfLayer = async () => {
-        // console.log(router)
 
-        if (Object.keys(imgs).includes(layerId)) {
-            setImgsLoading(false)
-            return
-        };
-        try {
-            setError('')
-
-            const values = { layerId }
-            const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.IMGS, values)
-            const { payload } = await res.data.data
-
-            // setTraits(payload.imgs)
-            setImgsLoading(false)
-            let tempobj: any = {};
-            tempobj[payload.layerId] = payload.imgs;
-            setImgs({ ...imgs, ...tempobj })
-            // console.log('imgs: ', { ...imgs, ...tempobj })
-        } catch (err) {
-            setImgsLoading(false)
-            /** Set Unexpected Error */
-            setError((err as AxiosError).response?.data.error.message)
-        }
-    }
 
     useEffect(() => {
         if (!imgs[layerId]) return
@@ -58,10 +28,40 @@ const FolderDetail = () => {
         setItemsIds(ids)
         // reset selected ids
         setSelectedIds([])
-    }, [imgsLoading, imgs[layerId]])
+    }, [imgsLoading, imgs])
 
     useEffect(() => {
         if (!router.isReady) return;
+        /**
+        * 
+        * Fetch Imgs of current layer
+        */
+        const getImgsOfLayer = async () => {
+            // console.log(router)
+
+            if (Object.keys(imgs).includes(layerId)) {
+                setImgsLoading(false)
+                return
+            };
+            try {
+                setError('')
+
+                const values = { layerId }
+                const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.IMGS, values)
+                const { payload } = await res.data.data
+
+                // setTraits(payload.imgs)
+                setImgsLoading(false)
+                let tempobj: any = {};
+                tempobj[payload.layerId] = payload.imgs;
+                setImgs({ ...imgs, ...tempobj })
+                // console.log('imgs: ', { ...imgs, ...tempobj })
+            } catch (err) {
+                setImgsLoading(false)
+                /** Set Unexpected Error */
+                setError((err as AxiosError).response?.data.error.message)
+            }
+        }
         getImgsOfLayer()
     }, [router.isReady]);
 

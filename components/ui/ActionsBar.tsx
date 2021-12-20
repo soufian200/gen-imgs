@@ -4,6 +4,8 @@ import { AiOutlineCloudUpload, AiOutlineFolderAdd } from "react-icons/ai";
 import { BsTrash, } from 'react-icons/bs'
 import { BiEdit } from "react-icons/bi";
 import { useContext } from "react";
+import routes from "../../constants/routes";
+import { useRouter } from "next/router";
 /**
  * 
  * Actions Bar Component
@@ -24,24 +26,23 @@ const ActionsBar = () => {
     }
     /**
     * Render Component Depends On Action Type 
-    * @param type 
+    * @param event 
     */
     const handleUploadLayers = (e: React.FormEvent<HTMLInputElement>) => {
-
         const files = e.currentTarget.files;
         if (!files) return
-
+        /** Set Action To UploadLayers (used to decide which ui to render) */
         handleAction(ActionTypes.UPLOADLAYERS)
         setFiles(Array.from(files))
-
-
-
     }
+    const { asPath, query } = useRouter();
+    const layerPath = routes.CONTENT + routes.LAYERS;
     return <>
         <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed z-30`}>
             <div className="flex text-gray-800">
                 <div className={`relative overflow-hidden cursor-pointer hover:bg-gray-100 rounded-md `}>
                     <input
+                        disabled={query.layerId ? false : true}
                         type="file"
                         title="Upload Layers"
                         accept="image/*"
@@ -55,6 +56,7 @@ const ActionsBar = () => {
                     />
                 </div>
                 <Action
+                    disabled={layerPath !== asPath}
                     Icon={<AiOutlineFolderAdd size={25} />}
                     label="New Folder"
                     onClick={() => handleAction(ActionTypes.NEWFOLDER)}

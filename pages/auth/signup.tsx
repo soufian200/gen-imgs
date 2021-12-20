@@ -116,7 +116,7 @@ const Signup = () => {
             </Formik>
             <div>
                 <p className={`text-sm capitalize mt-4`}>I have an account!
-                    <Link href={routes.LOGIN}><span className={`text-blue-500 cursor-pointer capitalize hover:underline`}> log in</span>
+                    <Link href={routes.LOGIN} passHref><span className={`text-blue-500 cursor-pointer capitalize hover:underline`}> log in</span>
                     </Link>
                 </p>
             </div>

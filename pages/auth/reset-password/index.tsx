@@ -87,7 +87,7 @@ const ResetPassword = () => {
                     </div>
                     <div>
                         <p className={`text-sm capitalize mt-4`}>I have an account!
-                            <Link href={routes.LOGIN}>
+                            <Link href={routes.LOGIN} passHref>
                                 <span
                                     className={`text-blue-500 cursor-pointer capitalize hover:underline`}
                                 > log in</span>
