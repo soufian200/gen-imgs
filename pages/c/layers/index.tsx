@@ -8,6 +8,7 @@ import FailedOperation from "../../../components/ui/FailedOperation";
 import Empty from "../../../components/ui/Empty";
 import routes from "../../../constants/routes";
 import { useRouter } from "next/router";
+import AssetSkeleton from "../../../components/ui/skeletons/AssetSkeleton";
 /**
  * 
  * Layers Page
@@ -63,9 +64,10 @@ const Layers = () => {
         setSelectedIds([])
     }, [])
     /** Render Layers Page */
+
     return <Main>
         <div className={`flex flex-wrap w-full mb-10 `}>
-            {loading && folders.length === 0 && <h1>Loading...</h1>}
+            {loading && folders.length === 0 && [1, 2, 3, 4, 5, 6, 7, 8].map(i => <AssetSkeleton key={i} />)}
             {error && <FailedOperation msg={error} />}
             {folders.length === 0 && !loading
                 ? <Empty />

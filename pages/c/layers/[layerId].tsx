@@ -9,6 +9,7 @@ import axios, { AxiosError } from "axios";
 import routes from "../../../constants/routes";
 import FailedOperation from "../../../components/ui/FailedOperation";
 import Empty from "../../../components/ui/Empty";
+import AssetSkeleton from "../../../components/ui/skeletons/AssetSkeleton";
 
 
 const FolderDetail = () => {
@@ -69,7 +70,7 @@ const FolderDetail = () => {
         <div className={`flex flex-wrap w-full`}>
             {!imgsLoading && error && <FailedOperation msg={error} />}
             {imgsLoading || !layerId
-                ? <h1>imgs Loading...</h1>
+                ? [1, 2, 3, 4, 5, 6, 7, 8].map(i => <AssetSkeleton key={i} />)
                 : imgs[layerId] && imgs[layerId].length > 0
                     ? imgs[layerId].map((item, index) => <Asset
                         key={item.id}
