@@ -8,6 +8,7 @@ import AppContext from "../../contexts/AppContext";
 import { useRouter } from "next/router";
 import routes from "../../constants/routes";
 import axios from "axios";
+import UserSkeleton from "./skeletons/UserSkeleton";
 /**
  * 
  * Navbar Props
@@ -54,15 +55,14 @@ const Navbar: FC<NavbarProps> = ({ styles }) => {
             setLoading(false)
         }
     }
+
     // Render Navbar
     return <div className={`shadow-md bg-white p-4 fixed z-50 w-full flex justify-between items-center left-0 top-0 h-16 ${styles ? styles : null}`} >
         <div className={`w-full flex justify-between items-center`}>
             <Logo />
             {!(path.includes(routes.CONTENT)) && NavbarLinks}
             {userLoading
-                ? <div>
-                    <Loader color="text-black" />
-                </div>
+                ? <UserSkeleton />
                 : user
                 && <div className={`flex`}>
                     <Action
