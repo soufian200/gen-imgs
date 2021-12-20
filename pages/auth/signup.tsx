@@ -59,9 +59,9 @@ const Signup = () => {
             const res = await axios.post(routes.SIGNUP, values)
             const { payload } = await res.data.data
             // set token in local storage
-            localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
+            // localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
             // hide loader
-            setLoading(false)
+            // setLoading(false)
             // Go to Home
             router.replace(routes.CONTENT + routes.HOME)
         } catch (err) {

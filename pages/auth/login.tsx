@@ -56,10 +56,10 @@ const Login = () => {
             /**  Set token in local storage */
             // localStorage.setItem(COOKIES_NAMES.token, payload?.sub)
             /** Hide loader */
-            setLoading(false)
+            // setLoading(false)
             // Go to Home
-            router.reload()
-            // router.replace(routes.CONTENT + routes.HOME)
+            // router.reload()
+            router.replace(routes.CONTENT + routes.HOME)
         } catch (err) {
             // Set Error If Post Request Wasn't Successful
             setError((err as AxiosError).response?.data.error.message)
