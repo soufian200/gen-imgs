@@ -9,6 +9,7 @@ import Empty from "../../../components/ui/Empty";
 import routes from "../../../constants/routes";
 import { useRouter } from "next/router";
 import AssetSkeleton from "../../../components/ui/skeletons/AssetSkeleton";
+import getItemsIds from "../../../lib/getItemsIds";
 /**
  * 
  * Layers Page
@@ -63,6 +64,11 @@ const Layers = () => {
         /** Reset selected ids */
         setSelectedIds([])
     }, [])
+
+    useEffect(() => {
+        const ids = getItemsIds(folders);
+        setItemsIds(ids)
+    }, [folders])
     /** Render Layers Page */
 
     return <Main>

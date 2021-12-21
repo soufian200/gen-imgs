@@ -51,24 +51,20 @@ const Sidebar: FC<SidebarProps> = () => {
     ]
 
     return <>
-
         <div className={` w-2/12 z-20 fixed left-0 top-0 h-screen pt-16 border-r border-gray-300`}>
-
             <div className={`mt-10`}>
-
-
                 <ul className={`p-10 pt-4 pl-0 text-gray-800`}>
                     {
-
                         LINKSP1.map((li, index) => {
-                            return <SidebarLink key={index} path={li.path} isActive={router.asPath == li.path} dirname={li.dirname} Icon={li.Icon} />
+                            return <SidebarLink key={index} path={li.path}
+                                isActive={router.asPath.includes(li.path)}
+                                dirname={li.dirname} Icon={li.Icon} />
                         })
                     }
                 </ul>
                 <div className={`border border-gray-200 w-full`} />
                 <ul className={`p-10 pt-4 pl-0 text-gray-800`}>
                     {
-
                         LINKSP2.map((li, index) => {
                             return <SidebarLink key={index} path={li.path} isActive={router.asPath == li.path} dirname={li.dirname} Icon={li.Icon} />
                         })

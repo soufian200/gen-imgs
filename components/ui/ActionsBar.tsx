@@ -1,11 +1,11 @@
 import Action from "./Action";
 import AppContext, { ActionTypes } from "../../contexts/AppContext";
 import { AiOutlineCloudUpload, AiOutlineFolderAdd } from "react-icons/ai";
-import { BsTrash, } from 'react-icons/bs'
+import { BsArrowLeft, BsTrash, } from 'react-icons/bs'
 import { BiEdit } from "react-icons/bi";
 import { useContext } from "react";
 import routes from "../../constants/routes";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 /**
  * 
  * Actions Bar Component
@@ -38,7 +38,11 @@ const ActionsBar = () => {
     const { asPath, query } = useRouter();
     const layerPath = routes.CONTENT + routes.LAYERS;
     return <>
-        <div className={`flex justify-between items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed z-30`}>
+        <div className={`flex items-center border-b top-16 right-0 h-16 w-10/12 bg-white bg-opacity-90 p-2 fixed z-30`}>
+            <div onClick={router.back} title="Go Back"
+                className={`w-10 h-10 hover:bg-gray-100 transition cursor-pointer rounded-full flex justify-center items-center mr-6`}>
+                <BsArrowLeft size={20} />
+            </div>
             <div className="flex text-gray-800">
                 <div className={`relative overflow-hidden cursor-pointer hover:bg-gray-100 rounded-md `}>
                     <input
@@ -61,6 +65,11 @@ const ActionsBar = () => {
                     label="New Folder"
                     onClick={() => handleAction(ActionTypes.NEWFOLDER)}
                 />
+                {!isEmpty(selectedIds) && <Action
+                    onClick={() => handleAction(ActionTypes.DELETE)}
+                    Icon={<BsTrash size={21} />}
+                    label="Delete"
+                />}
                 {!isEmpty(selectedIds)
                     && <Action
                         onClick={() => handleAction(ActionTypes.EDIT)}
@@ -69,11 +78,6 @@ const ActionsBar = () => {
                         disabled={selectedIds.length != 1}
                     />
                 }
-                {!isEmpty(selectedIds) && <Action
-                    onClick={() => handleAction(ActionTypes.DELETE)}
-                    Icon={<BsTrash size={21} />}
-                    label="Delete"
-                />}
             </div>
         </div>
     </>

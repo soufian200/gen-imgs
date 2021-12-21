@@ -3,8 +3,8 @@ import AppRes, { AppResData } from '../../../../lib/api/AppRes'
 import getPayload from '../../../../lib/api/getPayload'
 import getToken from '../../../../lib/api/getToken'
 import apiHandler from '../../../../lib/api/middlewares/apiHandler'
-import requireJWT from '../../../../lib/api/middlewares/requireJWT'
 import Layer from '../../../../services/firebase/classes/Layer'
+import * as _ from 'lodash';
 /**
  * 
  * Handler get all layers
@@ -24,7 +24,8 @@ async function handler(
     /** Instantiate new Layer */
     const layer = new Layer(sub as string);
     /** Retrieve All Layers Of Current User */
-    const layers = await layer.getAll()
-    return AppRes(res, 200, 'get all layers', { layers })
+    const layers = await layer.getFolders()
+    const sortedLayers = _.sortBy(layers, [(i) => i.folderName]);
+    return AppRes(res, 200, 'get all layers', { layers: sortedLayers })
 }
 export default apiHandler(handler)

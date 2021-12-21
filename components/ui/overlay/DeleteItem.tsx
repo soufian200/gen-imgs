@@ -28,7 +28,7 @@ const DeleteItem = () => {
             setLoading(true)
             /** Post Data To Reset Password Api & Get Response */
             const res = await axios.post(routes.CONTENT + routes.LAYERS + routes.DELETE, { layerIds: selectedIds })
-            console.log(res.data)
+            // console.log(res.data)
             /** Hide loader */
             setLoading(false)
 

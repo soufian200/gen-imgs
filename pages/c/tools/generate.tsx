@@ -3,13 +3,13 @@ import { useState } from "react";
 import axios from "axios";
 import { LayerInterface } from "../../../utils/interfaces";
 import { BsArrowLeft } from "react-icons/bs";
-import apiRoutes from "../../../constants/apiRoutes";
 import Center from "../../../components/common/Center";
 import Main from "../../../components/ui/Main";
 import GenerateFormFinished from "../../../components/ui/generate/GenerateFormFinished";
 import GenerateFormErr from "../../../components/ui/generate/GenerateFormErr";
 import GenerateFormProccessing from "../../../components/ui/generate/GenerateFormProccessing";
 import GenerateForm from "../../../components/ui/generate/GenerateForm";
+import routes from "../../../constants/routes";
 
 
 
@@ -24,10 +24,6 @@ export interface Values {
 export interface configValsProps extends Values {
     layers: LayerInterface[];
 }
-
-
-
-
 const Generate = () => {
 
     const [loading, setLoading] = useState(false)
@@ -47,9 +43,10 @@ const Generate = () => {
 
     const handleOnSubmit = async (values: Values) => {
 
+
         // TODO: send layers ids
 
-        const configVals = { layers, ...values };
+        const configVals = { ...values };
 
         try {
 
@@ -57,8 +54,9 @@ const Generate = () => {
             setLoading(true)
 
             // send config value to server
-            const { data } = await axios.post(apiRoutes.generate, configVals)
-            setData(data)
+            const res = await axios.post(routes.CONTENT + routes.TOOLS + routes.GENERATE, configVals)
+            const { payload, message } = await res.data.data
+            setData({ ...payload, msg: message as string })
 
             finish()
 
@@ -135,34 +133,27 @@ const Generate = () => {
 
                 {!loading && !finished
                     ? <GenerateForm onSubmit={handleOnSubmit} />
-                    : <div className={`w-80 h-80`}>
-                        <Center styles="flex-col h-full">
+                    : <Center styles="flex-col h-full">
+                        {!finished
+                            ? <GenerateFormProccessing />
+                            : <Center styles={`flex-col`}>
+                                {error
+                                    ? <GenerateFormErr err={error} />
+                                    : <GenerateFormFinished data={data} />
+                                }
+                                <button
+                                    onClick={handleReset}
+                                    className={`flex items-center mt-3 text-blue-500 hover:text-blue-700`}>
+                                    <BsArrowLeft />
+                                    <h1 className={`ml-2`}>Return</h1>
+                                </button>
 
-                            {!finished
-                                ? <GenerateFormProccessing />
-                                : <Center styles={`flex-col`}>
-                                    {error
-                                        ? <GenerateFormErr err={error} />
-                                        : <GenerateFormFinished data={data} />
-                                    }
-                                    <button
-                                        onClick={handleReset}
-                                        className={`flex items-center mt-5 text-blue-500 hover:text-blue-700`}>
-                                        <BsArrowLeft />
-                                        <h1 className={`ml-2`}>Return</h1>
-                                    </button>
-
-                                </Center>
-                            }
-
-                        </Center>
-                    </div>
+                            </Center>
+                        }
+                    </Center>
                 }
-
             </Center>
         </div>
     </Main>
-
 }
-
 export default Generate;

@@ -27,7 +27,7 @@ class ArtGenerator {
     private solanaMetadata = {
         symbol: "YC",
         seller_fee_basis_points: 1000, // Define how much % you want from secondary market sales 1000 = 10%
-        external_url: "https://www.youtube.com/c/hashlipsnft",
+        // external_url: "https://www.youtube.com/c/hashlipsnft",
         creators: [
             {
                 address: "7fXNuer5sbZtaTEPhtJ5g5gNtuyRoKkvxdjEjEnPN4mC",
@@ -35,13 +35,13 @@ class ArtGenerator {
             },
         ],
     };
-    private baseUri = "ipfs://NewUriToReplace";
 
     private extraMetadata = {};
 
     private height;
     private width;
     private collectionName;
+    private ipfs;
     private description;
     private layers;
     private shuffleLayers;
@@ -60,6 +60,7 @@ class ArtGenerator {
     constructor(
         height: number = 512, width: number = 512,
         collectionName: string,
+        ipfs: string,
         description: string = "",
         layers: LayerInterface[],
         shuffleLayers: boolean = false,
@@ -70,7 +71,7 @@ class ArtGenerator {
             static: boolean
             default: string
         } = {
-                generate: true,
+                generate: false,
                 brightness: "80%",
                 static: false,
                 default: "#000000",
@@ -79,6 +80,7 @@ class ArtGenerator {
         this.height = height;
         this.width = width;
         this.collectionName = collectionName;
+        this.ipfs = ipfs;
         this.description = description;
         this.layers = layers;
         this.shuffleLayers = shuffleLayers;
@@ -112,13 +114,10 @@ class ArtGenerator {
     * get filename without extension
     * */
     private cleanName = (_str: string) => _str.split(this.rarityDelimiter)[0];
-
-
-
     /**
+     * 
      * Get Rarity Weight
      * */
-
     private getRarityWeight = (_str: string) => { // e.g yellow#12.png => 12
 
         let nameWithoutExtension = _str.slice(0, -4);
@@ -127,14 +126,10 @@ class ArtGenerator {
 
         return isNaN(nameWithoutWeight) ? 1 : nameWithoutWeight;
     };
-
-
-
-
     /**
+     * 
      * getElements
      * */
-
     private getElements = (imgs: any) => {
 
         return imgs.map((i: any, index: number) => {
@@ -147,13 +142,10 @@ class ArtGenerator {
             };
         });
     };
-
-
-
     /**
+     * 
      * layersSetup
      * */
-
     private layersSetup = (_layers: LayerInterface[]) => {
 
         const layers = _layers.map((layerObj, index: number) => ({
@@ -174,13 +166,10 @@ class ArtGenerator {
         }));
         return layers;
     };
-
-
-
     /**
+     * 
      * Create Dna
      * */
-
     private createDna = (_layers: LayersInterface[]): string => {
 
         let randNum: string[] = [];
@@ -207,27 +196,20 @@ class ArtGenerator {
         });
         return randNum.join(this.DNA_DELIMITER);
     };
-
-
-
     /**
+     * 
      * is Dna Unique
      * */
 
     private isDnaUnique = (_DnaList = new Set(), _dna = "") => !_DnaList.has(_dna);
-
-
-
-
     /**
+     * 
     * cleanDna
     * */
 
     private cleanDna = (_str: string) => Number(_str.split(":").shift());
-
-
-
     /**
+     * 
      * construct Layer To Dna
      * */
 
@@ -367,7 +349,7 @@ class ArtGenerator {
         let tempMetadata: TempMetadataInterface = {
             name: `${namePrefix} #${_edition}`,
             description,
-            image: `${this.baseUri}/${_edition}.png`,
+            image: `${this.ipfs}/${_edition}.png`,
             dna: sha1(_dna),
             edition: _edition,
             date: dateTime,
@@ -387,7 +369,7 @@ class ArtGenerator {
                 seller_fee_basis_points: this.solanaMetadata.seller_fee_basis_points,
                 image: `image.png`,
                 //Added metadata for solana
-                external_url: this.solanaMetadata.external_url,
+                // external_url: this.solanaMetadata.external_url,
                 edition: _edition,
                 ...this.extraMetadata,
                 attributes: tempMetadata.attributes,
@@ -500,7 +482,6 @@ class ArtGenerator {
                     // debugLogs
                     //     ? console.log("Editions left to create: ", abstractedIndexes)
                     //     : null;
-
                     const imgBuffer = this.getBufferImage(this.abstractedIndexes[0]);
                     imgsBuffer.push(imgBuffer)
 

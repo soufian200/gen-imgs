@@ -57,7 +57,7 @@ const Navbar: FC<NavbarProps> = ({ styles }) => {
     }
 
     // Render Navbar
-    return <div className={`shadow-md bg-white p-4 fixed z-50 w-full flex justify-between items-center left-0 top-0 h-16 ${styles ? styles : null}`} >
+    return <div className={`shadow-md bg-white p-4 px-10 fixed z-50 w-full flex justify-between items-center left-0 top-0 h-16 ${styles ? styles : null}`} >
         <div className={`w-full flex justify-between items-center`}>
             <Logo />
             {!(path.includes(routes.CONTENT)) && NavbarLinks}

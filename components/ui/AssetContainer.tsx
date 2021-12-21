@@ -3,6 +3,7 @@ import { FC, useContext } from "react"
 import AppContext from "../../contexts/AppContext"
 import { useRouter } from 'next/router'
 import formatCreatedAt from "../../lib/utils/formatCreatedAt"
+import routes from "../../constants/routes"
 /**
  * 
  * Interface For Asset Props
@@ -48,6 +49,7 @@ const AssetContainer: FC<AssetContainerProps> = ({ children, id, title, createdA
 
     const handleOpenFolder = (id: string) => {
         // console.log("open folder with this id: ", router.asPath + '/' + id)
+        if (router.asPath !== routes.CONTENT + routes.LAYERS) return
         setSelectedIds([])
         setItemsIds([])
         router.push(router.asPath + '/' + id)

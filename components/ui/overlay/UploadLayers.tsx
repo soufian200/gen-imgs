@@ -73,10 +73,10 @@ const UploadLayers = () => {
                                     const values = { layerId, imgs: [newImg] }
                                     // console.log("values: ", values)
                                     await axios.post(routes.CONTENT + routes.LAYERS + routes.IMGS + routes.ADDIMG, values)
-                                    const currentImgs = imgs[layerId as string]
-                                    // let updatedImgs = currentImgs.map(img => img.id === firstSelected ? { ...img, filename: renameVal } : img);
+                                    // const currentImgs = [...imgs[layerId as string], newImg]
+                                    imgs[layerId as string].push(newImg)
                                     const newImgs = { ...imgs }
-                                    newImgs[layerId as string] = [...currentImgs, newImg];
+                                    newImgs[layerId as string] = imgs[layerId as string]
                                     setImgs(newImgs);
                                 } catch (err) {
                                     // console.log((err as AxiosError).response?.data)

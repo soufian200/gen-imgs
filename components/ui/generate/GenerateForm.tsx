@@ -26,6 +26,7 @@ const GenerateForm: FC<IGenerateFormProps> = ({ onSubmit }) => {
                 height: "",
                 size: "",
                 collectionName: "",
+                ipfs: "",
                 description: "",
                 isShuffle: false
             }}
@@ -64,6 +65,13 @@ const GenerateForm: FC<IGenerateFormProps> = ({ onSubmit }) => {
                     name="collectionName"
                     parentStyles={`mb-5`}
                 />
+                <InputFormik
+                    label="IPFS Url (optional)"
+                    placeholder="Enter collection name"
+                    name="ipfs"
+                    parentStyles={`mb-5`}
+                />
+
 
                 <MyTextArea
                     label="Description"

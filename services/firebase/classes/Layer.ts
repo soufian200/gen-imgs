@@ -99,15 +99,15 @@ class Layer extends User {
         imgsOfLayer.forEach(imgOfLayer => {
 
             if (imgOfLayer.exists)
-                imgs.push({ id: imgOfLayer.id, ...imgOfLayer.data(), })
+                imgs.push({ ...imgOfLayer.data(), })
 
         })
 
         /** Return Layer With It's Images */
+
         return imgs
 
     }
-
     /**
     * Get Layers's IDs
     * */
@@ -125,7 +125,6 @@ class Layer extends User {
         return ids
 
     }
-
     /**
     * Get Layers's Names
     * */
@@ -154,7 +153,35 @@ class Layer extends User {
         return names.map(name => name.folderName.split('-').pop());
 
     }
+    /**
+   * Get 
+   * */
+    async getFolders() {
 
+        /** Get All Layers Of A User */
+        const layersIds = await this.layersCollection.get();
+
+        const pendingLayers: Promise<LayerInterface>[] = [];
+        const pendingImgs: Promise<any>[] = [];
+
+        layersIds.forEach((layerId) => {
+            const layer = this.get(layerId.id)
+            pendingLayers.push(layer as Promise<LayerInterface>)
+        })
+        const layers = await Promise.all(pendingLayers)
+
+        const layersOfUser = layers.map((layer, index) => {
+            return {
+                ...layer,
+            }
+        })
+
+
+
+
+
+        return layersOfUser;
+    }
     /**
     * Get 
     * */
@@ -170,6 +197,8 @@ class Layer extends User {
 
             const layer = this.get(layerId.id)
             const imgs = this.getLayerImgs(layerId.id)
+
+
             pendingLayers.push(layer as Promise<LayerInterface>)
             pendingImgs.push(imgs)
         })
@@ -178,11 +207,14 @@ class Layer extends User {
 
         const layers = await Promise.all(pendingLayers)
         const imgs = await Promise.all(pendingImgs)
+        // console.log("===================================================================")
+        // console.log("layers: ", layers)
+        // console.log("imgs: ", imgs)
 
         const layersOfUser = layers.map((layer, index) => {
             return {
                 ...layer,
-                imgs: imgs[0]
+                imgs: imgs[index]
             }
         })
 

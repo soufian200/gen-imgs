@@ -40,7 +40,7 @@ function ResultBar() {
     }
     return <div className={`flex justify-between items-center text-gray-600 text-sm`}>
         <div className={`flex items-center`}>
-            <h3 className={`capitalize`}>results {folders.length > 0 && `( ${folders.length} )`}</h3>
+            <h3 className={`capitalize`}>results {itemsIds.length > 0 && `( ${itemsIds.length} )`}</h3>
             {selectedIds.length > 0 && <>
                 <VertSep />
                 < h3 className={`text-black mr-2`}>{selectedIds.length} Selected</h3>
